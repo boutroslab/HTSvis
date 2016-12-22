@@ -1,4 +1,4 @@
-####Function to plot heatmaps with tooltip 
+####Function to define drop down lists in server via renderUI 
 DropDown <- function(identifier,input,toSelect,multiState){
   
   renderUI({
