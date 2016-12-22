@@ -4,7 +4,7 @@ source("./helperFunctions.R")
 shinyUI(
   fixedPage(
             theme = "bootstrap.css",
-            title = "HTS-Vis-SYNGENE",
+            title = "HTS-Vis",
             HTML('<style type="text/css">
                  .row-fluid { width: 50%; }
                  .well { background-color: #99CCFF; }
