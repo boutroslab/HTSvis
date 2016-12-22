@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 
 <p>
@@ -40,7 +39,3 @@ Following test data sets are provided:<br />
 
 
 
-=======
-# HTSvis
-Hello World
->>>>>>> dcd4f4ed1b9df074e8b1fdb94ceb8db587fadb31
