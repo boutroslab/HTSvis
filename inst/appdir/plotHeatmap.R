@@ -53,7 +53,7 @@ plotHeatmap <- function(data_table,limits,curr_plate,curr_screen,curr_feature,pl
                             )
 
 
-#Negative values of defense get a blue color scale with 10 colors
+#Set color scale
   curr_df = mutate(
                 curr_df,def.color=as.character(cut(value,
                                                    breaks=breakPoints,
@@ -63,7 +63,7 @@ plotHeatmap <- function(data_table,limits,curr_plate,curr_screen,curr_feature,pl
   curr_df$def.color[curr_df$value < min] = col_palette[1]
   curr_df$def.color[curr_df$value > max] = col_palette[length(col_palette)]
 
-  # Set NA values in df2$def.color to light gray in df2$def.color
+  # Set NA values in df2$def.color to light balck in df2$def.color
   curr_df$def.color[is.na(curr_df$value)] = "black"
   curr_df$id <- 1:nrow(curr_df)
   return(curr_df)
