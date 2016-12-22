@@ -1,0 +1,33 @@
+Package: HTSvis
+Type: Package
+Title: Visualization and analysis of arrayed high-thorughput screens (HTS)
+Version: 0.1.0
+Authors@R: c(
+    person("Christian", "Scheeder", email = "c.scheeder@dkfz.de", role = c("cre", "aut")),
+    person("Florian", "Heigwer", email = "f.heigwer@dkfz.de", role = c("aut")),
+    person("Michael", "Boutros", email = "m.boutros@dkfz.de", role = c("aut")))
+Maintainer: Christian Scheeder <c.scheeder@dkfz.de>
+Description: HTSvis provides a stand-alone shiny appication for the
+    visulaization and analysis of data from arrayed high-thorughput screens.
+Depends:
+    R (>= 3.3.2),
+    tools (>= 3.3.2),
+    tibble (>= 1.2),
+    stringr (>= 1.1.0),
+    tidyr (>= 0.6.0),
+    data.table (>= 1.10.0), 
+    shinyjs (>= 0.8),
+    ggplot2 (>= 2.2.0),
+    reshape2 (>= 1.4.2),
+    dplyr (>= 0.5.0),
+    ggvis (>= 0.4.3),
+    RColorBrewer (>= 1.1.2),
+    scales (>= 0.4.1),
+    gplots (>= 3.0.1),
+    DT (>= 0.2),
+    gtools (>= 3.5.0),
+    shiny (>= 0.14.2)
+License: GPL (>=2)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 5.0.1
