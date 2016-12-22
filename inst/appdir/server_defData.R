@@ -175,7 +175,7 @@ output$ScreensOnColumnsOut <- renderUI({
   validate(need(input$file1, message=FALSE))
     if(!is.null(feature_table2$data_pre))
       checkboxInput("ScreensOnColumns",
-                    "set check if one column per data series and measured value",
+                    "set check if one column per data series and measured value (e.g. experiment_channel)",
                     F)
 })
 
