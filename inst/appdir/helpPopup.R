@@ -1,3 +1,7 @@
+####Function for help popups
+## original function written by Joe Cheng (@jcheng5), slighty edited 
+
+
 helpPopup <- function(title, content,id,
                       placement='right',
                       trigger='hover',
