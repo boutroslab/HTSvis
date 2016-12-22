@@ -18,7 +18,7 @@ We recommend to start a new session and clear the workspace when using the appli
 ```
 install.packages("devtools", dependencies = TRUE)
 
-devtools::install_github("cscheeder/HTSvis", build_vignettes = F)
+devtools::install_github("boutroslab/HTSvis", build_vignettes = F)
 
 library(HTSvis)
 
