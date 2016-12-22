@@ -19,6 +19,7 @@ plotHeatmap <- function(data_table,limits,curr_plate,curr_screen,curr_feature,pl
                           )
                       )
 
+  #create a data frame corresponding to the current plate sorted according to multi-well format 
   if(curr_screen == F) {
   curr_df= data_table %>%
     dplyr::filter_(lazyeval::interp(quote(x == y),
