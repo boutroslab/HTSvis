@@ -612,11 +612,16 @@ observe({testCheckbox
   for(i in names(testCheckbox)) {
     if(  testCheckbox[[as.character(i)]][1] == "on" ) {
       if(length(unlist(brush_container[[i]][2])) == 1 ) {
+          
+      singelSample_val <- featureFrame() %>%
+                    slice(unlist(brush_container[[i]][2])) %>%
+                        unlist(use.names=F)
+      
         frame <- rbind.data.frame(
                     frame,
                     cbind.data.frame( name=i,
-                        cutX=unlist(brush_container[[i]][2]),
-                        cutY=unlist(brush_container[[i]][2]),
+                        cutX=as.vector(singelSample_val)[1],
+                        cutY=as.vector(singelSample_val)[2],
                         thickness=0.5,
                         color=as.character(testCheckbox[[as.character(i)]][2]))
                     )
