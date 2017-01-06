@@ -38,8 +38,10 @@ Following test data sets are provided:<br />
 </br> <sup>2</sup> imageHTS: Analysis of high-throughput microscopy-based screens. R package version 1.24.0. Pau G et al. 2016 
 
 ## Manual
-### A comprehensive manuel is provided on the help page in the application 
+### A comprehensive manual is provided on the help page in the application 
 
-
+## Contact 
+### c.scheeder@dkfz.de
+### m.boutros@dkfz.de 
 
 
