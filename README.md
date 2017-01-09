@@ -41,7 +41,7 @@ Following test data sets are provided:<br />
 ### A comprehensive manual is provided on the help page in the application 
 
 ## Contact 
-#### c.scheeder@dkfz.de
-#### m.boutros@dkfz.de 
+#### Christian Scheeder c.scheeder@dkfz.de
+#### Michael Boutros m.boutros@dkfz.de 
 
 
