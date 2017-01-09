@@ -1,7 +1,7 @@
 
 
 <p>
-<img align="right" max-width="75%" src="https://github.com/cscheeder/HTSvis/blob/master/inst/appdir/WWW/logo.png">
+<img align="center" max-width="75%" src="https://github.com/cscheeder/HTSvis/blob/master/inst/appdir/WWW/logo.png">
 <h1 id="title"  >HTSvis</h1>
 </p>
 
