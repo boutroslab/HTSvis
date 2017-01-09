@@ -21,7 +21,7 @@ install.packages("devtools", dependencies = TRUE)
 devtools::install_github("boutroslab/HTSvis", build_vignettes = F)
 ```
 ## Usage 
-### Load the packe and call the funtion HTSvis to start the web application
+### Load the packe and call the funtion 'HTSvis' to start the web application
 We recommend to start a new session and clear the workspace when using the application 
 ```
 library(HTSvis)
@@ -29,7 +29,7 @@ library(HTSvis)
 HTSvis()
 ```
 ## Test Data
-Test data can be found in the GitHub repository (test_data folder) and has to be downloaded manually. <br />
+Test data can be found in the GitHub repository ('test_data' folder) and has to be downloaded manually. <br />
 Following test data sets are provided:<br />
 
 | File | Description |
