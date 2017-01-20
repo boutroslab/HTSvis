@@ -153,12 +153,12 @@ output$helpChOne2 <- renderUI(
                 <b>1. cellHTS result file (<i>topTable.txt</i>)</b>
                 </br>
                 The cellHTS package
-                provides a summary table provided as as delimted text file (<i>topTable.txt</i>). 
-                This text file has a defined structure and column names can be loaded directly in applciation. 
-                Both, the strucutre and
+                provides a summary table provided as delimited text file (<i>topTable.txt</i>). 
+                This text file has a defined structure and column names can be loaded directly in application. 
+                Both, the structure and
                 the column names of the topTable object should not be changed as 
                 the application relies on those.
-                The expected structure of the topTable is illistrated below."
+                The expected structure of the topTable is illustrated below."
 
 
                 # Measured values (features) per well are represented as
@@ -192,9 +192,9 @@ output$helpChOne3 <- renderUI(
                 per-well annotation. 
                 The topTable will contain additional columns with data points assigned 
                 to each well. Depending on the design of the experiment, those columns
-                contain meausured values of replicates. Data from single and dual channel experiments 
+                contain measured values of replicates. Data from single and dual channel experiments 
                 can be loaded in the application. Besides raw measured values, 
-                futher columns with normalized values and further metrics are available.
+                further columns with normalized values and further metrics are available.
                 <br/>
                 </br>
                 <b>2. Generic data table from arrayed screens </b>
@@ -246,7 +246,7 @@ output$helpStructure2 <- renderUI(
 An <b>important requirement</b> concerning the data structure is
 that the dataset is <b>symetrical</b> in a way that each experiment contains
 the same set of plates and each plate has the same well format.
-This is espicially relevant if mutiple experiments are investigated because
+This is especially relevant if multiple experiments are investigated because
 the plate identifiers need to be consistent between the
 experiments.
 Furthermore the data set has to be <b>complete</b>
@@ -259,11 +259,11 @@ filled with NA or NaN.<br/>
 The <b>well annotation</b> has to follow an alphanumerical
 coding with column positions indicated by numbers and row positions
 by letters (see illustration below).
-The specific row and collumn annotation format is: 'RowColmn' with rows as
+The specific row and column annotation format is: 'RowColmn' with rows as
 letters and columns as numbers (e.g. A1 or A01).
 Letters can be upper- or lowercase.
 Letters and numbers may be separated by
-charcaters like '-' or '_'.
+characters like '-' or '_'.
                "
     ))
 )
