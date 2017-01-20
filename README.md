@@ -36,10 +36,10 @@ Following test data sets are provided:<br />
 | --- | --- |
 | topTable.txt<sup>1</sup> | result table from an analysis of an RNAi screen using cellHTS2 |
 | topTable_dc.txt<sup>1</sup>  | result table from an analysis of a dual channel RNAi screen using cellHTS2 |
-| kimorph.RData<sup>2</sup> |  multiparametric data set from an image-based profiling experiment |
-| 96wellFACS.csv   |  multiparametric data set from a flowcytometry screen |
+| humanSGI.RData<sup>2</sup> |  multiparametric data set from an image-based screen |
+| 96wellFACS.csv   |  multiparametric data set from a flowcytometry screen (unpublished) |
 </br> <sup>1</sup> cellHTS: Analysis of cell-based RNAi screens, Boutros et al. 2006, Genome Biology 
-</br> <sup>2</sup> imageHTS: Analysis of high-throughput microscopy-based screens. R package version 1.24.0. Pau G et al. 2016 
+</br> <sup>2</sup> Measuring genetic interactions in human cells by RNAi and imaging, Laufer et al. 2014, Nature Methods
 
 ## Manual
 ### A comprehensive manual is provided on the help page in the application 
