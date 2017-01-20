@@ -1,4 +1,4 @@
-##shiny server function
+    ##shiny server function
 shinyServer(function(input, output,session) {
 
 ##helper functions for js in scatter plot tab

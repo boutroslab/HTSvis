@@ -8,7 +8,7 @@ observe({
     validate(need(input$platesPlate1, message=FALSE))
     validate(need(input$screensPlate1, message=FALSE))
 
-
+    
     if(!isTRUE(IsSingleExperimentTabs$state)) {
         limits$limits1 <- setLimits(data_lim=feature_table2$data,
                                      lo_scale_lim=input$LoScaleLim1,

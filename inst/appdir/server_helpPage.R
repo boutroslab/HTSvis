@@ -1,6 +1,6 @@
-#server part of global help page
+###server of global help page
 
-#control of conditional panels
+##control of conditional panels
 helpTabs <- reactiveValues(structure=T,upload=F, plateViewer=F,featureTable=F,
                            qualityControl=F,scatterPlot=F)
 
@@ -96,6 +96,8 @@ output$showHelpSPOut <- reactive({
 })
 outputOptions(output, "showHelpSPOut", suspendWhenHidden=FALSE)
 
+
+
 ##Global headers
 output$helpHeader <- renderUI(
     HTML(paste("
@@ -108,7 +110,6 @@ output$helpSubHeader <- renderUI(
                Click on the tabs to open the sub pages"
     ))
     )
-
 
 
 
@@ -143,15 +144,69 @@ output$helpChOne2 <- renderUI(
                 Data input requires a tabular
                 format (.csv, .txt or .RData).
                 The input data table can be either a result file
-                from a statistical analysis using cellHTS2 (<i>topTable.txt</i>)
-                or a generic spread sheet table (e.g. raw data).
-                Measured values (features) per well are represented as
-                column entries in the data table.
-                In any case, at least two identifier columns are
-                required: the well and plate annotation.
-                Those columns assign the measured values
-                (termed <i>feature</i> in the application) to the well position
+                from a statistical analysis using the Bioconductor <i>R</i> package 
+                cellHTS 
+                or a generic spread sheet table (e.g. raw data). 
+                The two possible types of input tables, require different structures: 
+                <br/>
+                <br/>
+                <b>1. cellHTS result file (<i>topTable.txt</i>)</b>
+                </br>
+                The cellHTS package
+                provides a summary table provided as as delimted text file (<i>topTable.txt</i>). 
+                This text file has a defined structure and column names can be loaded directly in applciation. 
+                Both, the strucutre and
+                the column names of the topTable object should not be changed as 
+                the application relies on those.
+                The expected structure of the topTable is illistrated below."
+
+
+                # Measured values (features) per well are represented as
+                # column entries in the data table.
+                # In any case, at least two identifier columns are
+                # required: the well and plate annotation.
+                # Those columns assign the measured values
+                # (termed <i>feature</i> in the application) to the well position
+                # and the plate.
+                # Columns containing
+                # additional information such as an annotation can be
+                # present.
+                # Accordingly, the
+                # data table contains row-wise entries per well as
+                # illustrated in the example below.
+                # If an experiment contains multiple plates, the rows of each plate
+                # are pasted one below the other.<br/>
+                # <br/>
+                # If a
+                # single experiment is uploaded, you can upload your data table in the format
+                # as illusrated below. The annotation column is optional."
+
+    ))
+)
+
+
+output$helpChOne3 <- renderUI(
+    HTML(paste("
+                Well and plate annotation columns are absolutely required.
+                The annotation column is optional and can contain any kind of 
+                per-well annotation. 
+                The topTable will contain additional columns with data points assigned 
+                to each well. Depending on the design of the experiment, those columns
+                contain meausured values of replicates. Data from single and dual channel experiments 
+                can be loaded in the application. Besides raw measured values, 
+                futher columns with normalized values and further metrics are available.
+                <br/>
+                </br>
+                <b>2. Generic data table from arrayed screens </b>
+                </br>
+                At least two identifier columns are
+                required for a table to be loaded in the application: the well and plate annotation.
+                Those columns assign the sample values
+                (termed <i>channels</i> in the application) to the well position
                 and the plate.
+               Sample values  per well are represented as
+                column entries in the data table. The number of channels per well 
+                is not limited. 
                 Columns containing
                 additional information such as an annotation can be
                 present.
@@ -160,37 +215,20 @@ output$helpChOne2 <- renderUI(
                 illustrated in the example below.
                 If an experiment contains multiple plates, the rows of each plate
                 are pasted one below the other.<br/>
-                <br/>
-                If a
-                single experiment is uploaded, you can upload your data table in the format
-                as illusrated below. The annotation column is optional."
+               "
 
-    ))
-)
-
-
-output$helpChOne3 <- renderUI(
-    HTML(paste("
-                If the data set contains multiple experiments (e.g. replicates) or
-                has been statistically analyzed
-                (e.g. raw and normalized data is available),
-                two structures of the data table are possible:
-                <br/>
-                <br/>
-                <b>1. one column per data series and measured value </b>(<i>topTable.txt</i> cellHTS
-                result file).</br>
-                <b>Important note:</b>
-               columns need to be named according to a defined pattern:
-               the experiement identifier and the measured value separated by a '_',
-               e.g. replicate1_channel1.
-               The '_' separator can further only be used once in the corresponding column name.'"
     ))
 )
 
 output$helpChOne4 <- renderUI(
     HTML(paste("
-               <b>2. An additional identifier column containing the experiment
-               allocation is available.<b/>"
+                If the table contains individual sets of plates 
+                (e.g. replicates) each well has to be assigned 
+                to those. Accordingly, an additional annotation column 
+                has to be present. The required structure is illustrated below. 
+                Importantly, in the case of such a data structure the individual
+                sets have to contain the same collection of plates 
+                (same identifiers are required)."
 
     ))
 )
@@ -260,47 +298,46 @@ output$uploadText1 <- renderUI(
     HTML(paste("
                 A file browser is available to read data into the application.
                 Once the data is uploaded, a short notice with a summary of the
-                dimensions of the uploaded data table will appear on the right
-                of the upload browser. Drop down lists containing the column
-                names will appear below (see illustration below).
+                uploaded data table's dimensions will appear on the right. 
+                Drop down lists containing the column
+                names will appear below the file browser (see illustration below).
                "
     ))
 )
 
 output$uploadText2 <- renderUI(
     HTML(paste("
-        The columns containing the annotations and features per well
-        can be selected from all columns using the drop down lists after
-        successful data upload. As indicated, the annotation is defined
+        After a successful data upload, the columns containing the annotations and sample values per well
+        can be selected from all columns using the drop down lists. 
+        As indicated, the annotation is defined
         by the <i>well</i>, <i>plate</i> and <i>experiment</i> dimension. The
-        measured values per well are selected in the <i>feature</i> dimension.
+        measured values per well are selected in the <i>channel</i> dimension.
         An additional <i>annotation</i> per well is optional.
         <br/>
         <br/>
-        If a single experiment is investigated (i.e. a single series
-        of plates with one or more measures values per well),
-        the well, plate and feature dimension have to be
-        defined. To indiacte that only a single exeriment is investigated,
-        the upper checkbox on the overview panel has to be set.
-        A 'single_experiment' placeholder will
-        be pasted in all dropdown lists for the experiment dimension.
-        (see illustration below)
+        Depending on the structure of the input data table, the experiment dimension
+        varies. 
+        The default setting is this respect matches a generic data table with multiple series of
+        plates (e.g. multiple experiments/replicates). 
+        In this case, a column with the experiment allocation has to be present 
+        (compare I.2 in the 'data structure' help) which is selected from the corresponing 
+        drop down list. Sample values per well are selected from a 
+        separate drop down list as illustrated below. 
+        
         "
     ))
 )
 
 output$uploadText3 <- renderUI(
     HTML(paste("
-               If the data table is structured with one column per data series
-                and feature (compare I.1 in the 'data structure' help),
-                the lower check has to be set. After setting this option,
-                the columns containing the measured values can be selected from
-                the experiment drop down list.
-                As the experiment annotation and feature dimension are combined
-                in one column, the feature selection drop dowm list will be hidden
-                subsequently (see illustration below).
-                This option has to be chosen for <b>cellHTS2</b> result tables
-                (<i>topTable.txt</i>).
+                If the data input table is a <b>cellHTS</b> result table
+                (<i>topTable.txt</i>), the first checkbox next to the experiment 
+                drop down list has to be set.
+                As the experiment annotation and <i>channel</i> dimension are combined
+                in one column, the channel selection drop dowm list will be hidden
+                subsequently (see illustration below). All columns of interest 
+                containing numeric values per well can be chosen from the drop down list.
+                An annotation column can be chosen optionally. 
                "
     ))
 )
@@ -308,10 +345,14 @@ output$uploadText3 <- renderUI(
 
 output$uploadText4 <- renderUI(
     HTML(paste("
-                If an annotation column with the experiment allocation for each
-                well is available (compare I.2 in the 'data structure' help),
-                this column has to be selected from the
-                <i>experiment</i> drop down list as illustrated below.
+        If a single experiment is investigated (i.e. a single series
+        of plates with one or more measures values per well),
+        the well, plate and channel dimension have to be
+        defined. To indiacte that only a single exeriment is investigated,
+        the lower checkbox on the overview panel has to be set.
+        A 'single_experiment' placeholder will
+        be pasted in all dropdown lists for the experiment dimension.
+        (see illustration below)
                "
     ))
 )
@@ -319,9 +360,10 @@ output$uploadText4 <- renderUI(
 
 output$uploadText5 <- renderUI(
     HTML(paste("
-               Once the data input is complete and all required inputs
+                Once the data input is complete and all required inputs
                 are defined, the data can be subitted to the application
-                with the 'Explore Data' button. If inputs are changed afterwards
+                with the 'Explore Data' button (button will only appear if 
+                all required settings are defined). If inputs are changed afterwards
                 those have to be submitted by pushing this button again.
                 Upon successful data input, a message with a summary
                 of the uploaded table will appear next to
@@ -351,8 +393,8 @@ The plate viewer tab provides heatmap representation of the data
 in the mutiwell plate format. Four plates can be investiagted
 simultaneously and each of the four plates has a separate adjustment panel.
 This panel allows the user to define which plate of the screen is shown as a
-heatmap. In addition, the feature for which the data should be shown can be set
-(e.g. cell number). The selection of screen, plate and feature is done by
+heatmap. In addition, the channel for which the data should be shown can be set
+(e.g. cell number). The selection of screen, plate and channel is done by
 choosing from dropdown lists. The content of the dropdown lists is extracted
 from the annotations of the loaded data set.
 Hovering ovter the heatmap will show the well ids
@@ -416,7 +458,7 @@ output$FTtext2 <- renderUI(
     HTML(paste("
                By default, only the first measured value is shown in the table.
                If more than one meadured values per well are defined, those can
-               be selected from a drop down list ('select feature') and added. Each column carries
+               be selected from a drop down list ('select channel') and added. Each column carries
                either a sort (for identifier columns) or a filter option
                (for numeric columns). The sorted and filtered table can be
                downloaded as a <i>.csv </i>  table with columns separated by ','
@@ -463,7 +505,7 @@ The upper right plot shows the density distribution (Kernel density distribution
 of positive and negative controls and further provides
 the robust Z’-factor (Birmingham, A. et al., <i>Nat. Methods</i>, 2009) for the experiment.
 A boxplot of chosen controls for all plates is provided in the lower left plot.
-All plots are created for data of one screens and feature, both can be selected from drop-down lists."
+All plots are created for data of one screens and channel, both can be selected from drop-down lists."
     ))
 )
 
@@ -536,7 +578,7 @@ output$SPtext1 <- renderUI(
     HTML(paste("
 The 'Scatter Plot' tab is an additional visualization tool to interpret the data.
 A two-dimensional graphical visualization of the relation between two data series is possible.
-Each of the two data series represents values for one feature.
+Each of the two data series represents values for one channel.
 The two data series are supposed to be of uniform length and are plotted against each other in a cartesian grid.
 As an example, the correlation between replicate screens can be estimated based on the plot.
                "
@@ -546,7 +588,7 @@ As an example, the correlation between replicate screens can be estimated based 
 
 output$SPtext2 <- renderUI(
     HTML(paste("
-Which experiment and feature the data should be plotted for, is defined by choosing from drop-down lists.
+Which experiment and channel the data should be plotted for, is defined by choosing from drop-down lists.
 If the'single experiment' choice is set, data series of single plates within one experiment
 can be plotted against each other. A regression line can be added to the plot
 by setting the corresponding action in the control panel. The equation,

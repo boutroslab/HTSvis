@@ -59,7 +59,7 @@ observe({
                                     identifier="MeasuredValues",
                                     input=colnames(feature_table2$data_pre),
                                     label=HTML(paste("Choose",
-                                       "<em> feature </em>",
+                                       "<em> channel </em>",
                                        "<br/>column(s)")),
                                     multiState=T)  
 })
@@ -170,12 +170,14 @@ output$IsSingleExperimentOut <- renderUI({
                       value = F)
 })
 
-# checkbox for "multiple experiment" columns
-output$ScreensOnColumnsOut <- renderUI({
+# checkbox for "cellHTS top table" as input 
+output$cellHTSstyleOut <- renderUI({
   validate(need(input$file1, message=FALSE))
     if(!is.null(feature_table2$data_pre))
-      checkboxInput("ScreensOnColumns",
-                    "set check if one column per data series and measured value (e.g. experiment_channel)",
+      checkboxInput("cellHTSstyle",
+                    label = HTML(paste("set check if",
+                                       "<em> 'cellHTS topTable'</em>"
+                                       )),
                     F)
 })
 
@@ -188,7 +190,7 @@ observe({
                         choices = "single experiment",
                         selected = "single experiment")
       updateCheckboxInput(session,
-                          "ScreensOnColumns",
+                          "cellHTSstyle",
                           value = F)    
     } else {
       updateSelectInput(session, 
@@ -199,13 +201,13 @@ observe({
 })
 
  observe({
-   if(!is.null(input$ScreensOnColumns)){
-     if(isTRUE(input$ScreensOnColumns)) {
+   if(!is.null(input$cellHTSstyle)){
+     if(isTRUE(input$cellHTSstyle)) {
         output$ExperimentDimensionOut <- DropDownInput(
                                             "ExperimentDimension",
                                             colnames(feature_table2$data_pre),
                                             HTML(paste("Choose",
-                                               "<em> experiment/feature </em>",
+                                               "<em> experiment/channel </em>",
                                                        "<br/> column(s)")),
                                             T)
         hideMeasuredValues$state <-  T

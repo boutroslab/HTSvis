@@ -73,7 +73,7 @@ fixedRow(
               )
   ),
   column(3,
-         uiOutput("ScreensOnColumnsOut"),
+         uiOutput("cellHTSstyleOut"),
          uiOutput("IsSingleExperimentOut")
          )
 )#end of fixedRow

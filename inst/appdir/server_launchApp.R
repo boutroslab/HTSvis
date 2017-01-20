@@ -1,11 +1,7 @@
-## conditions to start the app
-
-#if id variables contain factors, convert them to charcater
-#rename columns according to internal annotation: well > plate > screen.id
-#for conditional panel of startApp and resetApp action buttons
+## test teh data and define conditions to start the app
 
 
-
+#define reactiveValues objects required for data tests and control of conditional panels 
 showApp <- reactiveValues(panels=F,dummy=T)
 tabInput <- reactiveValues()
 test_data <- reactiveValues(na=T,
@@ -20,7 +16,7 @@ brush_container <- reactiveValues()
 observer <- reactiveValues(click=NULL, click2=NULL)
 showPopMan <- reactiveValues(state=NULL)
 
-#invalidate all drop down lists upon changes of the user input on overview panel
+#invalidate all drop down lists upon changes of the user-input on the data upload panel
 observeEvent(input$MeasuredValues,{
   showApp$panels = F
   showApp$dummy = T
@@ -142,6 +138,9 @@ outputOptions(output, "showStartButtons", suspendWhenHidden=FALSE)
 
 
 #validate data upon triggering of action button "input$startApp"
+#if id variables contain factors, convert them to charcater
+#rename columns according to internal annotation: well > plate > screen.id
+
 observeEvent(input$startApp,{
   test_ft <- feature_table2$data_pre
   test_data$multiFalse <- F
@@ -150,27 +149,27 @@ observeEvent(input$startApp,{
      !is.null(input$WellDimension)  &
      !is.null(input$PlateDimension) &
      length(input$ExperimentDimension)>1 ){
-        if(any(str_count(input$ExperimentDimension,"_")>1)) {
-            test_data$multiFalse <- T
-                warnMF_js_string <-"alert(\"Error: '_' in column names are only allowed to seperate experiment and channel id \");"
-                    session$sendCustomMessage(type='jsCode', list(value = warnMF_js_string ))
-    } else {
-      if(any(str_count(input$ExperimentDimension,"_")==0)) {
-            test_data$multiFalse <- T
-            warnMF2_js_string <-"alert(\"Error: Experiment and channel id have to be separated by '_' \");"
-                session$sendCustomMessage(type='jsCode', list(value = warnMF2_js_string ))
-        } else {
-          if(isTRUE(any(c(input$ExperimentDimension,
-                          input$PlateDimension,
-                          input$WellDimension,
-                          input$AnnoDimension,
-                          input$MeasuredValues) == "experiment.id"))){
-                test_data$multiFalse <- T
-                    warnMF3_js_string <-"alert(\"Error: The column name 'experiment.id' is reserved, please rename the column\");"
-                        session$sendCustomMessage(type='jsCode', list(value = warnMF3_js_string ))
-            } else {
-            warnMF_js_string <- ""
-            warnMF2_js_string <- ""
+    #     if(any(str_count(input$ExperimentDimension,"_")>1)) {
+    #         test_data$multiFalse <- T
+    #             warnMF_js_string <-"alert(\"Error: '_' in column names are only allowed to seperate experiment and channel id \");"
+    #                 session$sendCustomMessage(type='jsCode', list(value = warnMF_js_string ))
+    # } else {
+    #   if(any(str_count(input$ExperimentDimension,"_")==0)) {
+    #         test_data$multiFalse <- T
+    #         warnMF2_js_string <-"alert(\"Error: Experiment and channel id have to be separated by '_' \");"
+    #             session$sendCustomMessage(type='jsCode', list(value = warnMF2_js_string ))
+    #     } else {
+    #       if(isTRUE(any(c(input$ExperimentDimension,
+    #                       input$PlateDimension,
+    #                       input$WellDimension,
+    #                       input$AnnoDimension,
+    #                       input$MeasuredValues) == "experiment.id"))){
+    #             test_data$multiFalse <- T
+    #                 warnMF3_js_string <-"alert(\"Error: The column name 'experiment.id' is reserved, please rename the column\");"
+    #                     session$sendCustomMessage(type='jsCode', list(value = warnMF3_js_string ))
+    #         } else {
+            #warnMF_js_string <- ""
+            #warnMF2_js_string <- ""
             test_ft <-test_ft %>%
                         dplyr::select(one_of(input$WellDimension,
                                             input$PlateDimension,
@@ -179,10 +178,19 @@ observeEvent(input$startApp,{
                             gather_("CSvB110",
                                     "CSvalueB110",
                                     input$ExperimentDimension) %>%
-                                separate(CSvB110,
-                                         c("experiment.id", "col"),
-                                         sep="_") %>%
-                                    spread(col, CSvalueB110)
+                            extract(CSvB110,
+                                    c("experiment.id", "col"),
+                                    regex="(.*)_([[:alnum:]]{3})")%>%
+                                        spread(col, CSvalueB110) 
+            #for dual channel experiments only 
+            if(any(colnames(test_ft) %in% "ch2")) {
+            test_ft <-test_ft %>% mutate(ch2 = replace(ch2, 
+                                   which(experiment.id%in%c("normalized_r1",
+                                                            "normalized_r2")), 
+                                   test_ft[which(test_ft$experiment.id %in% c("normalized_r1","normalized_r2")),"ch1"]
+                                    )
+                                )
+            } 
           colnames_string <- c(input$WellDimension,
                                input$PlateDimension,
                                input$AnnoDimension,
@@ -190,9 +198,8 @@ observeEvent(input$startApp,{
           test_ft <-  test_ft %>% dplyr::mutate_each(funs(as.character),
                                                      one_of(colnames_string))
           feature_table2$data <- test_ft
-        }
-      }
-    }
+      #}
+   # }
   } else {
 
 
@@ -430,6 +437,7 @@ observeEvent(input$startApp,{
     test_data$na <- any(is.na(feature_table2$data %>%
                                   dplyr::select(-one_of(colnames_string)) ))
 
+
     test_data$duplicateCols <- any(duplicated(names(feature_table2$data)))
   } else {
       if(!isTRUE(test_data$multiFalse)) {
@@ -464,6 +472,7 @@ observeEvent(input$startApp,{
                                 dplyr::select(CSdiffB110) %>%
                                     unlist(use.names = F) %>% any
         }
+      }
     }
   }
     js_string <- 'alert("SOMETHING");'
@@ -487,7 +496,7 @@ observeEvent(input$startApp,{
           } else  {
             if(isTRUE(test_data$missingPlates)) {
               warnMP <- paste("Error: Experiments do not",
-                                "contain equal number of plates",sep = " ")
+                                "contain equal number of plates or plate identifiers between experiments not identical",sep = " ")
               warnMP_js_string <- sub("SOMETHING",warnMP,js_string)
               session$sendCustomMessage(type='jsCode',
                                         list(value = warnMP_js_string ))
@@ -510,7 +519,6 @@ observeEvent(input$startApp,{
       }
     }
     }
-  }
 })
 
 

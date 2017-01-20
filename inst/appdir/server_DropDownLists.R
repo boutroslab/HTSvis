@@ -19,22 +19,22 @@ observeEvent(input$startApp,{
   
 output$featuresPlate1 <- DropDown(identifier="featuresPlate1",
                                   input=tabInput$inputFeatures,
-                                  toSelect = "Select feature",
+                                  toSelect = "Select channel",
                                   multiState=F)
 
 output$featuresPlate2 <- DropDown("featuresPlate2",
                                   tabInput$inputFeatures,
-                                  "Select feature",
+                                  "Select channel",
                                   F)
 
 output$featuresPlate3 <- DropDown("featuresPlate3",
                                   tabInput$inputFeatures,
-                                  "Select feature",
+                                  "Select channel",
                                   F)
 
 output$featuresPlate4 <- DropDown("featuresPlate4",
                                   tabInput$inputFeatures,
-                                  "Select feature",
+                                  "Select channel",
                                   F)
 
 
@@ -85,14 +85,14 @@ output$screensPlate4 <- DropDown("screensPlate4",
 #UI Outputs for Feature Table tab
 output$features_ft <- DropDown("feature_selection_ft",
                                tabInput$inputFeatures,
-                               "Select feature",
+                               "Select channel",
                                T)
 
 
 #UI Outputs for Quality Control tab
 output$features_qc <- DropDown("feature_selection_qc",
                                tabInput$inputFeatures,
-                               "Select feature",
+                               "Select channel",
                                F)
 
 output$screens_qc <- DropDown("screen_selection_qc",
@@ -109,12 +109,12 @@ output$plates_qc <- DropDown("plate_selection_qc",
 #UI Outputs for Scatter Plot tab
 output$features_sp_x <- DropDown("feature_selection_sp_x",
                                  tabInput$inputFeatures,
-                                 "Select feature",
+                                 "Select channel",
                                  F)
 
 output$features_sp_y <- DropDown("feature_selection_sp_y",
                                  tabInput$inputFeatures,
-                                 "Select feature",
+                                 "Select channel",
                                  F)
 
 output$screens_sp_x <- DropDown("screens_selection_sp_x",

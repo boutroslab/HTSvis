@@ -11,7 +11,7 @@ observe({
     return(feature_table2)
   } else {
     if(file_ext(inFile$name) == "txt" | file_ext(inFile$name) == "tsv"){
-      feature_table2$data_pre <-  read.table(inFile$datapath)
+      feature_table2$data_pre <-  read.table(inFile$datapath,header=T)
     } else {
       if(file_ext(inFile$name) == "csv") {
         feature_table2$data_pre <-  data.frame(

@@ -78,7 +78,7 @@ fixedRow(
                    "#helpChOne2 { font-size:15px;")),
 
                HTML("<div>"),
-               HTML(paste(img(src='table.png',
+               HTML(paste(img(src='table_cellHTS.png',
                               style='height: 300px;',
                               vspace="60",
                               style="display: block;
@@ -91,7 +91,7 @@ fixedRow(
                    "#helpChOne3 { font-size:15px;")),
 
                HTML("<div>"),
-               HTML(paste(img(src='table_cellHTS.png',
+               HTML(paste(img(src='table.png',
                               style='height: 300px;',
                               vspace="40",
                               style="display: block;
@@ -140,7 +140,7 @@ fixedRow(
 
 
 
-
+#Data upload 
        conditionalPanel(
            condition = "output.showUploadOut",
 
@@ -174,7 +174,7 @@ fixedRow(
                    font-size:15px;")),
 
            HTML("<div>"),
-           HTML(paste(img(src='upload2.png',
+           HTML(paste(img(src='upload4.png',
                           style='height: 400px;',
                           vspace="40",
                           style="display: block;
@@ -204,7 +204,7 @@ fixedRow(
 
 
            HTML("<div>"),
-           HTML(paste(img(src='upload4.png',
+           HTML(paste(img(src='upload2.png',
                           style='height: 400px;',
                           vspace="40",
                           style="display: block;

@@ -171,9 +171,10 @@ dfHeatmap <- reactive({
                                                 appendix_duplicates,
                                                 sep="_")
                                     }
-
+                                    rownames(df_heatmap) <- rownames
                                     return(df_heatmap)
                         } else {
+                            rownames(df_heatmap) <- rownames
                             return(df_heatmap)
                             }
                 } else {

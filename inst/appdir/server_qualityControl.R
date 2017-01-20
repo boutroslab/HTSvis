@@ -1,3 +1,13 @@
+### server of quality control tab
+## reactiveValues object 'TabDimensions' defined in lauchApp.R 
+## 3 quality control plots are generated: plate plot, desity plot and box plot
+
+## Control populations are selected by clicking on corresponding wells of a 
+## plotted heatmap 
+
+## 'col' is a reactiveValues object to store the clicked wells 
+col <- reactiveValues()
+
 #Heatmap to define control populations by clickin'
 df_qc <- reactive({
     validate(need(input$feature_selection_qc, message=FALSE))
@@ -80,6 +90,7 @@ observeEvent(input$resetControls,{
 })
 
 
+
 observe({
   if(!is.null(input$screen_selection_qc)) {
     if(nchar(input$screen_selection_qc)>0){
@@ -100,6 +111,8 @@ observe({
 })
 
 
+#function to select controls by clicking 
+#input$radio is a radio button to switch between the contol populations 
 fu_qc_click <- reactive({print_out <- function(x) {
   if(is.null(x)) return(NULL) else
     isolate(
@@ -131,6 +144,7 @@ fu_qc_click <- reactive({print_out <- function(x) {
 })
 
 
+#function for hover over heatmap 
 fu_qc_hover <- reactive({print_out <- function(x) {
   if(is.null(x)) return(NULL)
     if(TabDimensions$well == TabDimensions$annotation) {
@@ -144,8 +158,8 @@ fu_qc_hover <- reactive({print_out <- function(x) {
 })
 
 
+#reactive values object to buffer reactivity before heatmap is plotted 
 test_df_qc <- reactiveValues(state1=F,state2=F)
-
 
 observe({
   validate(need(input$feature_selection_qc, message=FALSE))
@@ -159,8 +173,10 @@ observe({
 })
 
 
+
+#plot the reactive heatmap 
 observe({
-  if(test_df_qc$state1 == T | test_df_qc$state2 == T) {
+  if(isTRUE(test_df_qc$state1) | isTRUE(test_df_qc$state2)) {
     df_qc %>%
       ggvis(~column,
             ~row,
@@ -212,16 +228,35 @@ nt_wells <- reactive({
     df_qc()[which(col$population == "nt"),TabDimensions$well] })
 
 
+#in development: per-plate definition of control wells  
+#further steps: create a reacive values object to assign the control wells
+#               per plate 
+#               then re-create the 'col' reactiveValues object with sub lists
+#               ('list of a list') and assign the col parameters also per plate 
+# asd_test <- reactiveValues()
+# 
+# observe({
+#     for(i in tabInput$inputPlates) {
+#         asd_test[[i]] <- i
+#     }
+# })
+# 
+# 
+# observe({
+#         asd_test[[input$plate_selection_qc]] <- pos_wells()
+# })
+# 
+# observe({
+#         print(asd_test[[input$plate_selection_qc]])
+# })
 
+#definition of control populations
 
-##definition of control populations
-gene_list=list()
 
 final <- reactive ({
   validate(need(input$feature_selection_qc, message=FALSE))
   validate(need(input$screen_selection_qc, message=FALSE))
-  if(!is.null(input$IsSingleExperiment)){
-    if(input$IsSingleExperiment == F) {
+  if(!isTRUE(IsSingleExperimentTabs$state)) {
       feature_table2$data %>%
         filter_(lazyeval::interp(quote(x == y),
                                  x = as.name(TabDimensions$experiment),
@@ -234,7 +269,6 @@ final <- reactive ({
         select_(TabDimensions$well,
                 TabDimensions$plate,
                 "value"=input$feature_selection_qc)
-    }
   }
 })
 
@@ -384,7 +418,7 @@ output$densityPlot <- renderPlot({
     }
 })#end of renderPlot
 
-#contorl condictional panel for dummy plots (when populations are undefined)
+#control conditional panel for dummy plots (when populations are undefined)
 output$showDensPlots <- reactive({
     return(DummyPlots$dens)
 })
@@ -498,6 +532,7 @@ output$platePlot <- renderPlot({
   feature_mp <- as.character(input$feature_selection_qc)
 
   meds_total <- rbind.data.frame(meds1,meds2,meds3)
+
 
 
   plot(med ~as.numeric(plate),
