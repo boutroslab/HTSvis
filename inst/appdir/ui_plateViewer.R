@@ -84,7 +84,7 @@ conditionalPanel(condition="output.showPanels",
                                     column(4,
                                            align="center",
                                            actionButton('syncFeature',
-                                                label = "Synchronize feature"),
+                                                label = "Synchronize channel"),
                                                 tags$style(type='text/css',
                                                         "#syncFeature{
                                                         font-size:12px;}"),
