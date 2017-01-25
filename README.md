@@ -17,6 +17,7 @@
 ### Run the following lines of code in your R session to download and install the R package
 ```
 install.packages("devtools", dependencies = TRUE)
+install.packages("tidyr")
 
 devtools::install_github("boutroslab/HTSvis", build_vignettes = F)
 ```
