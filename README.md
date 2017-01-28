@@ -45,6 +45,16 @@ Following test data sets are provided:<br />
 ## Manual
 ### A comprehensive manual is provided on the help page in the application 
 
+## Additional notes for winows user
+### Windows user might have to manually install the following packages
+```
+install.packages("miniUI")
+install.packages("shinyjs")
+install.packages("httpuv")
+install.packages("gplots")
+install.packages("htmlwidgets")
+```
+
 ## Contact 
 #### Christian Scheeder c.scheeder@dkfz.de
 #### Michael Boutros m.boutros@dkfz.de 
