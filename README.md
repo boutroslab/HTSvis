@@ -44,9 +44,12 @@ Following test data sets are provided:<br />
 
 ## Manual
 ### A comprehensive manual is provided on the help page in the application 
-
-## Additional notes for winows user
-### Windows user might have to manually install the following packages
+</br>
+</br>
+## Additional notes 
+### Windows user might have to manually install the following packages and the current version of RTools 
+### macOS user should have the current version of Xcode Command Line Tools installes
+### Linux user should have r-devel or r-base-dev installed. 
 ```
 install.packages("miniUI")
 install.packages("shinyjs")
@@ -54,6 +57,7 @@ install.packages("httpuv")
 install.packages("gplots")
 install.packages("htmlwidgets")
 ```
+RTools can be downloaded from https://cran.r-project.org/bin/windows/Rtools/
 
 ## Contact 
 #### Christian Scheeder c.scheeder@dkfz.de
