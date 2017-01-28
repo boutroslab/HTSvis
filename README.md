@@ -47,9 +47,9 @@ Following test data sets are provided:<br />
 </br>
 </br>
 ## Additional notes 
-### Windows user might have to manually install the following packages and the current version of RTools 
-### macOS user should have the current version of Xcode Command Line Tools installes
+### macOS user should have the current version of Xcode Command Line Tools installed.
 ### Linux user should have r-devel or r-base-dev installed. 
+### Windows user might have to manually install the following packages and the current version of RTools 
 ```
 install.packages("miniUI")
 install.packages("shinyjs")
