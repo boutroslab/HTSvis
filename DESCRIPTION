@@ -8,7 +8,7 @@ Authors@R: c(
     person("Michael", "Boutros", email = "m.boutros@dkfz.de", role = c("aut")))
 Maintainer: Christian Scheeder <c.scheeder@dkfz.de>
 Description: HTSvis provides a stand-alone shiny appication for the 
-visulaization and analysis of data from arrayed high-thorughput screens.
+    visulaization and analysis of data from arrayed high-thorughput screens.
 Depends:
     R (>= 3.3.2),
     tools (>= 3.3.2),
