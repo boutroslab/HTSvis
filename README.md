@@ -17,7 +17,6 @@
 ### Run the following lines of code in your R session to download and install the R package
 ```
 install.packages("devtools", dependencies = TRUE)
-install.packages("tidyr")
 
 devtools::install_github("boutroslab/HTSvis", build_vignettes = F)
 ```
@@ -51,6 +50,7 @@ Following test data sets are provided:<br />
 ### Linux user should have r-devel or r-base-dev installed. 
 ### Windows user might have to manually install the following packages and the current version of RTools 
 ```
+install.packages("tidyr")
 install.packages("miniUI")
 install.packages("shinyjs")
 install.packages("httpuv")
