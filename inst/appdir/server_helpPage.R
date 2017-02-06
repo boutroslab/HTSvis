@@ -154,7 +154,7 @@ output$helpChOne2 <- renderUI(
                 </br>
                 The cellHTS package
                 provides a summary table provided as delimited text file (<i>topTable.txt</i>). 
-                This text file has a defined structure and column names can be loaded directly in application. 
+                This text file carries a defined structure and fixed column names and can be loaded directly in application. 
                 Both, the structure and
                 the column names of the topTable object should not be changed as 
                 the application relies on those.
