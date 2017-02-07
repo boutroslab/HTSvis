@@ -46,9 +46,9 @@ Following test data sets are provided:<br />
 </br>
 </br>
 ## Additional notes 
-### macOS user should have the current version of Xcode Command Line Tools installed.
-### Linux user should have r-devel or r-base-dev installed. 
-### Windows user might have to manually install the following packages and the current version of RTools 
+<b>macOS<b/> user should have the current version of Xcode Command Line Tools installed
+<b>Windows <b/>user might have to manually install the following packages and the current version of RTools 
+<b>Linux<b/> user should have a compiler with corresponding development libraries installed (e.g. r-devel or r-base-dev) 
 ```
 install.packages("tidyr")
 install.packages("miniUI")
@@ -57,6 +57,7 @@ install.packages("httpuv")
 install.packages("gplots")
 install.packages("htmlwidgets")
 ```
+Xcode can be downloaded from the App Store
 RTools can be downloaded from https://cran.r-project.org/bin/windows/Rtools/
 
 ## Contact 
