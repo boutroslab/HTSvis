@@ -7,7 +7,7 @@
 
 
 
-# A shiny application for the visualization and analysis of arrayed high-throughput screens 
+# A shiny app for exploratory data analysis and visualization of arrayed high-throughput screens 
 
 
 
