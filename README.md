@@ -59,7 +59,7 @@ install.packages("httpuv")
 install.packages("gplots")
 install.packages("htmlwidgets")
 ```
-Xcode can be downloaded from the App Store
+Xcode can be downloaded from the App Store<br />
 RTools can be downloaded from https://cran.r-project.org/bin/windows/Rtools/
 
 ## Contact 
