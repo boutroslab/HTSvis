@@ -14,7 +14,7 @@
 
 ## INSTALLATION
 ### HTSvis is provided as an R package
-### Run the following lines of code in your R session to download and install the R package
+### Run the following lines of code in your R session to download and install the package
 ```
 install.packages("devtools", dependencies = TRUE)
 
