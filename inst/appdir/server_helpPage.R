@@ -2,7 +2,7 @@
 
 ##control of conditional panels
 helpTabs <- reactiveValues(structure=T,upload=F, plateViewer=F,featureTable=F,
-                           qualityControl=F,scatterPlot=F)
+                           qualityControl=F,scatterPlot=F,testData=F)
 
 observeEvent(input$showStructure,{
     for(i in names(helpTabs)) {
@@ -58,6 +58,13 @@ observeEvent(input$showHelpSP,{
     helpTabs$scatterPlot<- T
 })
 
+observeEvent(input$showTestData,{
+    for(i in names(helpTabs)) {
+        helpTabs[[i]] <- F
+    }
+    helpTabs$testData<- T
+})
+
 
 output$showStructureOut <- reactive({
     return(helpTabs$structure)
@@ -95,6 +102,12 @@ output$showHelpSPOut <- reactive({
     return(helpTabs$scatterPlot)
 })
 outputOptions(output, "showHelpSPOut", suspendWhenHidden=FALSE)
+
+
+output$showHelpTestDataOut <- reactive({
+    return(helpTabs$testData)
+})
+outputOptions(output, "showHelpTestDataOut", suspendWhenHidden=FALSE)
 
 
 
@@ -621,3 +634,26 @@ population. All defined populations are listed in a reactive table.
                "
     ))
 )
+
+output$headerTD <- renderUI(
+    HTML(paste("
+               <b>Test Data</b>"
+    ))
+    )
+
+output$TDNum1 <- renderUI(
+    HTML(paste("
+               <b>I. General notes</b>"
+    ))
+)
+
+
+output$TDtext1 <- renderUI(
+    HTML(paste("
+               Following test data sets can be downloaded from the HTSvis github repository
+                (https://github.com/boutroslab/HTSvis):
+               "
+    ))
+)
+
+

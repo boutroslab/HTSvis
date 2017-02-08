@@ -44,6 +44,12 @@ fixedRow(
            tags$style(type="text/css","#showHelpSP {
                               margin-top:50px;
                               margin-left:25px;"),
+   
+           actionButton("showTestData",
+                        label="Test Data"),
+           tags$style(type="text/css","#showTestData {
+                      margin-top:50px;
+                      margin-left:25px;"),
 
 
     #Data structure
@@ -488,7 +494,34 @@ fixedRow(
 
 
 
-   )#end of conditional panel
+   ),#end of conditional panel
+
+    conditionalPanel(
+        condition = "output.showHelpTestDataOut",
+        
+        htmlOutput("headerTD"),
+        tags$style(HTML(
+            "#headerTD {  margin-top:50px;
+            font-size:25px;")),
+        
+        htmlOutput("TDNum1"),
+        tags$style(HTML(
+            "#TDNum1 {  margin-top:25px;
+            font-size:20px;")),
+        
+        htmlOutput("TDtext1"),
+        tags$style(HTML(
+            "#TDtext1 {  margin-top:10px;
+            font-size:15px;")),
+        HTML("<div>"),
+        HTML(paste(img(src='test_data.png',
+                       style='height: 200px;',
+                       vspace="50",
+                       style="display: block;
+                       margin-left: auto; margin-right: auto;"), "")
+        ),
+        HTML("</div>")
+    )#end of conditional panel
 
 ),#end of column
 
