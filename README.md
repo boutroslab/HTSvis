@@ -7,14 +7,14 @@
 
 
 
-# A shiny application for the visualization and analysis of arrayed high-throughput screens 
+# A shiny app for exploratory data analysis and visualization of arrayed high-throughput screens 
 
 
 
 
 ## INSTALLATION
 ### HTSvis is provided as an R package
-### Run the following lines of code in your R session to download and install the R package
+### Run the following lines of code in your R session to download and install the package
 ```
 install.packages("devtools", dependencies = TRUE)
 
@@ -43,6 +43,24 @@ Following test data sets are provided:<br />
 
 ## Manual
 ### A comprehensive manual is provided on the help page in the application 
+</br>
+</br>
+## Additional notes 
+<b>macOS</b> user should have the current version of Xcode Command Line Tools installed<br />
+<b>Windows </b>user should have the current version of RTools installed <br />
+<b>Linux</b> user should have a compiler with corresponding development libraries installed (e.g. r-devel or r-base-dev) <br />
+
+In case the installation fails try to install the following packages manually  
+```
+install.packages("tidyr")
+install.packages("miniUI")
+install.packages("shinyjs")
+install.packages("httpuv")
+install.packages("gplots")
+install.packages("htmlwidgets")
+```
+Xcode can be downloaded from the App Store<br />
+RTools can be downloaded from https://cran.r-project.org/bin/windows/Rtools/
 
 ## Contact 
 #### Christian Scheeder c.scheeder@dkfz.de
