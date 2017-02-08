@@ -659,6 +659,7 @@ output$TDtext1 <- renderUI(
 output$TDtext2 <- renderUI(
     HTML(paste("
                Please consider the following points concerning the test data sets:</br>
+                </br>
                 <b>1. <i>topTable.txt</i> and <i>topTable_dc.txt</i> </b>
                 </br>
                 Those are reulst files ubtained by analysis with cellHTS, please set the

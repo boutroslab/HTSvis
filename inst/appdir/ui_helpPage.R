@@ -515,7 +515,7 @@ fixedRow(
             font-size:15px;")),
         HTML("<div>"),
         HTML(paste(img(src='test_data.png',
-                       style='height: 400px;',
+                       style='height: 300px;',
                        vspace="50",
                        style="display: block;
                        margin-left: auto; margin-right: auto;"), "")
