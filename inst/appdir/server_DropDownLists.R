@@ -100,10 +100,7 @@ output$screens_qc <- DropDown("screen_selection_qc",
                               "Select experiment",
                               F)
 
-output$plates_qc <- DropDown("plate_selection_qc",
-                             tabInput$inputPlates,
-                             "Select Plate",
-                             F)
+
 
 
 #UI Outputs for Scatter Plot tab

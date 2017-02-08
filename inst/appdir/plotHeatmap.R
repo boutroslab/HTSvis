@@ -1,5 +1,8 @@
-####Function to plot heatmaps with tooltip
+####Function that return a data frame for the plate heatmaps
+##data frame is created by subsetting the input table based on the values of 
+##  of the corresponding drop down lists which are passed over as function arguments
 ##col_palette defined in global.R
+
 plotHeatmap <- function(data_table,limits,curr_plate,curr_screen,curr_feature,plateDim,expDim,wellDim,annoDim){
 
   #define color breaks and range

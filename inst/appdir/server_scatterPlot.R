@@ -323,6 +323,12 @@ output$downloadPlot <- downloadHandler(
           ggsave(filename=file,
                  plot=scatter_plot(df=featureFrame()),
                  device="jpeg")
+        } else {
+            if(input$fileFormatPlot %in% ".pdf"){
+                ggsave(filename=file,
+                       plot=scatter_plot(df=featureFrame()),
+                       device="pdf")
+            }
         }
       }
     }
@@ -412,6 +418,7 @@ observeEvent(input$makeSubpopulation,{
            2,
            isolate(popCounter$count),
            isolate(population_colors[popCounter$count]))
+    print(brush_container[[as.character(isolate(populationName))]])
     }
 })
 
@@ -427,6 +434,7 @@ observeEvent(input$delete_button, {
 })
 
 
+#make population via "color by id" 
 observeEvent(input$ColorGenes,{
     if(!isTRUE(any(
         feature_table_scatter() %>%
@@ -765,7 +773,23 @@ observe({
       orderAndColors_SP$pops = Populations
       orderAndColors_SP$pop_order = pop_order_sp
       orderAndColors_SP$colors=colors_sp
-
+      
+      #this is a quick fix, a more elgant way should be implemented
+      if(length(unique(Populations)) != length(pop_order_sp)){
+          if(ncol(orderAndColors$data)>0) {
+          pop_order_sp <-orderAndColors$data[grep(
+                                paste(unique(Populations),collapse="|"), 
+                                    orderAndColors$data[,"name"]),"name"]
+          pop_order_sp <- append("all",pop_order_sp)
+          
+          colors_sp <-orderAndColors$data[grep(
+                                        paste(unique(Populations),collapse="|"), 
+                                            orderAndColors$data[,"name"]),3]
+          colors_sp <- append("#000000",colors_sp)
+          orderAndColors_SP$pops = Populations
+          orderAndColors_SP$pop_order = pop_order_sp
+          orderAndColors_SP$colors=colors_sp
+          }}
     }
 })
 
@@ -822,8 +846,15 @@ scatter_plot <- function(df){
   validate(need(input$feature_selection_sp_y, message=FALSE))
   validate(need(input$screens_selection_sp_x, message=FALSE))
   validate(need(input$screens_selection_sp_y, message=FALSE))
-
+  
+  if(length(input$pointSizeSPin)>0)
+  {pointSizeSP<- input$pointSizeSPin} else {pointSizeSP<-1}
+  
+  if(length(input$opaSPin)>0)
+  {opaSP<- input$opaSPin} else {opaSP<-1}
+  
   cross <- hlines$hline_frame
+
   df_ordered <-  df %>%
     mutate(Pops=
         factor(orderAndColors_SP$pops,levels=orderAndColors_SP$pop_order)) %>%
@@ -833,7 +864,7 @@ scatter_plot <- function(df){
          aes_string(x=names(df_ordered)[1],
                     y=names(df_ordered)[2],
                     color="Pops")) +
-          geom_point(shape=20,alpha = 0.5,na.rm=TRUE) +
+          geom_point(size=pointSizeSP,alpha = opaSP,na.rm=TRUE) +
           theme_classic() +
           scale_colour_manual(values= orderAndColors_SP$colors) +
           coord_cartesian(xlim = lims$xlims, ylim = lims$ylims) +

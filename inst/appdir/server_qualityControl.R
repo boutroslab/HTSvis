@@ -12,7 +12,6 @@ col <- reactiveValues()
 df_qc <- reactive({
     validate(need(input$feature_selection_qc, message=FALSE))
     validate(need(input$screen_selection_qc, message=FALSE))
-    validate(need(input$plate_selection_qc, message=FALSE))
 
     if(!isTRUE(IsSingleExperimentTabs$state)) {
         limits_qc <- feature_table2$data %>%
@@ -24,7 +23,7 @@ df_qc <- reactive({
                                     y = input$screen_selection_qc)) %>%
                                 filter_(lazyeval::interp(quote(x == y),
                                              x = as.name(TabDimensions$plate),
-                                             y = input$plate_selection_qc)) %>%
+                                            y = feature_table2$data[1,TabDimensions$plate])) %>%
                                     select_(input$feature_selection_qc) %>%
                                         do(funs=c(min(.,na.rm=T),
                                                   max(.,na.rm=T))) %>%
@@ -34,7 +33,7 @@ df_qc <- reactive({
 
         plotHeatmap(data_table=feature_table2$data,
                            limits=limits_qc,
-                           curr_plate=input$plate_selection_qc,
+                           curr_plate=feature_table2$data[1,TabDimensions$plate],
                            curr_screen=input$screen_selection_qc,
                            curr_feature=input$feature_selection_qc,
                            plateDim=TabDimensions$plate,
@@ -52,7 +51,7 @@ df_qc <- reactive({
                                     "value"=input$feature_selection_qc) %>%
                                 filter_(lazyeval::interp(quote(x == y),
                                         x = as.name(TabDimensions$plate),
-                                        y = input$plate_selection_qc)) %>%
+                                        y = feature_table2$data[1,TabDimensions$plate])) %>%
                                     select_("value") %>%
                                         do(funs=c(min(.,na.rm=T)
                                                   ,max(.,na.rm=T))) %>%
@@ -63,7 +62,7 @@ df_qc <- reactive({
 
     plotHeatmap(data_table=feature_table2$data,
                        limits=limits_qc,
-                       curr_plate=input$plate_selection_qc,
+                       curr_plate=feature_table2$data[1,TabDimensions$plate],
                        curr_screen=F,
                        curr_feature=input$feature_selection_qc,
                        plateDim=TabDimensions$plate,
@@ -212,47 +211,21 @@ observe({
 pos_wells <- reactive({
   validate(need(input$feature_selection_qc, message=FALSE))
   validate(need(input$screen_selection_qc, message=FALSE))
-  validate(need(input$plate_selection_qc, message=FALSE))
     df_qc()[which(col$population == "positive"),TabDimensions$well]})
 
 neg_wells <- reactive({
   validate(need(input$feature_selection_qc, message=FALSE))
   validate(need(input$screen_selection_qc, message=FALSE))
-  validate(need(input$plate_selection_qc, message=FALSE))
     df_qc()[which(col$population == "negative"),TabDimensions$well] })
 
 nt_wells <- reactive({
   validate(need(input$feature_selection_qc, message=FALSE))
   validate(need(input$screen_selection_qc, message=FALSE))
-  validate(need(input$plate_selection_qc, message=FALSE))
     df_qc()[which(col$population == "nt"),TabDimensions$well] })
 
 
-#in development: per-plate definition of control wells  
-#further steps: create a reacive values object to assign the control wells
-#               per plate 
-#               then re-create the 'col' reactiveValues object with sub lists
-#               ('list of a list') and assign the col parameters also per plate 
-# asd_test <- reactiveValues()
-# 
-# observe({
-#     for(i in tabInput$inputPlates) {
-#         asd_test[[i]] <- i
-#     }
-# })
-# 
-# 
-# observe({
-#         asd_test[[input$plate_selection_qc]] <- pos_wells()
-# })
-# 
-# observe({
-#         print(asd_test[[input$plate_selection_qc]])
-# })
 
 #definition of control populations
-
-
 final <- reactive ({
   validate(need(input$feature_selection_qc, message=FALSE))
   validate(need(input$screen_selection_qc, message=FALSE))
@@ -276,7 +249,6 @@ final <- reactive ({
 nt_controls <- reactive({
     validate(need(input$feature_selection_qc, message=FALSE))
     validate(need(input$screen_selection_qc, message=FALSE))
-    validate(need(input$plate_selection_qc, message=FALSE))
     final()[with(final(),
                  which(final()[,TabDimensions$well] %in% nt_wells()) ),"value"]
 })
@@ -285,7 +257,6 @@ nt_controls <- reactive({
 p_controls_n <- reactive({
   validate(need(input$feature_selection_qc, message=FALSE))
   validate(need(input$screen_selection_qc, message=FALSE))
-  validate(need(input$plate_selection_qc, message=FALSE))
     final()[with(final(),
                  which(final()[,TabDimensions$well] %in% neg_wells()) ),"value"]
 })
@@ -294,7 +265,6 @@ p_controls_n <- reactive({
 p_controls_p <- reactive({
   validate(need(input$feature_selection_qc, message=FALSE))
   validate(need(input$screen_selection_qc, message=FALSE))
-  validate(need(input$plate_selection_qc, message=FALSE))
     final()[with(final(),
                  which(final()[,TabDimensions$well] %in% pos_wells()) ),"value"]
 })
@@ -303,7 +273,6 @@ p_controls_p <- reactive({
 rest <- reactive ({
   validate(need(input$feature_selection_qc, message=FALSE))
   validate(need(input$screen_selection_qc, message=FALSE))
-  validate(need(input$plate_selection_qc, message=FALSE))
 
   if(!is.null(input$IsSingleExperiment)){
     if(!isTRUE(input$IsSingleExperiment)) {
@@ -353,9 +322,11 @@ observe({
 output$densityPlot <- renderPlot({
   validate(need(input$feature_selection_qc, message=FALSE))
   validate(need(input$screen_selection_qc, message=FALSE))
-  validate(need(input$plate_selection_qc, message=FALSE))
-
-  if(!isTRUE(DummyPlots$dens)){
+    densPlotOut()
+})#end of renderPlot
+  
+densPlotOut <- function(){  
+    if(!isTRUE(DummyPlots$dens)){
       plot(1, type="n", axes=F, xlab="", ylab="" ,main = NA)
   }else{
     if(length(p_controls_p())>0 &length(p_controls_n())>0) {
@@ -375,14 +346,14 @@ output$densityPlot <- renderPlot({
                         +(0-abs(min(c(dis_n$y,dis_p$y,dis_nt$y),na.rm = T)*0.2))
                 ymax <- max(c(dis_n$y,dis_p$y,dis_nt$y),na.rm=T)
                         +max(c(dis_n$y,dis_p$y,dis_nt$y,na.rm=T)*0.2)
-                    mad_p <- mad(p_controls_p(),na.rm=T)
-                    mad_n <- mad(p_controls_n(),na.rm=T)
-                            med_p <- median(p_controls_p(),na.rm=T)
-                            med_n <- median(p_controls_n(),na.rm=T)
+                    mad_p <- sd(p_controls_p(),na.rm=T)
+                    mad_n <- sd(p_controls_n(),na.rm=T)
+                            med_p <- mean(p_controls_p(),na.rm=T)
+                            med_n <- mean(p_controls_n(),na.rm=T)
                     z_factor <- round(
                         (1-((3*(mad_p+mad_n))/(abs(med_p-med_n)))),
                             2)
-                    z_factor_printout <- paste("rob. Z'-factor",
+                    z_factor_printout <- paste("Z'-factor",
                                                z_factor,
                                                sep=" : ")
                         feature <- input$feature_selection_qc
@@ -415,8 +386,9 @@ output$densityPlot <- renderPlot({
            col=legend_cols,
            legend=legend_string)
         }
-    }
-})#end of renderPlot
+        }
+}
+
 
 #control conditional panel for dummy plots (when populations are undefined)
 output$showDensPlots <- reactive({
@@ -447,8 +419,10 @@ output$textDensDummy <- renderUI(
 output$platePlot <- renderPlot({
   validate(need(input$feature_selection_qc, message=FALSE))
   validate(need(tabInput$inputPlates, message=FALSE))
-  validate(need(input$plate_selection_qc, message=FALSE))
+  platePlotOut()
+})#end of renderPlot
 
+platePlotOut <- function(){
   plates <- tabInput$inputPlates
 
 
@@ -463,7 +437,7 @@ output$platePlot <- renderPlot({
             sapply(seq_along(meds1$plate), function(ind, p) {
                 x <- final()[with(final(),which(
                     final()[,TabDimensions$plate] %in% p[ind])),]
-                meds1[ind,"med"] <<- median(x[with(x, which(
+                meds1[ind,"med"] <<- mean(x[with(x, which(
                     x[,TabDimensions$well] %in% pos_wells()) ),"value"] )
                 meds1[ind,"status"] <<- "positive"
                 meds1[ind,"color"] <<- pp_col
@@ -483,7 +457,7 @@ output$platePlot <- renderPlot({
             sapply(seq_along(meds2$plate), function(ind, p) {
               x <- final()[with(final(), which(
                   final()[,TabDimensions$plate] %in% p[ind])),]
-              meds2[ind,"med"] <<- median(x[with(x, which(
+              meds2[ind,"med"] <<- mean(x[with(x, which(
                   x[,TabDimensions$well] %in% neg_wells()) ),"value"] )
               meds2[ind,"status"] <<- "negative"
               meds2[ind,"color"] <<- pn_col
@@ -503,7 +477,7 @@ output$platePlot <- renderPlot({
         sapply(seq_along(meds3$plate), function(ind, p) {
             x <- final()[with(final(), which(
                 final()[,TabDimensions$plate] %in% p[ind])) ,]
-            meds3[ind,"med"] <<- median(x[with(x, which(
+            meds3[ind,"med"] <<- mean(x[with(x, which(
               x[,TabDimensions$well] %in% nt_wells()) ),"value"] )
             meds3[ind,"status"] <<- "non-targeting"
             meds3[ind,"color"] <<- nt_col
@@ -547,7 +521,7 @@ output$platePlot <- renderPlot({
   axis(1, at = 1:(length(unique(meds_total$plate))))
   points(sample_values,col = "black", pch = 19,cex = 0.1)
 
-})#end of renderPlot
+}
 
 
 
@@ -601,8 +575,11 @@ observe({
 output$boxPlot <- renderPlot({
   validate(need(input$feature_selection_qc, message=FALSE))
   validate(need(input$screen_selection_qc, message=FALSE))
+  boxPlotOut()
+})#end of renderPlot
 
-  if(!isTRUE(DummyPlots$box)){
+boxPlotOut <- function(){
+    if(!isTRUE(DummyPlots$box)){
         plot(1, type="n", axes=F, xlab="", ylab="" ,main = NA)
     } else {
 
@@ -626,7 +603,25 @@ output$boxPlot <- renderPlot({
                 points(rep(x_pos_pp,length(pp()$value)),pp()$value,col = pp_col)
     }
   }
-})#end of renderPlot
+}
+
+
+#downlaod function for qc plot 
+
+output$downloadPlotQC <- downloadHandler(
+    filename = function() {
+        paste(input$fileNamePlotQC,input$fileFormatPlotQC,sep="")
+    },
+    content = function(file) {
+        pdf(file)
+             platePlotOut() 
+             densPlotOut() 
+             boxPlotOut() 
+        dev.off()
+    }
+)#end of download function
+
+
 
 
 #contorl condictional panel for dummy plots (when populations are undefined)

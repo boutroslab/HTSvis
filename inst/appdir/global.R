@@ -12,12 +12,12 @@ options(shiny.maxRequestSize = 10000*1024^2)
 #plotHeatmap.R for plate heatmaps
 #setLimits.R for dynamic limits of color scale of plate heatmaps
 #switchButton.R for radio button in scatter plot tab
-#helpPopup.R for question marks with popups
+#helpPopup2.R for question marks with popups
 source("./plotKey.R")
 source("./plotHeatmap.R")
 source("./switchButton.R")
 source("./setLimits.R")
-source("./helpPopup.R")
+source("./helpPopup2.R")
 
 
 ##color settings

@@ -2,18 +2,13 @@ conditionalPanel(condition='output.showPanels',
              HTML("<div style='height: 50px;'>"),
              HTML("</div>"),
                  fixedRow(
-                   column(3),
                    column( 2,
-                           uiOutput("screens_qc"),
-                           tags$style(type='text/css',
-                                      "#screens_qc { margin-top: 50px;}")
+                           uiOutput("screens_qc")
                    ),
                    column( 2,
-                           uiOutput("features_qc"),
-                           tags$style(type='text/css',
-                                      "#features_qc { margin-top: 50px;}")
+                           uiOutput("features_qc")
                    ),
-                   column(3,
+                   column(1,
                           helpPopup("Help: Quality Control Plots",
                                     id="helpQC",
                                     content = "Select an experiment to generate
@@ -23,10 +18,6 @@ conditionalPanel(condition='output.showPanels',
                                     a box plot).
                                     Control wells are defined by clicking on the
                                     heatmap at the bottom of the page.
-                                    Control wells are always defined per experiment
-                                    and the selection is valid for all plates within
-                                    the experiment. The plate selection drop down
-                                    list is only relevant for the heatmap to be shown.
                                     If a single experiment is investigated, the
                                     'select experiment'
                                     option is inactive. The measured value
@@ -35,8 +26,22 @@ conditionalPanel(condition='output.showPanels',
                                     iconClass = "fa fa-question"),
                           tags$style(
                               type='text/css',
-                              "#helpQC{ margin-top: 50px;
-                              margin-left:-25px;}"))
+                              "#helpQC{ margin-top: 38px;
+                              margin-left:-25px;}")
+                          ),
+                   column(3),
+                   column( 2,
+                           align = "center",
+                           textInput(   'fileNamePlotQC',
+                                        label = h6('Enter filename to download plots'),
+                                        placeholder  = "filename") 
+                   ),
+                   column(2,
+                          downloadButton('downloadPlotQC', 'Click to Download'),
+                          tags$style(
+                              type='text/css', 
+                              "#downloadPlotQC { margin-top:25px;}")
+                          )
                  ),
                  fixedRow(
                    column(   6,
@@ -91,9 +96,18 @@ conditionalPanel(condition='output.showPanels',
                                          tags$style(type='text/css',
                         ('#resetControls  {margin:0 auto; display:block; }'))
                                  ),
-                                 column( 3,
-                                         uiOutput("plates_qc")
-                                 )
+                                column(1,
+                                      helpPopup("Help: Quality Control Plots",
+                                                id="helpQC2",
+                                                content = "Control wells are always defined per experiment
+                                                    and the selection is valid for all plates within
+                                                the experiment. The heatmap shows the first plate from the data set.",
+                                                iconClass = "fa fa-question"),
+                                          tags$style(
+                                              type='text/css',
+                                              "#helpQC2{ margin-top: 38px;
+                                              margin-left:-25px;}")
+                                )
                                ),
                        HTML("<div style='height: 25px;'>"),
                        HTML("</div>"),

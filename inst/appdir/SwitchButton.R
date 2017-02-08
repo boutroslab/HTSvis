@@ -1,3 +1,4 @@
+##Code for this function adopted from: 
 # Customised TRUE-FALSE switch button for Rshiny
 # Only sing CSS3 code (No javascript)
 #

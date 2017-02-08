@@ -154,7 +154,7 @@ output$helpChOne2 <- renderUI(
                 </br>
                 The cellHTS package
                 provides a summary table provided as delimited text file (<i>topTable.txt</i>). 
-                This text file has a defined structure and column names can be loaded directly in application. 
+                This text file has a defined structure and column names and can be loaded directly in application. 
                 Both, the structure and
                 the column names of the topTable object should not be changed as 
                 the application relies on those.
@@ -244,7 +244,7 @@ output$helpChOneTwoNum <- renderUI(
 output$helpStructure2 <- renderUI(
     HTML(paste("
 An <b>important requirement</b> concerning the data structure is
-that the dataset is <b>symetrical</b> in a way that each experiment contains
+that the dataset is <b>symmetrical</b> in a way that each experiment contains
 the same set of plates and each plate has the same well format.
 This is especially relevant if multiple experiments are investigated because
 the plate identifiers need to be consistent between the
@@ -460,7 +460,8 @@ output$FTtext2 <- renderUI(
                If more than one meadured values per well are defined, those can
                be selected from a drop down list ('select channel') and added. Each column carries
                either a sort (for identifier columns) or a filter option
-               (for numeric columns). The sorted and filtered table can be
+               (for numeric columns). Note that the data values shown in the table are rounded to 3 digits.
+                The sorted and filtered table can be
                downloaded as a <i>.csv </i>  table with columns separated by ','
                 and '.' as decimal separator."
     ))
@@ -500,7 +501,7 @@ Controls are selected by defining their position on the plate. <b>Importantly</b
 position of the controls is fixed for all plates within one experiment upon selection.
 The upper left plot shows all data points of one screen as plate-wise data
 series (data points of one plate are plotted at one x-axis position). If control populations are defined,
-the median of controls will be plotted as colored dots.
+the arithmetic mean of control samples will be plotted as colored dots.
 The upper right plot shows the density distribution (Kernel density distribution)
 of positive and negative controls and further provides
 the robust Z’-factor (Birmingham, A. et al., <i>Nat. Methods</i>, 2009) for the experiment.

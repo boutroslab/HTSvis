@@ -87,8 +87,6 @@ observeEvent(input$PlateDimension,{
   session$sendCustomMessage(type = "resetValue", message =
                                 "platesPlate4")
 
-  session$sendCustomMessage(type = "resetValue",
-                            message = " plate_selection_qc")
 })
 
 observeEvent(input$AnnoDimension,{
