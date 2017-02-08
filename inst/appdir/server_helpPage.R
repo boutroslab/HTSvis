@@ -107,7 +107,8 @@ output$helpHeader <- renderUI(
 
 output$helpSubHeader <- renderUI(
     HTML(paste("
-               Click on the tabs to open the sub pages"
+               Click on the tabs to open the sub pages. You can restart the app
+               by refreshing your browser."
     ))
     )
 
