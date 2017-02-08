@@ -515,12 +515,16 @@ fixedRow(
             font-size:15px;")),
         HTML("<div>"),
         HTML(paste(img(src='test_data.png',
-                       style='height: 200px;',
+                       style='height: 400px;',
                        vspace="50",
                        style="display: block;
                        margin-left: auto; margin-right: auto;"), "")
         ),
-        HTML("</div>")
+        HTML("</div>"),
+        htmlOutput("TDtext2"),
+        tags$style(HTML(
+            "#TDtext2 {  margin-top:10px;
+            font-size:15px;"))
     )#end of conditional panel
 
 ),#end of column
