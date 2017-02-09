@@ -610,7 +610,7 @@ boxPlotOut <- function(){
 
 output$downloadPlotQC <- downloadHandler(
     filename = function() {
-        paste(input$fileNamePlotQC,input$fileFormatPlotQC,sep="")
+        paste0(input$fileNamePlotQC,".pdf")
     },
     content = function(file) {
         pdf(file)

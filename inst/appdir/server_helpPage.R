@@ -662,14 +662,17 @@ output$TDtext2 <- renderUI(
                 </br>
                 <b>1. <i>topTable.txt</i> and <i>topTable_dc.txt</i> </b>
                 </br>
-                Those are reulst files ubtained by analysis with cellHTS, please set the
-                corresponding check on the 'Data Input' tab (see Data Inpu help for more details).     
+                Those are results files ubtained by analysis with cellHTS, please set the
+                corresponding check on the 'Data Input' tab (see Data Input help for more details).     
                 </br>
                 </br>
                 <b>2. <i>humanSGI.RData</i> </b>
                 </br>
                 This is a multiparametric data set, no check has to be set on the 
-                'Data Input' tab (see Data Inpu help for more details).
+                'Data Input' tab (see Data Inpu help for more details). 
+                Note that wells A1-A23 as well as column 24 were empty in this screen. 
+                The 'experiment' column is names 'replicate' in this data set. 
+                
                 </br>
                 </br>
                 <b>2. <i>96wellFACS.csv</i> </b>

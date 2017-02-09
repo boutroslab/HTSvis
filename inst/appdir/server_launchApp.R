@@ -9,7 +9,8 @@ test_data <- reactiveValues(na=T,
                             duplicateCols=F,
                             wellForm=F,
                             missingPlates=F,
-                            multiFalse=F)
+                            multiFalse=F,
+                            cellHTSform=T)
 col <- reactiveValues()
 TabDimensions <- reactiveValues(experiment=F,well=F,plate=F,annotation=F)
 brush_container <- reactiveValues()
@@ -142,7 +143,8 @@ outputOptions(output, "showStartButtons", suspendWhenHidden=FALSE)
 observeEvent(input$startApp,{
   test_ft <- feature_table2$data_pre
   test_data$multiFalse <- F
-
+  test_data$cellHTSform = F
+  
   if(isTRUE(hideMeasuredValues$state) &
      !is.null(input$WellDimension)  &
      !is.null(input$PlateDimension) &
@@ -168,6 +170,11 @@ observeEvent(input$startApp,{
     #         } else {
             #warnMF_js_string <- ""
             #warnMF2_js_string <- ""
+      
+            if( length(grep("r1_ch1",colnames(test_ft)))<1) {
+                test_data$cellHTSform = T
+            } else {
+        
             test_ft <-test_ft %>%
                         dplyr::select(one_of(input$WellDimension,
                                             input$PlateDimension,
@@ -196,7 +203,7 @@ observeEvent(input$startApp,{
           test_ft <-  test_ft %>% dplyr::mutate_each(funs(as.character),
                                                      one_of(colnames_string))
           feature_table2$data <- test_ft
-      #}
+      }
    # }
   } else {
 
@@ -237,7 +244,7 @@ observeEvent(input$startApp,{
 
   test_data$wellForm <- F
 
-  if(!isTRUE(test_data$multiFalse)) {
+  if(!isTRUE(test_data$multiFalse) & !isTRUE(test_data$cellHTSform)) {
 
     testWellForm <- feature_table2$data %>%
                         dplyr::select_(input$WellDimension) %>%
@@ -370,6 +377,7 @@ observeEvent(input$startApp,{
 
   if(!isTRUE(test_data$multiFalse) &
      isTRUE(hideMeasuredValues$state) &
+     !isTRUE(test_data$cellHTSform) &
      !is.null(input$WellDimension) &
      !is.null(input$PlateDimension) &
      length(input$ExperimentDimension)>1 ) {
@@ -427,7 +435,7 @@ observeEvent(input$startApp,{
     test_data$numeric <- F
     test_data$duplicateCols <- F
     test_data$missingPlates <- F
-  if(isTRUE(hideMeasuredValues$state) & !isTRUE(test_data$multiFalse)){
+  if(isTRUE(hideMeasuredValues$state) & !isTRUE(test_data$multiFalse) & !isTRUE(test_data$cellHTSform)){
     test_data$numeric <- any(!sapply(
                                 feature_table2$data %>%
                                     dplyr::select(-one_of(colnames_string)),
@@ -438,7 +446,7 @@ observeEvent(input$startApp,{
 
     test_data$duplicateCols <- any(duplicated(names(feature_table2$data)))
   } else {
-      if(!isTRUE(test_data$multiFalse)) {
+      if(!isTRUE(test_data$multiFalse) & !isTRUE(test_data$cellHTSform)) {
       test_data$numeric <- any(!sapply(
                                     feature_table2$data %>%
                                         dplyr::select(
@@ -474,6 +482,11 @@ observeEvent(input$startApp,{
     }
   }
     js_string <- 'alert("SOMETHING");'
+    if(isTRUE(test_data$cellHTSform)) {
+        warnTT <- "Input data is not in 'cellHTS topTable' format"
+        warnTT_js_string <- sub("SOMETHING",warnTT,js_string)
+        session$sendCustomMessage(type='jsCode', list(value = warnTT_js_string ))
+    }else{
     if(isTRUE(test_data$duplicateCols)) {
       warnDC <- "Columns can't be selected twice"
       warnDC_js_string <- sub("SOMETHING",warnDC,js_string)
@@ -512,9 +525,11 @@ observeEvent(input$startApp,{
               warnNum <- ""
               warnNA <- ""
               warnDC <- ""
+              warnTT <- ""
           }
         }
       }
+    }
     }
     }
 })
@@ -568,7 +583,8 @@ observeEvent(input$startApp,{
                       test_data$duplicateCols,
                       test_data$wellForm,
                       test_data$missingPlates,
-                      test_data$multiFalse))) {
+                      test_data$multiFalse,
+                      test_data$cellHTSform))) {
                             showApp$panels = F
                             showApp$dummy = T
             } else {
