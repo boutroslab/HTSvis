@@ -30,7 +30,7 @@ HTSvis()
 ```
 ## Test Data
 Test data can be found in the GitHub repository ('test_data' folder) and has to be downloaded manually. <br />
-Following test data sets are provided:<br />
+Following test data sets are provided, please check the help page in the app for instructions on how to upload them:<br />
 
 | File | Description |
 | --- | --- |
