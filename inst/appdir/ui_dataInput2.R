@@ -51,10 +51,7 @@ fixedRow(
        column(1,
               helpPopup("Help: Experiments",
                         id="helpExperiments",
-                        content = "If you want
-                        to investiagte only a single experiment
-                        (and the experiment column is missing) you should set
-                        the upper check at the right.
+                        content = "
                         If you want to investigate multiple experiments,
                         select the column of the uploaded data table
                         that contains the experiment information.
@@ -62,9 +59,12 @@ fixedRow(
                         If more than one experiment is investigated, all
                         experiments have to contain the identical
                         set of plates.
-                        If your data has one column per experiment and
-                        measured channel, set the lower check and choose
-                        those columns. (more detailed information can be found
+                        If you upload the result table of cellHTS set the upper check at the right. 
+                        If you want
+                        to investiagte only a single experiment
+                        (and the experiment column is missing) you should set
+                        the lower check at the right.
+                        (more detailed information can be found
                         on the help page)",
                         iconClass = "fa fa-question"),
               tags$style(
