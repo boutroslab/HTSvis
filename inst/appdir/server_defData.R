@@ -191,7 +191,8 @@ observe({
                         selected = "single experiment")
       updateCheckboxInput(session,
                           "cellHTSstyle",
-                          value = F)    
+                          value = F)
+      hideMeasuredValues$state = F
     } else {
       updateSelectInput(session, 
                         "ExperimentDimension",
