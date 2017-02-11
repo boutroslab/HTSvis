@@ -215,6 +215,7 @@ observe({
                             "IsSingleExperiment",
                             value = F) 
     }else{
+     if(!isTRUE(input$IsSingleExperiment)) {
       output$ExperimentDimensionOut <-  DropDownInput(
                                             "ExperimentDimension",
                                             colnames(feature_table2$data_pre),
@@ -225,6 +226,7 @@ observe({
       hideMeasuredValues$state = F
      }
     }
+     }
 })
 
 
