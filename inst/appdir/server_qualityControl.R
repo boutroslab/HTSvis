@@ -610,10 +610,10 @@ boxPlotOut <- function(){
 
 output$downloadPlotQC <- downloadHandler(
     filename = function() {
-        paste0(input$fileNamePlotQC,".pdf")
+        paste(input$fileNamePlotQC,".pdf",sep="")
     },
     content = function(file) {
-        pdf(file,filename)
+        pdf(file)
              platePlotOut() 
              densPlotOut() 
              boxPlotOut() 
