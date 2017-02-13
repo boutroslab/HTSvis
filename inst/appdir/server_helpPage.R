@@ -671,7 +671,9 @@ output$TDtext2 <- renderUI(
                 This is a multiparametric data set, no check has to be set on the 
                 'Data Input' tab (see Data Inpu help for more details). 
                 Note that wells A1-A23 as well as column 24 were empty in this screen. 
-                The 'experiment' column is names 'replicate' in this data set. 
+                The 'experiment' column is names 'replicate' in this data set. Besides the annotation columns 
+                (annotation,well,replicate, plate),
+                100 column represent measured values per well. 
                 
                 </br>
                 </br>
