@@ -2,7 +2,6 @@
 
 <p>
 <img align="right" max-width="75%" src="https://github.com/cscheeder/HTSvis/blob/master/inst/appdir/WWW/logo.png">
-<h1 id="title"  >HTSvis</h1>
 </p>
 
 
@@ -13,15 +12,15 @@
 
 
 ## INSTALLATION
-### HTSvis is provided as an R package
-### Run the following lines of code in your R session to download and install the package
+HTSvis is provided as an R package
+Run the following lines of code in your R session to download and install the package
 ```
 install.packages("devtools", dependencies = TRUE)
 
 devtools::install_github("boutroslab/HTSvis", build_vignettes = F)
 ```
 ## Usage 
-### Load the packe and call the funtion 'HTSvis' to start the web application
+### Load the package and call the funtion 'HTSvis' to start the web application
 We recommend to start a new session and clear the workspace when using the application 
 ```
 library(HTSvis)
