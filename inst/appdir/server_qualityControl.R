@@ -613,7 +613,7 @@ output$downloadPlotQC <- downloadHandler(
         paste0(input$fileNamePlotQC,".pdf")
     },
     content = function(file) {
-        pdf(file)
+        pdf(file,filename)
              platePlotOut() 
              densPlotOut() 
              boxPlotOut() 
