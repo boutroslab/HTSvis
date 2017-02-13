@@ -562,9 +562,9 @@ total <- reactive({
 
 #control conditional panel for box plot
 observe({
-    if(length(p_controls_p()) == 0 &
-       length(p_controls_n()) == 0  &
-       length(nt_controls()) == 0 ) {
+    if(length(na.omit(p_controls_p())) == 0 &
+       length(na.omit(p_controls_n())) == 0  &
+       length(na.omit(nt_controls())) == 0) {
         DummyPlots$box <- F
     } else {
         DummyPlots$box <- T
