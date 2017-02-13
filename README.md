@@ -1,10 +1,9 @@
-
-
 <p>
 <img align="right" max-width="75%" src="https://github.com/cscheeder/HTSvis/blob/master/inst/appdir/WWW/logo.png">
 </p>
 
-
+</br> 
+</br> 
 
 # A shiny app for exploratory data analysis and visualization of arrayed high-throughput screens 
 
