@@ -28,7 +28,7 @@ library(HTSvis)
 HTSvis()
 ```
 ## Test Data
-Test data can be found in the GitHub repository ('test_data' folder) and has to be downloaded manually. <br />
+Test data can be found in the GitHub repository ('test_data' folder), you can get it by dowloading the repository ('clone or download' option). <br />
 Following test data sets are provided, please check the help page in the app for instructions on how to upload them:<br />
 
 | File | Description |
