@@ -10,7 +10,8 @@ test_data <- reactiveValues(na=T,
                             wellForm=F,
                             missingPlates=F,
                             multiFalse=F,
-                            cellHTSform=T)
+                            cellHTSform=T,
+                            whiteSpace=F)
 col <- reactiveValues()
 TabDimensions <- reactiveValues(experiment=F,well=F,plate=F,annotation=F)
 brush_container <- reactiveValues()
@@ -137,52 +138,62 @@ outputOptions(output, "showStartButtons", suspendWhenHidden=FALSE)
 
 
 #validate data upon triggering of action button "input$startApp"
+# remove whitespaces from entire data set
+#check table format if input file is cellHTS topTable
 #if id variables contain factors, convert them to charcater
 #rename columns according to internal annotation: well > plate > screen.id
 
 observeEvent(input$startApp,{
   test_ft <- feature_table2$data_pre
-  test_data$multiFalse <- F
+  test_data$multiFalse = F
   test_data$cellHTSform = F
   
+  testColnames <- gsub(" ",
+                       "",
+                       c(input$WellDimension,
+                         input$PlateDimension,
+                         input$ExperimentDimension,
+                         input$AnnoDimension,
+                         input$MeasuredValues),
+                       fixed = TRUE)
+
+  
+  if(isTRUE(any(nchar(testColnames) != nchar(c(input$WellDimension,
+                                               input$PlateDimension,
+                                               input$ExperimentDimension,
+                                               input$AnnoDimension,
+                                               input$MeasuredValues))))) { 
+    test_data$whiteSpace = T
+  } else {
+
   if(isTRUE(hideMeasuredValues$state) &
      !is.null(input$WellDimension)  &
      !is.null(input$PlateDimension) &
      length(input$ExperimentDimension)>1 ){
-    #     if(any(str_count(input$ExperimentDimension,"_")>1)) {
-    #         test_data$multiFalse <- T
-    #             warnMF_js_string <-"alert(\"Error: '_' in column names are only allowed to seperate experiment and channel id \");"
-    #                 session$sendCustomMessage(type='jsCode', list(value = warnMF_js_string ))
-    # } else {
-    #   if(any(str_count(input$ExperimentDimension,"_")==0)) {
-    #         test_data$multiFalse <- T
-    #         warnMF2_js_string <-"alert(\"Error: Experiment and channel id have to be separated by '_' \");"
-    #             session$sendCustomMessage(type='jsCode', list(value = warnMF2_js_string ))
-    #     } else {
-    #       if(isTRUE(any(c(input$ExperimentDimension,
-    #                       input$PlateDimension,
-    #                       input$WellDimension,
-    #                       input$AnnoDimension,
-    #                       input$MeasuredValues) == "experiment.id"))){
-    #             test_data$multiFalse <- T
-    #                 warnMF3_js_string <-"alert(\"Error: The column name 'experiment.id' is reserved, please rename the column\");"
-    #                     session$sendCustomMessage(type='jsCode', list(value = warnMF3_js_string ))
-    #         } else {
-            #warnMF_js_string <- ""
-            #warnMF2_js_string <- ""
-      
+
             if( length(grep("r1_ch1",colnames(test_ft)))<1) {
                 test_data$cellHTSform = T
             } else {
         
+            cellHTSstring <- input$ExperimentDimension   
+            #check if score column is present, if yes rename columns 
+            if(length(grep("score",cellHTSstring))>0 ) {
+                test_ft <- test_ft %>% rename(score_ch1 =score)
+                cellHTSstring <- c("score_ch1",cellHTSstring[-which(cellHTSstring %in% "score")])
+                if(length(grep("ch2",cellHTSstring))>0 ) {
+                    test_ft <-test_ft %>% mutate(score_ch2=test_ft[,"score_ch1"])
+                    cellHTSstring <- c("score_ch2",cellHTSstring)
+                }
+            }
+            
             test_ft <-test_ft %>%
                         dplyr::select(one_of(input$WellDimension,
                                             input$PlateDimension,
-                                            input$ExperimentDimension,
+                                            cellHTSstring,
                                             input$AnnoDimension)) %>%
                             gather_("CSvB110",
                                     "CSvalueB110",
-                                    input$ExperimentDimension) %>%
+                                    cellHTSstring) %>%
                             extract(CSvB110,
                                     c("experiment.id", "col"),
                                     regex="(.*)_([[:alnum:]]{3})")%>%
@@ -204,7 +215,6 @@ observeEvent(input$startApp,{
                                                      one_of(colnames_string))
           feature_table2$data <- test_ft
       }
-   # }
   } else {
 
 
@@ -230,8 +240,9 @@ observeEvent(input$startApp,{
                         dplyr::select(one_of(colnames_string,
                                              input$MeasuredValues))
     feature_table2$data <- test_ft
+        }
+      }
     }
-  }
 })
 
 
@@ -244,7 +255,7 @@ observeEvent(input$startApp,{
 
   test_data$wellForm <- F
 
-  if(!isTRUE(test_data$multiFalse) & !isTRUE(test_data$cellHTSform)) {
+  if(!isTRUE(test_data$multiFalse) & !isTRUE(test_data$cellHTSform) & !isTRUE(test_data$whiteSpace)) {
 
     testWellForm <- feature_table2$data %>%
                         dplyr::select_(input$WellDimension) %>%
@@ -378,8 +389,9 @@ observeEvent(input$startApp,{
   if(!isTRUE(test_data$multiFalse) &
      isTRUE(hideMeasuredValues$state) &
      !isTRUE(test_data$cellHTSform) &
+     !isTRUE(test_data$whiteSpace) &
      !is.null(input$WellDimension) &
-     !is.null(input$PlateDimension) &
+     !is.null(input$PlateDimension) & 
      length(input$ExperimentDimension)>1 ) {
         tabInput$inputPlates <- mixedsort(
                                 feature_table2$data %>%
@@ -399,7 +411,9 @@ observeEvent(input$startApp,{
     if(!is.null(input$WellDimension) &
        !is.null(input$PlateDimension) &
        !is.null(input$ExperimentDimension) &
-       !is.null(input$MeasuredValues)){
+       !is.null(input$MeasuredValues) &
+       !isTRUE(test_data$whiteSpace)
+       ){
         tabInput$inputFeatures=input$MeasuredValues
         tabInput$inputPlates <- mixedsort(
             feature_table2$data %>%
@@ -407,7 +421,7 @@ observeEvent(input$startApp,{
                     unlist(use.names = FALSE))
         if(!is.null(input$IsSingleExperiment)){
           if(isTRUE(input$IsSingleExperiment)) {
-          tabInput$inputScreens="single experiment"
+          tabInput$inputScreens="single_experiment"
           } else {
             tabInput$inputScreens=feature_table2$data %>%
                 dplyr::distinct_(input$ExperimentDimension) %>%
@@ -435,7 +449,10 @@ observeEvent(input$startApp,{
     test_data$numeric <- F
     test_data$duplicateCols <- F
     test_data$missingPlates <- F
-  if(isTRUE(hideMeasuredValues$state) & !isTRUE(test_data$multiFalse) & !isTRUE(test_data$cellHTSform)){
+  if(isTRUE(hideMeasuredValues$state) & 
+     !isTRUE(test_data$multiFalse) & 
+     !isTRUE(test_data$cellHTSform) & 
+     !isTRUE(test_data$whiteSpace)){
     test_data$numeric <- any(!sapply(
                                 feature_table2$data %>%
                                     dplyr::select(-one_of(colnames_string)),
@@ -446,7 +463,7 @@ observeEvent(input$startApp,{
 
     test_data$duplicateCols <- any(duplicated(names(feature_table2$data)))
   } else {
-      if(!isTRUE(test_data$multiFalse) & !isTRUE(test_data$cellHTSform)) {
+      if(!isTRUE(test_data$multiFalse) & !isTRUE(test_data$cellHTSform) & !isTRUE(test_data$whiteSpace)) {
       test_data$numeric <- any(!sapply(
                                     feature_table2$data %>%
                                         dplyr::select(
@@ -482,6 +499,11 @@ observeEvent(input$startApp,{
     }
   }
     js_string <- 'alert("SOMETHING");'
+    if(isTRUE(test_data$whiteSpace)) {
+        warnWS <- "Column names and identifers can't contain whitespaces, please separate by e.g. '_'"
+        warnWS_js_string <- sub("SOMETHING",warnWS,js_string)
+        session$sendCustomMessage(type='jsCode', list(value = warnWS_js_string ))
+    }else{
     if(isTRUE(test_data$cellHTSform)) {
         warnTT <- "Input data is not in 'cellHTS topTable' format"
         warnTT_js_string <- sub("SOMETHING",warnTT,js_string)
@@ -526,11 +548,13 @@ observeEvent(input$startApp,{
               warnNA <- ""
               warnDC <- ""
               warnTT <- ""
+              warnWS <- ""
+            }
+           }
           }
+         }
         }
       }
-    }
-    }
     }
 })
 
@@ -584,7 +608,8 @@ observeEvent(input$startApp,{
                       test_data$wellForm,
                       test_data$missingPlates,
                       test_data$multiFalse,
-                      test_data$cellHTSform))) {
+                      test_data$cellHTSform,
+                      test_data$whiteSpace))) {
                             showApp$panels = F
                             showApp$dummy = T
             } else {

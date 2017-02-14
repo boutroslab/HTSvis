@@ -130,7 +130,7 @@ selection = 'none',rownames=F,options=overviewTablesOptions)
 output$definedExp<- DT::renderDataTable({
   validate(need(input$ExperimentDimension, message=FALSE))
     if(!is.null(InputStartTables$experiment)) {
-        if(InputStartTables$experiment[1] == "single experiment") {
+        if(InputStartTables$experiment[1] == "single_experiment") {
             data.frame()
             } else {
                 if(length(InputStartTables$experiment)>1){
@@ -187,8 +187,8 @@ observe({
     if(isTRUE(input$IsSingleExperiment)) {
       updateSelectInput(session, 
                         "ExperimentDimension",
-                        choices = "single experiment",
-                        selected = "single experiment")
+                        choices = "single_experiment",
+                        selected = "single_experiment")
       updateCheckboxInput(session,
                           "cellHTSstyle",
                           value = F)

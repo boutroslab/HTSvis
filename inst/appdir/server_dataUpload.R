@@ -29,6 +29,8 @@ observe({
   }
 })
 
+
+
 InputStartTables <- reactiveValues()
 observeEvent(input$file1,{
   InputStartTables$plate <- NULL
@@ -46,6 +48,10 @@ output$dataInfo <- renderUI({
     if (is.null(feature_table2$data_pre)){
         h6("Incorrect data format (.RData data frames, .txt and .csv are supported)")
     } else {
+        test_cols <- feature_table2$data_pre
+        if(any(duplicated(colnames(test_cols)))) {
+            h6("Duplicated colnames are not allowed")
+        } else {
         HTML(paste0("The uploaded data table has <b>",
                     ncol(feature_table2$data_pre),
                    " columns</b> and <b>",
@@ -55,7 +61,9 @@ output$dataInfo <- renderUI({
                     and measured values from the drop down lists.")
        )
         }
+    }
 })
+
 
 
 
