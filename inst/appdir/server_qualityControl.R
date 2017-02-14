@@ -320,74 +320,75 @@ observe({
 
 #Density Plot
 output$densityPlot <- renderPlot({
-  validate(need(input$feature_selection_qc, message=FALSE))
-  validate(need(input$screen_selection_qc, message=FALSE))
+    validate(need(input$feature_selection_qc, message=FALSE))
+    validate(need(input$screen_selection_qc, message=FALSE))
     densPlotOut()
 })#end of renderPlot
-  
+
 densPlotOut <- function(){  
     if(!isTRUE(DummyPlots$dens)){
-      plot(1, type="n", axes=F, xlab="", ylab="" ,main = NA)
-  }else{
-    if(length(p_controls_p())>0 &length(p_controls_n())>0) {
-    dis_p <- suppressWarnings(density(p_controls_p(),na.rm=T))
-        dis_n <- suppressWarnings(density(p_controls_n(),na.rm=T))
-        if(length(nt_controls()) < 10 ){
-            dis_nt <- list()
-            dis_nt$x <- 0
-            dis_nt$y <- 0
-                } else {
-                    dis_nt <- suppressWarnings(density(nt_controls(),na.rm=T))}
-                xmin <-  min(c(dis_n$x,dis_p$x,dis_nt$x),na.rm = T)
-                        +(0-abs(min(c(dis_n$x,dis_p$x,dis_nt$x),na.rm = T)*0.5))
-                xmax <-  max(c(dis_n$x,dis_p$x,dis_nt$x),na.rm = T)
-                        +(max(c(dis_n$x,dis_p$x,dis_nt$x),na.rm = T)*0.5)
-                ymin <- min(c(dis_n$y,dis_p$y,dis_nt$y),na.rm = T)
-                        +(0-abs(min(c(dis_n$y,dis_p$y,dis_nt$y),na.rm = T)*0.2))
-                ymax <- max(c(dis_n$y,dis_p$y,dis_nt$y),na.rm=T)
-                        +max(c(dis_n$y,dis_p$y,dis_nt$y,na.rm=T)*0.2)
-                    mad_p <- sd(p_controls_p(),na.rm=T)
-                    mad_n <- sd(p_controls_n(),na.rm=T)
-                            med_p <- mean(p_controls_p(),na.rm=T)
-                            med_n <- mean(p_controls_n(),na.rm=T)
-                    z_factor <- round(
-                        (1-((3*(mad_p+mad_n))/(abs(med_p-med_n)))),
-                            2)
-                    z_factor_printout <- paste("Z'-factor",
-                                               z_factor,
-                                               sep=" : ")
-                        feature <- input$feature_selection_qc
-                            plot(dis_p,
-                                 ylim=c(ymin,ymax),
-                                 xlim =c(xmin,xmax),
-                                 main=NA,
-                                 col=pp_col,xlab=feature)
-                                    lines(dis_n,col = pn_col)
-                                    lines(dis_nt,col = nt_col)
-                                        title(main=substitute(
-                                            paste(
-                                        "Density Distributions of Controls for",
-                                          "\n",italic(feature) ) ) )
-
-    if(length(nt_controls()) > 10  ){
-        legend_cols <- c("blue","red","mediumseagreen","black")
-        legend_string <- c("positive controls",
-                           "negative controls",
-                           "non-targeting controls",
-                           z_factor_printout)
-    } else {
-        legend_cols <- c("blue","red","black")
-        legend_string <- c("positive controls",
-                           "negative controls",
-                           z_factor_printout)
+        plot(1, type="n", axes=F, xlab="", ylab="" ,main = NA)
+    }else{
+        if(length(p_controls_p())>0 &length(p_controls_n())>0) {
+            dis_p <- suppressWarnings(density(p_controls_p(),na.rm=T))
+            dis_n <- suppressWarnings(density(p_controls_n(),na.rm=T))
+            if(length(nt_controls()) < 10 ){
+                dis_nt <- list()
+                dis_nt$x <- 0
+                dis_nt$y <- 0
+            } else {
+                dis_nt <- suppressWarnings(density(nt_controls(),na.rm=T))}
+            xmin <-  min(c(dis_n$x,dis_p$x,dis_nt$x),na.rm = T)
+            +(0-abs(min(c(dis_n$x,dis_p$x,dis_nt$x),na.rm = T)*0.5))
+            xmax <-  max(c(dis_n$x,dis_p$x,dis_nt$x),na.rm = T)
+            +(max(c(dis_n$x,dis_p$x,dis_nt$x),na.rm = T)*0.5)
+            ymin <- min(c(dis_n$y,dis_p$y,dis_nt$y),na.rm = T)
+            +(0-abs(min(c(dis_n$y,dis_p$y,dis_nt$y),na.rm = T)*0.2))
+            ymax <- max(c(dis_n$y,dis_p$y,dis_nt$y),na.rm=T)
+            +max(c(dis_n$y,dis_p$y,dis_nt$y,na.rm=T)*0.2)
+            mad_p <- sd(p_controls_p(),na.rm=T)
+            mad_n <- sd(p_controls_n(),na.rm=T)
+            med_p <- mean(p_controls_p(),na.rm=T)
+            med_n <- mean(p_controls_n(),na.rm=T)
+            z_factor <- round(
+                (1-((3*(mad_p+mad_n))/(abs(med_p-med_n)))),
+                2)
+            z_factor_printout <- paste("Z'-factor",
+                                       z_factor,
+                                       sep=" : ")
+            feature <- input$feature_selection_qc
+            plot(dis_p,
+                 ylim=c(ymin,ymax),
+                 xlim =c(xmin,xmax),
+                 main=NA,
+                 col=pp_col,xlab=feature)
+            lines(dis_n,col = pn_col)
+            lines(dis_nt,col = nt_col)
+            title(main=substitute(
+                paste(
+                    "Density Distributions of Controls for",
+                    "\n",italic(feature) ) ) )
+            
+            if(length(nt_controls()) > 10  ){
+                legend_cols <- c("blue","red","mediumseagreen","black")
+                legend_string <- c("positive controls",
+                                   "negative controls",
+                                   "non-targeting controls",
+                                   z_factor_printout)
+            } else {
+                legend_cols <- c("blue","red","black")
+                legend_string <- c("positive controls",
+                                   "negative controls",
+                                   z_factor_printout)
+            }
+            legend("topleft",
+                   pch=c(15,15,16),
+                   col=legend_cols,
+                   legend=legend_string)
+        }
     }
-    legend("topleft",
-           pch=c(15,15,16),
-           col=legend_cols,
-           legend=legend_string)
-        }
-        }
 }
+
 
 
 #control conditional panel for dummy plots (when populations are undefined)
@@ -409,7 +410,7 @@ output$textDensDummy <- renderUI(
                 <b> Density distribution (KDE) plot </b>",
                "Select control wells
                to create a density distribution (KDE) plot.",
-               "Minimum of 10 data points per population are
+               "Minimum 10 data points for positve and negative controls are
                required",
                sep="<br/>"))
 )
