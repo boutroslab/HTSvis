@@ -7,7 +7,7 @@
 
 # A shiny app for exploratory data analysis and visualization of arrayed high-throughput screens 
 
-</br> 
+
 </br> 
 
 ## About 
@@ -17,7 +17,7 @@ The apllication can be installed as an R package and is started fom the R consol
 usage of the application in the user's default web browser does not require further coding.
 Input data can either be a result file obtained upon analysis with the Bioconductor/R package cellHTS or 
 a generic table with raw or analyzed data from, e.g. a high-content microscopy screen. </br> 
-
+</br> 
 ## Installation
 HTSvis is provided as an R package.</br> 
 Run the following lines of code in your R session to download and install the package:
