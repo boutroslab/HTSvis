@@ -10,6 +10,13 @@
 </br> 
 </br> 
 
+## About 
+HTSvis is R/Shiny open-source web application for interactive visualization and 
+exploratory analysis of data from arayed high-throughput screens. 
+The apllication can be installed as an R package and is started fom the R console,
+usage of the application in the user's default web browser does not require further coding.
+Input data can either be a result file obtained upon analysis with the Bioconductor/R package cellHTS or 
+a generic table with raw or analyzed data from, e.g. a high-content microscopy screen. 
 
 ## INSTALLATION
 HTSvis is provided as an R package.</br> 
@@ -28,7 +35,7 @@ library(HTSvis)
 HTSvis()
 ```
 ## Test Data
-Test data can be found in the GitHub repository ('test_data' folder), you can get it by dowloading the repository ('clone or download' option). <br />
+Test data can be found in the GitHub repository ('test_data' folder), you can get it by dowloading the repository ('clone or download' option). Please note that Safari does not support the upload of RData files.<br />
 Following test data sets are provided, please check the help page in the app for instructions on how to upload them:<br />
 
 | File | Description |
