@@ -11,7 +11,7 @@
 </br> 
 
 ## About 
-HTSvis is R/Shiny open-source web application for interactive visualization and 
+HTSvis is an R/Shiny open-source web application for interactive visualization and 
 exploratory analysis of data from arayed high-throughput screens. 
 The apllication can be installed as an R package and is started fom the R console,
 usage of the application in the user's default web browser does not require further coding.
