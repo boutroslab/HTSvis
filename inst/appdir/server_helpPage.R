@@ -673,7 +673,7 @@ output$TDtext2 <- renderUI(
                 Note that wells A1-A23 as well as column 24 were empty in this screen. 
                 The 'experiment' column is names 'replicate' in this data set. Besides the annotation columns 
                 (annotation,well,replicate, plate),
-                100 column represent measured values per well. 
+                10 columns with measured values per well are present. 
                 
                 </br>
                 </br>
