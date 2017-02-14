@@ -16,9 +16,9 @@ exploratory analysis of data from arayed high-throughput screens.
 The apllication can be installed as an R package and is started fom the R console,
 usage of the application in the user's default web browser does not require further coding.
 Input data can either be a result file obtained upon analysis with the Bioconductor/R package cellHTS or 
-a generic table with raw or analyzed data from, e.g. a high-content microscopy screen. 
+a generic table with raw or analyzed data from, e.g. a high-content microscopy screen. </br> 
 
-## INSTALLATION
+## Installation
 HTSvis is provided as an R package.</br> 
 Run the following lines of code in your R session to download and install the package:
 ```
