@@ -603,6 +603,9 @@ output$StartInfo5 <- renderUI({
 output$StartInfo6 <- renderUI({
   h6(paste(length(tabInput$inputFeatures),"Measured Values per well",sep=" "))
 })
+output$StartInfo7 <- renderUI({
+    h4("You can now open the tabs")
+})
 
 
 

@@ -75,6 +75,11 @@ HTML("</div>"),
                 tags$style("#StartInfo1 {color: green;
                                   }"
                          ),
+             uiOutput("StartInfo7"),
+             tags$style(type='text/css', "#StartInfo1 { margin-top: 25px;}"),
+             tags$style("#StartInfo7{color: green;
+                        }"
+                         ),
                uiOutput("StartInfo2"),
                uiOutput("StartInfo3"),
                uiOutput("StartInfo4"),
