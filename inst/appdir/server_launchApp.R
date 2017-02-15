@@ -11,6 +11,7 @@ test_data <- reactiveValues(na=T,
                             missingPlates=F,
                             multiFalse=F,
                             cellHTSform=T,
+                            cellHTScols=F,
                             whiteSpace=F)
 col <- reactiveValues()
 TabDimensions <- reactiveValues(experiment=F,well=F,plate=F,annotation=F)
@@ -147,6 +148,7 @@ observeEvent(input$startApp,{
   test_ft <- feature_table2$data_pre
   test_data$multiFalse = F
   test_data$cellHTSform = F
+  test_data$cellHTScols = F
   
   testColnames <- gsub(" ",
                        "",
@@ -170,6 +172,7 @@ observeEvent(input$startApp,{
      !is.null(input$WellDimension)  &
      !is.null(input$PlateDimension) &
      length(input$ExperimentDimension)>1 ){
+      
 
             if( length(grep("r1_ch1",colnames(test_ft)))<1) {
                 test_data$cellHTSform = T
@@ -200,13 +203,20 @@ observeEvent(input$startApp,{
                                         spread(col, CSvalueB110) 
             #for dual channel experiments only 
             if(any(colnames(test_ft) %in% "ch2")) {
-            test_ft <-test_ft %>% mutate(ch2 = replace(ch2, 
-                                   which(experiment.id%in%c("normalized_r1",
-                                                            "normalized_r2")), 
-                                   test_ft[which(test_ft$experiment.id %in% c("normalized_r1","normalized_r2")),"ch1"]
-                                    )
-                                )
-            } 
+                ch1_cols <- length(grep("ch1",input$ExperimentDimension))-length(grep("normalized",input$ExperimentDimension))
+                ch2_cols <- length(grep("ch2",input$ExperimentDimension))
+                
+                if(ch1_cols != ch2_cols) {
+                    test_data$cellHTScols = T
+                } else {
+                    test_ft <-test_ft %>% mutate(ch2 = replace(ch2, 
+                                           which(experiment.id%in%c("normalized_r1",
+                                                                    "normalized_r2")), 
+                                           test_ft[which(test_ft$experiment.id %in% c("normalized_r1","normalized_r2")),"ch1"]
+                                            )
+                                        )
+                        } 
+                }
           colnames_string <- c(input$WellDimension,
                                input$PlateDimension,
                                input$AnnoDimension,
@@ -214,7 +224,7 @@ observeEvent(input$startApp,{
           test_ft <-  test_ft %>% dplyr::mutate_each(funs(as.character),
                                                      one_of(colnames_string))
           feature_table2$data <- test_ft
-      }
+        }
   } else {
 
 
@@ -255,7 +265,10 @@ observeEvent(input$startApp,{
 
   test_data$wellForm <- F
 
-  if(!isTRUE(test_data$multiFalse) & !isTRUE(test_data$cellHTSform) & !isTRUE(test_data$whiteSpace)) {
+  if(!isTRUE(test_data$multiFalse) & 
+     !isTRUE(test_data$cellHTSform) & 
+     !isTRUE(test_data$whiteSpace) &
+     !isTRUE(test_data$cellHTScols)) {
 
     testWellForm <- feature_table2$data %>%
                         dplyr::select_(input$WellDimension) %>%
@@ -389,6 +402,7 @@ observeEvent(input$startApp,{
   if(!isTRUE(test_data$multiFalse) &
      isTRUE(hideMeasuredValues$state) &
      !isTRUE(test_data$cellHTSform) &
+     !isTRUE(test_data$cellHTScols) &
      !isTRUE(test_data$whiteSpace) &
      !is.null(input$WellDimension) &
      !is.null(input$PlateDimension) & 
@@ -452,6 +466,7 @@ observeEvent(input$startApp,{
   if(isTRUE(hideMeasuredValues$state) & 
      !isTRUE(test_data$multiFalse) & 
      !isTRUE(test_data$cellHTSform) & 
+     !isTRUE(test_data$cellHTScols) & 
      !isTRUE(test_data$whiteSpace)){
     test_data$numeric <- any(!sapply(
                                 feature_table2$data %>%
@@ -463,7 +478,10 @@ observeEvent(input$startApp,{
 
     test_data$duplicateCols <- any(duplicated(names(feature_table2$data)))
   } else {
-      if(!isTRUE(test_data$multiFalse) & !isTRUE(test_data$cellHTSform) & !isTRUE(test_data$whiteSpace)) {
+      if(!isTRUE(test_data$multiFalse) & 
+         !isTRUE(test_data$cellHTSform) & 
+         !isTRUE(test_data$cellHTScols) &
+         !isTRUE(test_data$whiteSpace)) {
       test_data$numeric <- any(!sapply(
                                     feature_table2$data %>%
                                         dplyr::select(
@@ -503,6 +521,11 @@ observeEvent(input$startApp,{
         warnWS <- "Column names and identifers can't contain whitespaces, please separate by e.g. '_'"
         warnWS_js_string <- sub("SOMETHING",warnWS,js_string)
         session$sendCustomMessage(type='jsCode', list(value = warnWS_js_string ))
+    }else{
+    if(isTRUE(test_data$cellHTScols)) {
+        warnTTC <- "Please select the same columns for both channels of your cellHTS topTable (e.g. 'raw_r1_ch1' and 'raw_r1_ch2)"
+        warnTTC_js_string <- sub("SOMETHING",warnTTC,js_string)
+        session$sendCustomMessage(type='jsCode', list(value = warnTTC_js_string ))
     }else{
     if(isTRUE(test_data$cellHTSform)) {
         warnTT <- "Input data is not in 'cellHTS topTable' format"
@@ -549,12 +572,14 @@ observeEvent(input$startApp,{
               warnDC <- ""
               warnTT <- ""
               warnWS <- ""
-            }
+              warnTTC <- ""
            }
           }
          }
         }
+       }
       }
+     }
     }
 })
 
@@ -609,6 +634,7 @@ observeEvent(input$startApp,{
                       test_data$missingPlates,
                       test_data$multiFalse,
                       test_data$cellHTSform,
+                      test_data$cellHTScols,
                       test_data$whiteSpace))) {
                             showApp$panels = F
                             showApp$dummy = T

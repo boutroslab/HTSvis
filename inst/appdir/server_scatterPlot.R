@@ -854,6 +854,7 @@ scatter_plot <- function(df){
   {opaSP<- input$opaSPin} else {opaSP<-1}
   
   cross <- hlines$hline_frame
+  
 
   df_ordered <-  df %>%
     mutate(Pops=
