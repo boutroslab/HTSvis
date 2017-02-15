@@ -28,8 +28,8 @@ source("./helpPopup2.R")
 col_palette <- colorRampPalette(c("blue", "white", "red"))(n = 500)
 col_dfHeatmap <- rev(colorRampPalette(brewer.pal(9, "RdBu"))(500))
 nt_col <-  "limegreen"
-pp_col <- "red"
-pn_col <- "blue"
+pp_col <- "blue"
+pn_col <- "red"
 population_colors <- c("#E31A1C","#1F78B4","#33A02C","#6A3D9A","#FF7F00",
                        "#8E0152","#003C30","#543005","#006837","#A50026","#DD2D26")
 

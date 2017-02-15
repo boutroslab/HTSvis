@@ -346,12 +346,12 @@ densPlotOut <- function(){
             +(0-abs(min(c(dis_n$y,dis_p$y,dis_nt$y),na.rm = T)*0.2))
             ymax <- max(c(dis_n$y,dis_p$y,dis_nt$y),na.rm=T)
             +max(c(dis_n$y,dis_p$y,dis_nt$y,na.rm=T)*0.2)
-            mad_p <- sd(p_controls_p(),na.rm=T)
-            mad_n <- sd(p_controls_n(),na.rm=T)
-            med_p <- mean(p_controls_p(),na.rm=T)
-            med_n <- mean(p_controls_n(),na.rm=T)
+            sd_p <- sd(p_controls_p(),na.rm=T)
+            sd_n <- sd(p_controls_n(),na.rm=T)
+            mean_p <- mean(p_controls_p(),na.rm=T)
+            mean_n <- mean(p_controls_n(),na.rm=T)
             z_factor <- round(
-                (1-((3*(mad_p+mad_n))/(abs(med_p-med_n)))),
+                (1-((3*(sd_n+sd_p))/(abs(mean_n-mean_p)))),
                 2)
             z_factor_printout <- paste("Z'-factor",
                                        z_factor,
@@ -370,13 +370,13 @@ densPlotOut <- function(){
                     "\n",italic(feature) ) ) )
             
             if(length(nt_controls()) > 10  ){
-                legend_cols <- c("blue","red","mediumseagreen","black")
+                legend_cols <- c(pp_col,pn_col,nt_col,"black")
                 legend_string <- c("positive controls",
                                    "negative controls",
                                    "non-targeting controls",
                                    z_factor_printout)
             } else {
-                legend_cols <- c("blue","red","black")
+                legend_cols <- c(pp_col,pn_col,"black")
                 legend_string <- c("positive controls",
                                    "negative controls",
                                    z_factor_printout)
