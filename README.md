@@ -36,7 +36,7 @@ HTSvis()
 ```
 ## Test Data
 Test data can be found in the GitHub repository ('test_data' folder), you can get it by dowloading the repository ('clone or download' option). Please note that Safari does not support the upload of RData files.<br />
-Following test data sets are provided, please check the help page in the app for instructions on how to upload them. A description file od the tets data ts provided as a pdf in the 'test_data' folder.<br />
+Following test data sets are provided, please check the help page in the app for instructions on how to upload them. A description file of the tets data is provided as a pdf in the 'test_data' folder.<br />
 
 | File | Description |
 | --- | --- |
