@@ -658,30 +658,7 @@ output$TDtext1 <- renderUI(
 
 output$TDtext2 <- renderUI(
     HTML(paste("
-               Please consider the following points concerning the test data sets:</br>
-                </br>
-                <b>1. <i>topTable.txt</i> and <i>topTable_dc.txt</i> </b>
-                </br>
-                Those are results files ubtained by analysis with cellHTS, please set the
-                corresponding check on the 'Data Input' tab (see Data Input help for more details).     
-                </br>
-                </br>
-                <b>2. <i>humanSGI.RData</i> </b>
-                </br>
-                This is a multiparametric data set, no check has to be set on the 
-                'Data Input' tab (see Data Inpu help for more details). 
-                Note that wells A1-A23 as well as column 24 were empty in this screen. 
-                The 'experiment' column is names 'replicate' in this data set. Besides the annotation columns 
-                (annotation,well,replicate, plate),
-                10 columns with measured values per well are present. 
-                
-                </br>
-                </br>
-                <b>2. <i>96wellFACS.csv</i> </b>
-                </br>
-                This is a set of two plates from a FACS screen.
-                The 'single experiment' check hast to be set on the 
-                'Data Input' tab (see Data Inpu help for more details).
+              A help file with explainations is provided as a pdf in the test_data folder on the github repository
                "
     ))
 )
