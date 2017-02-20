@@ -15,7 +15,7 @@ options(shiny.maxRequestSize = 10000*1024^2)
 #helpPopup2.R for question marks with popups
 source("./plotKey.R")
 source("./plotHeatmap.R")
-source("./switchButton.R")
+source("./SwitchButton.R")
 source("./setLimits.R")
 source("./helpPopup2.R")
 

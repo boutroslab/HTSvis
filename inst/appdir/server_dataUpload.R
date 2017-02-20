@@ -1,5 +1,17 @@
+################################
+## Server part for data input ##
+################################
+
+# loaded table is committed to a reactive values object 'feature_table2'
+# data input is evaluated using the 'try' function' 
+# upon uploading of an input table, the app entire app is reset by changing the 
+#   value of several reacitve values objects 
 
 feature_table2 <- reactiveValues()
+
+testInput <- function(toEval) {
+    try(toEval,silent=T)
+}
 
 observe({
   inFile <- input$file1
@@ -7,23 +19,29 @@ observe({
     return(NULL)
   if(file_ext(inFile$name) == "RData" |
       file_ext(inFile$name) == "Rdata") {
-    feature_table2$data_pre <- get(load(inFile$datapath))
+    feature_table2$data_pre <- testInput(
+                                    get(load(inFile$datapath))
+                                )
     if(class(feature_table2$data_pre) != "data.frame"){
         feature_table2$data_pre <- NULL
     } else {
     return(feature_table2) }
   } else {
     if(file_ext(inFile$name) == "txt" | file_ext(inFile$name) == "tsv"){
-      feature_table2$data_pre <-  read.table(inFile$datapath,header=T)
+      feature_table2$data_pre <-  testInput(
+                                    read.table(inFile$datapath,header=T)
+                                    )
     } else {
       if(file_ext(inFile$name) == "csv") {
-        feature_table2$data_pre <-  data.frame(
+        feature_table2$data_pre <-  testInput(
+                                        data.frame(
                                             fread(
                                                 inFile$datapath,
                                                 na.strings = c("NA","N/A",
                                                                "NaN","null","")
                                                 )
                                             ,row.names = NULL)
+                                        )
         } else {feature_table2$data_pre <- NULL}
     }
   }
@@ -45,8 +63,11 @@ observeEvent(input$file1,{
 
 output$dataInfo <- renderUI({
   validate(need(input$file1, message=FALSE))
-    if (is.null(feature_table2$data_pre)){
+    if(is.null(feature_table2$data_pre)){
         h6("Incorrect data format (.RData data frames, .txt and .csv are supported)")
+    } else {
+    if(inherits(feature_table2$data_pre,"try-error",which=F)){
+        h6("Data input failed due to an unkown reason)")
     } else {
         test_cols <- feature_table2$data_pre
         if(any(duplicated(colnames(test_cols)))) {
@@ -59,8 +80,9 @@ output$dataInfo <- renderUI({
                    " rows</b>",
                    "<br/> Select columns with the annotation
                     and measured values from the drop down lists.")
-       )
+            )
         }
+      }
     }
 })
 
