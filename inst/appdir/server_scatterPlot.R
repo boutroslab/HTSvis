@@ -817,7 +817,7 @@ observe({
             digits=3)
 
         if(isTRUE(input$getCorr)) {
-            lmModel$line = 0.5
+            lmModel$line = 1
         } else{ lmModel$line = 0 }
     }
 })
@@ -884,7 +884,10 @@ scatter_plot <- function(df){
                      "for",
                      input$screens_selection_sp_y,
                      sep = "  ")) +
-      geom_smooth(method='lm',color="red",size = lmModel$line,fill=NA)
+          geom_line(stat="smooth",method = "lm",
+                    size = 0.5,
+                    color ="red",
+                    alpha = lmModel$line)
 }
 
 

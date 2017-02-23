@@ -73,6 +73,29 @@ observeEvent(input$ExperimentDimension,{
 
   session$sendCustomMessage(type = "resetValue",
                             message = "screens_selection_sp_y")
+  session$sendCustomMessage(type = "resetValue",
+                            message = "featuresPlate1")
+  
+  session$sendCustomMessage(type = "resetValue",
+                            message = "featuresPlate2")
+  
+  session$sendCustomMessage(type = "resetValue",
+                            message = "featuresPlate3")
+  
+  session$sendCustomMessage(type = "resetValue",
+                            message = "featuresPlate4")
+  
+  session$sendCustomMessage(type = "resetValue",
+                            message = "feature_selection_ft")
+  
+  session$sendCustomMessage(type = "resetValue",
+                            message = "feature_selection_qc")
+  
+  session$sendCustomMessage(type = "resetValue",
+                            message = "feature_selection_sp_x")
+  
+  session$sendCustomMessage(type = "resetValue",
+                            message = "feature_selection_sp_y")
 })
 
 observeEvent(input$PlateDimension,{
@@ -618,7 +641,10 @@ observeEvent(input$startApp,{
                       test_data$duplicateCols,
                       test_data$wellForm,
                       test_data$missingPlates,
-                      test_data$multiFalse))) {
+                      test_data$multiFalse,
+                      test_data$cellHTSform,
+                      test_data$cellHTScols,
+                      test_data$whiteSpace))) {
             showApp$panels = F
             showApp$dummy = T
             } else {
