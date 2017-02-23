@@ -7,10 +7,10 @@
 
 # A shiny app for exploratory data analysis and visualization of arrayed high-throughput screens 
 
-
+Version 1.01
 </br> 
 
-Version 1.01
+
 
 ## About 
 HTSvis is an R/Shiny open-source web application for interactive visualization and 
