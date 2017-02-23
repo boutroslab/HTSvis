@@ -10,6 +10,8 @@
 
 </br> 
 
+Version 1.01
+
 ## About 
 HTSvis is an R/Shiny open-source web application for interactive visualization and 
 exploratory analysis of data from arayed high-throughput screens. 
