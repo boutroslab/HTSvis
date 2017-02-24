@@ -48,10 +48,13 @@ Following test data sets are provided, please check the help page in the app for
 | 96wellFACS.csv   |  multiparametric data set from a flowcytometry screen (unpublished) |
 </br> <sup>1</sup> cellHTS: Analysis of cell-based RNAi screens, Boutros et al. 2006, Genome Biology 
 </br> <sup>2</sup> Measuring genetic interactions in human cells by RNAi and imaging, Laufer et al. 2014, Nature Methods
-
+</br>
 ## Manual
 ### A comprehensive manual is provided on the help page in the application 
 </br>
+</br>
+## Tip
+If you're running HTSvis on a laptop, low battery might slow down the application 
 </br>
 ## Additional notes 
 <b>macOS</b> user should have the current version of Xcode Command Line Tools installed<br />
