@@ -418,7 +418,6 @@ observeEvent(input$makeSubpopulation,{
            2,
            isolate(popCounter$count),
            isolate(population_colors[popCounter$count]))
-    print(brush_container[[as.character(isolate(populationName))]])
     }
 })
 
