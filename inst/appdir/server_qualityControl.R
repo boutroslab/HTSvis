@@ -115,27 +115,27 @@ observe({
 fu_qc_click <- reactive({print_out <- function(x) {
   if(is.null(x)) return(NULL) else
     isolate(
-      if(col$population[x$id] == "undefined") {
+      if(col$population[x$CSidB110] == "undefined") {
         if(input$radio == "pos") {
-          col$population[x$id] = "positive"
-          col$color[x$id] = pp_col
-          col$opa[x$id] = 1
+          col$population[x$CSidB110] = "positive"
+          col$color[x$CSidB110] = pp_col
+          col$opa[x$CSidB110] = 1
         } else {
           if(input$radio == "neg") {
-            col$color[x$id] = pn_col
-            col$population[x$id] = "negative"
-            col$opa[x$id] = 1 } else {
+            col$color[x$CSidB110] = pn_col
+            col$population[x$CSidB110] = "negative"
+            col$opa[x$CSidB110] = 1 } else {
               if(input$radio == "nt") {
-                col$population[x$id] = "nt"
-                col$color[x$id] = nt_col
-                col$opa[x$id] = 1
+                col$population[x$CSidB110] = "nt"
+                col$color[x$CSidB110] = nt_col
+                col$opa[x$CSidB110] = 1
               }
             }
         }
       }else{
-        col$population[x$id] = "undefined"
-        col$color[x$id] = df_qc()$def.color[x$id]
-        col$opa[x$id] = 0.3
+        col$population[x$CSidB110] = "undefined"
+        col$color[x$CSidB110] = df_qc()$def.color[x$CSidB110]
+        col$opa[x$CSidB110] = 0.3
       }
     )
   return(NULL)
@@ -147,12 +147,12 @@ fu_qc_click <- reactive({print_out <- function(x) {
 fu_qc_hover <- reactive({print_out <- function(x) {
   if(is.null(x)) return(NULL)
     if(TabDimensions$well == TabDimensions$annotation) {
-      paste(df_qc()[df_qc()$id == x$id,TabDimensions$well],
-            df_qc()[df_qc()$id == x$id,"value" ],sep="<br />")
+      paste(df_qc()[df_qc()$CSidB110 == x$CSidB110,TabDimensions$well],
+            df_qc()[df_qc()$CSidB110 == x$CSidB110,"value" ],sep="<br />")
     } else {
-      paste(df_qc()[df_qc()$id == x$id,TabDimensions$well],
-            df_qc()[df_qc()$id == x$id,"value" ],
-            df_qc()[df_qc()$id == x$id,TabDimensions$annotation],sep="<br />") }
+      paste(df_qc()[df_qc()$CSidB110 == x$CSidB110,TabDimensions$well],
+            df_qc()[df_qc()$CSidB110 == x$CSidB110,"value" ],
+            df_qc()[df_qc()$CSidB110 == x$CSidB110,TabDimensions$annotation],sep="<br />") }
 }
 })
 
@@ -182,7 +182,7 @@ observe({
             fill:=~col$color,
             fillOpacity:=~col$opa,
             stroke :="black",
-            key :=~id)%>%
+            key :=~CSidB110)%>%
         add_tooltip(fu_qc_click(), "click") %>%
             add_tooltip(fu_qc_hover(), "hover")%>%
                 layer_rects(width = band(), height = band())%>%
@@ -252,6 +252,7 @@ nt_controls <- reactive({
     final()[with(final(),
                  which(final()[,TabDimensions$well] %in% nt_wells()) ),"value"]
 })
+
 
 
 p_controls_n <- reactive({

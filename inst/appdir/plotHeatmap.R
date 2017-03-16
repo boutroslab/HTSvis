@@ -69,6 +69,6 @@ plotHeatmap <- function(data_table,limits,curr_plate,curr_screen,curr_feature,pl
 
   # Set NA values in df2$def.color to light balck in df2$def.color
   curr_df$def.color[is.na(curr_df$value)] = "black"
-  curr_df$id <- 1:nrow(curr_df)
+  curr_df$CSidB110 <- 1:nrow(curr_df)
   return(curr_df)
 }

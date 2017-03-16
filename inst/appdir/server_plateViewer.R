@@ -202,13 +202,13 @@ df1 <- reactive({
 hover_df1 <-    function(x) {
     if(is.null(x)) return(NULL)
     if(TabDimensions$well == TabDimensions$annotation) {
-        paste(df1()[df1()$id == x$id,TabDimensions$well],
-                    df1()[df1()$id == x$id,"value" ],
+        paste(df1()[df1()$CSidB110 == x$CSidB110,TabDimensions$well],
+                    df1()[df1()$CSidB110 == x$CSidB110,"value" ],
                     sep= "<br />")
         } else {
-            paste(df1()[df1()$id == x$id,TabDimensions$well],
-                  df1()[df1()$id == x$id,"value" ],
-                  df1()[df1()$id == x$id,TabDimensions$annotation],
+            paste(df1()[df1()$CSidB110 == x$CSidB110,TabDimensions$well],
+                  df1()[df1()$CSidB110 == x$CSidB110,"value" ],
+                  df1()[df1()$CSidB110 == x$CSidB110,TabDimensions$annotation],
                   sep= "<br />")
             }
 }
@@ -228,7 +228,7 @@ observe({
             ggvis(~column, ~row ,
                   fill:=~def.color,
                   stroke := "white",
-                  key :=~id)%>%
+                  key :=~CSidB110)%>%
                 add_tooltip(hover_df1, "hover")%>%
                     layer_rects(width = band(), height = band())%>%
                         scale_nominal("x", padding = 0, points = FALSE)%>%
@@ -288,13 +288,13 @@ df2 <- reactive({
 hover_df2 <- function(x) {
     if(is.null(x)) return(NULL)
     if(TabDimensions$well == TabDimensions$annotation) {
-        paste(df2()[df2()$id == x$id,TabDimensions$well],
-              df2()[df2()$id == x$id,"value" ],
+        paste(df2()[df2()$CSidB110 == x$CSidB110,TabDimensions$well],
+              df2()[df2()$CSidB110 == x$CSidB110,"value" ],
               sep="<br />")
     } else {
-        paste(df2()[df2()$id == x$id,TabDimensions$well],
-              df2()[df2()$id == x$id,"value" ],
-              df2()[df2()$id == x$id,TabDimensions$annotation],
+        paste(df2()[df2()$CSidB110 == x$CSidB110,TabDimensions$well],
+              df2()[df2()$CSidB110 == x$CSidB110,"value" ],
+              df2()[df2()$CSidB110 == x$CSidB110,TabDimensions$annotation],
               sep="<br />") }
 }
 
@@ -315,7 +315,7 @@ observe({
                   ~row,
                   fill:=~def.color,
                   stroke := "white",
-                  key :=~id)%>%
+                  key :=~CSidB110)%>%
                 add_tooltip(hover_df2, "hover")%>%
                 layer_rects(width=band(), height=band())%>%
                     scale_nominal("x", padding=0, points=FALSE)%>%
@@ -376,13 +376,13 @@ df3 <- reactive({
 hover_df3 <- function(x) {
     if(is.null(x)) return(NULL)
     if(TabDimensions$well == TabDimensions$annotation) {
-        paste(df3()[df3()$id == x$id,TabDimensions$well],
-              df3()[df3()$id == x$id,"value" ],
+        paste(df3()[df3()$CSidB110 == x$CSidB110,TabDimensions$well],
+              df3()[df3()$CSidB110 == x$CSidB110,"value" ],
               sep="<br />")
     } else {
-        paste(df3()[df3()$id == x$id,TabDimensions$well],
-              df3()[df3()$id == x$id,"value" ],
-              df3()[df3()$id == x$id,TabDimensions$annotation],
+        paste(df3()[df3()$CSidB110 == x$CSidB110,TabDimensions$well],
+              df3()[df3()$CSidB110 == x$CSidB110,"value" ],
+              df3()[df3()$CSidB110 == x$CSidB110,TabDimensions$annotation],
               sep="<br />") }
 }
 
@@ -404,7 +404,7 @@ observe({
                   ~row,
                   fill:=~def.color,
                   stroke := "white",
-                  key :=~id)%>%
+                  key :=~CSidB110)%>%
                 add_tooltip(hover_df3, "hover")%>%
                     layer_rects(width=band(), height=band())%>%
                         scale_nominal("x", padding=0, points=FALSE) %>%
@@ -464,13 +464,13 @@ df4 <- reactive({
 hover_df4 <- function(x) {
     if(is.null(x)) return(NULL)
     if(TabDimensions$well == TabDimensions$annotation) {
-        paste(df4()[df4()$id == x$id,TabDimensions$well],
-              df4()[df4()$id == x$id,"value" ],
+        paste(df4()[df4()$CSidB110 == x$CSidB110,TabDimensions$well],
+              df4()[df4()$CSidB110 == x$CSidB110,"value" ],
               sep="<br />")
     } else {
-        paste(df4()[df4()$id == x$id,TabDimensions$well],
-              df4()[df4()$id == x$id,"value" ],
-              df4()[df4()$id == x$id,TabDimensions$annotation],
+        paste(df4()[df4()$CSidB110 == x$CSidB110,TabDimensions$well],
+              df4()[df4()$CSidB110 == x$CSidB110,"value" ],
+              df4()[df4()$CSidB110 == x$CSidB110,TabDimensions$annotation],
               sep="<br />") }
 }
 testInputDf4 <- reactiveValues(state=F)
@@ -490,7 +490,7 @@ observe({
                   ~row,
                   fill:=~def.color,
                   stroke := "white",
-                  key :=~id)%>%
+                  key :=~CSidB110)%>%
                 add_tooltip(hover_df4, "hover") %>%
                     layer_rects(width=band(), height=band()) %>%
                         scale_nominal("x", padding=0, points=FALSE) %>%
