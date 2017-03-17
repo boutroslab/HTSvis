@@ -54,10 +54,12 @@ Following test data sets are provided, please check the help page in the app for
 ## Manual
 ### A comprehensive manual is provided on the help page in the application 
 </br>
+
 ## Tip
 If you're running HTSvis on a laptop, low battery might slow down the application 
 </br>
 </br>
+
 ## Additional notes 
 <b>macOS</b> user should have the current version of Xcode Command Line Tools installed<br />
 <b>Windows </b>user should have the current version of RTools installed <br />
