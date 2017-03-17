@@ -1,7 +1,7 @@
 Package: HTSvis
 Type: Package
 Title: Visualization and analysis of arrayed high-thorughput screens (HTS)
-Version: 0.1.0
+Version: 1.0.2
 Authors@R: c(
     person("Christian", "Scheeder", email = "c.scheeder@dkfz.de", role = c("cre", "aut")),
     person("Florian", "Heigwer", email = "f.heigwer@dkfz.de", role = c("aut")),
