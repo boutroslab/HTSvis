@@ -171,40 +171,51 @@ observe({
   test_df_qc$state2 = T
 })
 
-
+observe({
+    if(nrow(df_qc()) == length(col$color )) {
+    warnMissingQC_js_string <- ''
+     
+     } else {
+         test_df_qc$state2 = F
+         test_df_qc$state2 = F
+           warnMissingQC_js_string <- 'alert("The well dimensions is incomplete");'
+           session$sendCustomMessage(type='jsCode',
+                                    list(value = warnMissingQC_js_string ))}
+})
+        
 
 #plot the reactive heatmap 
 observe({
   if(isTRUE(test_df_qc$state1) | isTRUE(test_df_qc$state2)) {
-    df_qc %>%
-      ggvis(~column,
-            ~row,
-            fill:=~col$color,
-            fillOpacity:=~col$opa,
-            stroke :="black",
-            key :=~CSidB110)%>%
-        add_tooltip(fu_qc_click(), "click") %>%
-            add_tooltip(fu_qc_hover(), "hover")%>%
-                layer_rects(width = band(), height = band())%>%
-                    scale_nominal("x", padding = 0, points = FALSE)%>%
-                        scale_nominal("y", padding = 0, points = FALSE)%>%
-                            add_axis("x",
-                                     title="",
-                                     tick_size_major=0,
-                                     properties=axis_props(
-                                         axis=list(stroke="white",
-                                                   strokeWidth=0),
-                                         grid=list(strokeWidth=0)))%>%
-                            add_axis("y",
-                                     title="",
-                                     tick_size_major=0,
-                                     properties=axis_props(
-                                         axis=list(stroke="white",
-                                                   strokeWidth=0),
-                                         grid=list(strokeWidth = 0)))%>%
-                                    set_options(height = 300, width = 450) %>%
-                                        bind_shiny("heatmap_qc")
-  }
+        df_qc %>%
+          ggvis(~column,
+                ~row,
+                fill:=~col$color,
+                fillOpacity:=~col$opa,
+                stroke :="black",
+                key :=~CSidB110)%>%
+            add_tooltip(fu_qc_click(), "click") %>%
+                add_tooltip(fu_qc_hover(), "hover")%>%
+                    layer_rects(width = band(), height = band())%>%
+                        scale_nominal("x", padding = 0, points = FALSE)%>%
+                            scale_nominal("y", padding = 0, points = FALSE)%>%
+                                add_axis("x",
+                                         title="",
+                                         tick_size_major=0,
+                                         properties=axis_props(
+                                             axis=list(stroke="white",
+                                                       strokeWidth=0),
+                                             grid=list(strokeWidth=0)))%>%
+                                add_axis("y",
+                                         title="",
+                                         tick_size_major=0,
+                                         properties=axis_props(
+                                             axis=list(stroke="white",
+                                                       strokeWidth=0),
+                                             grid=list(strokeWidth = 0)))%>%
+                                        set_options(height = 300, width = 450) %>%
+                                            bind_shiny("heatmap_qc")
+    }
 })
 
 
