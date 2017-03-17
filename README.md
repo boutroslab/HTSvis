@@ -50,6 +50,7 @@ Following test data sets are provided, please check the help page in the app for
 </br> <sup>2</sup> Measuring genetic interactions in human cells by RNAi and imaging, Laufer et al. 2014, Nature Methods
 </br>
 </br>
+
 ## Manual
 ### A comprehensive manual is provided on the help page in the application 
 </br>
