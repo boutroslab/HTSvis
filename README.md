@@ -22,7 +22,7 @@ a generic table with raw or analyzed data from, e.g. a high-content microscopy s
 </br> 
 ## Installation
 HTSvis is provided as an R package and and requires R version 2.3.2 for installation 
-(the R version dependency can be changed in the DESCRIPTION file of the downloaded package).</br>
+(the R version dependency can be changed in the DESCRIPTION file of the package).</br>
 </br> 
 Run the following lines of code in your R session to download and install the package:
 ```
