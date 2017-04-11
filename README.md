@@ -21,7 +21,8 @@ Input data can either be a result file obtained upon analysis with the Bioconduc
 a generic table with raw or analyzed data from, e.g. a high-content microscopy screen. </br> 
 </br> 
 ## Installation
-HTSvis is provided as an R package.</br> 
+HTSvis is provided as an R package and and requires R version 2.3.2 for installation 
+(the R version dependency can be changed in the DESCRIPTION file of the downloaded package).</br>
 Run the following lines of code in your R session to download and install the package:
 ```
 install.packages("devtools", dependencies = TRUE)
