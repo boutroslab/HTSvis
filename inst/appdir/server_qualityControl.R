@@ -110,6 +110,7 @@ observe({
 })
 
 
+
 #function to select controls by clicking 
 #input$radio is a radio button to switch between the contol populations 
 fu_qc_click <- reactive({print_out <- function(x) {
@@ -217,6 +218,7 @@ observe({
                                             bind_shiny("heatmap_qc")
     }
 })
+
 
 
 pos_wells <- reactive({
@@ -519,7 +521,6 @@ platePlotOut <- function(){
   feature_mp <- as.character(input$feature_selection_qc)
 
   meds_total <- rbind.data.frame(meds1,meds2,meds3)
-
 
 
   plot(med ~as.numeric(plate),
