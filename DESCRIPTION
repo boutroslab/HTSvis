@@ -26,8 +26,8 @@ Depends:
     gplots (>= 3.0.1),
     DT (>= 0.2),
     gtools (>= 3.5.0),
-    shiny (>= 0.14.2)
-    readxl (>= 0)
+    shiny (>= 0.14.2),
+    readxl (>= 1.0.0)
 License: GPL (>=3)
 Encoding: UTF-8
 LazyData: true
