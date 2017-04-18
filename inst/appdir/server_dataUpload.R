@@ -31,8 +31,7 @@ observe({
       feature_table2$data_pre <-  testInput(
                                     read.table(inFile$datapath,header=T)
                                     )
-    } else {
-      if(file_ext(inFile$name) == "csv") {
+    } else if(file_ext(inFile$name) == "csv") {
         feature_table2$data_pre <-  testInput(
                                         data.frame(
                                             fread(
@@ -42,9 +41,7 @@ observe({
                                                 )
                                             ,row.names = NULL)
                                         )
-        }
-    } else {
-      if(file_ext(inFile$name) == "xlsx" || file_ext(inFile$name) == "xls") {
+    } else if(file_ext(inFile$name) == "xlsx" || file_ext(inFile$name) == "xls") {
         feature_table2$data_pre <-  testInput(
                                         data.frame(
                                             readxl::read_excel(
@@ -54,8 +51,9 @@ observe({
                                                 )
                                             ,row.names = NULL)
                                         )
-        } else {feature_table2$data_pre <- NULL}
-    }
+    } else {
+          feature_table2$data_pre <- NULL
+          }
   }
 })
 

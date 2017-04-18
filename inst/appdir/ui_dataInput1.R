@@ -7,6 +7,8 @@ fixedRow(
                               'text/comma-separated-values',
                               'text/plain',
                               '.csv',
+                              '.xls',
+                              '.xlsx',
                               '.Rdata')
                   )
   ),
