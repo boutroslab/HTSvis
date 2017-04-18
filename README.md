@@ -78,6 +78,24 @@ install.packages("htmlwidgets")
 ```
 Xcode can be downloaded from the App Store<br />
 RTools can be downloaded from https://cran.r-project.org/bin/windows/Rtools/
+The package also depends on other R-packages that should be automatically downloaded and installed by devtools. However a detailed list can be found below:
+    R (>= 3.3.2),
+    tools (>= 3.3.2),
+    tibble (>= 1.2),
+    stringr (>= 1.1.0),
+    tidyr (>= 0.6.0),
+    data.table (>= 1.10.0), 
+    shinyjs (>= 0.8),
+    ggplot2 (>= 2.2.0),
+    reshape2 (>= 1.4.2),
+    dplyr (>= 0.5.0),
+    ggvis (>= 0.4.3),
+    RColorBrewer (>= 1.1.2),
+    scales (>= 0.4.1),
+    gplots (>= 3.0.1),
+    DT (>= 0.2),
+    gtools (>= 3.5.0),
+    shiny (>= 0.14.2)
 
 ## Contact 
 #### Christian Scheeder c.scheeder@dkfz.de
