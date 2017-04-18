@@ -78,7 +78,8 @@ install.packages("htmlwidgets")
 ```
 Xcode can be downloaded from the App Store<br />
 RTools can be downloaded from https://cran.r-project.org/bin/windows/Rtools/
-The package also depends on other R-packages that should be automatically downloaded and installed by devtools. However a detailed list can be found below:
+
+The package also depends on other R-packages that should be automatically downloaded and installed by devtools. However, a detailed list can be found below:
     R (>= 3.3.2),
     tools (>= 3.3.2),
     tibble (>= 1.2),
