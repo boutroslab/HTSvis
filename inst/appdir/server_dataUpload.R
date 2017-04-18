@@ -42,14 +42,15 @@ observe({
                                             ,row.names = NULL)
                                         )
     } else if(file_ext(inFile$name) == "xlsx" || file_ext(inFile$name) == "xls") {
+      file.copy(inFile$datapath,paste(inFile$datapath, ".",file_ext(inFile$name), sep=""))
         feature_table2$data_pre <-  testInput(
-                                        data.frame(
-                                            readxl::read_excel(
-                                                inFile$datapath,
-                                                na.strings = c("NA","N/A",
+                                      data.frame(
+                                       readxl::read_excel(
+                                         paste(inFile$datapath, ".",file_ext(inFile$name), sep=""),
+                                                na = c("NA","N/A",
                                                                "NaN","null","")
                                                 )
-                                            ,row.names = NULL)
+                                       ,row.names = NULL)
                                         )
     } else {
           feature_table2$data_pre <- NULL
