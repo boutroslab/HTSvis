@@ -39,11 +39,11 @@ observeEvent(input$allPlates,{
 observe({ 
     validate(need(tabInput$inputPlates, message=FALSE))
         for(i in tabInput$inputPlates) {
-            getWells[[i]] <- list(rep("undefined", 384),
-                                    paste0(rep(LETTERS[1:16], 24),
-                                           unlist(lapply(1:16, rep, 24))),
-                                    rep("white",384),
-                                    rep(0.3,384)
+            getWells[[i]] <- list(rep("undefined", tabInput$rows*tabInput$cols),
+                                    paste0(rep(LETTERS[1:tabInput$rows], tabInput$cols),
+                                           unlist(lapply(1:tabInput$rows, rep, tabInput$cols))),
+                                    rep("white",tabInput$rows*tabInput$cols),
+                                    rep(0.3,tabInput$rows*tabInput$cols)
                                    )
             }
 })
@@ -169,12 +169,12 @@ df_qc <- reactive({
 
 ## action button to kill the clicked population(s)
 observeEvent(input$resetControls,{
-    for(i in names(getWells)) {
-        getWells[[i]] <- list(rep("undefined", 384),
-                              paste0(rep(LETTERS[1:16], 24),
-                                     unlist(lapply(1:16, rep, 24))),
-                              rep("white",384),
-                              rep(0.3,384)
+    for(i in tabInput$inputPlates) {
+        getWells[[i]] <- list(rep("undefined", tabInput$rows*tabInput$cols),
+                              paste0(rep(LETTERS[1:tabInput$rows], tabInput$cols),
+                                     unlist(lapply(1:tabInput$rows, rep, tabInput$cols))),
+                              rep("white",tabInput$rows*tabInput$cols),
+                              rep(0.3,tabInput$rows*tabInput$cols)
         )
     }
     
@@ -224,12 +224,12 @@ observeEvent(input$resetControls,{
 
 ## observer to kill the clicked population(s) if 'all Plates' is set/unset
 observeEvent(input$allPlates,{
-    for(i in names(getWells)) {
-        getWells[[i]] <- list(rep("undefined", 384),
-                              paste0(rep(LETTERS[1:16], 24),
-                                     unlist(lapply(1:16, rep, 24))),
-                              rep("white",384),
-                              rep(0.3,384)
+    for(i in tabInput$inputPlates) {
+        getWells[[i]] <- list(rep("undefined", tabInput$rows*tabInput$cols),
+                              paste0(rep(LETTERS[1:tabInput$rows], tabInput$cols),
+                                     unlist(lapply(1:tabInput$rows, rep, tabInput$cols))),
+                              rep("white",tabInput$rows*tabInput$cols),
+                              rep(0.3,tabInput$rows*tabInput$cols)
         )
     }
     
