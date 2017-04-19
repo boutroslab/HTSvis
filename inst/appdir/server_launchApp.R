@@ -312,10 +312,8 @@ observeEvent(input$startApp,{
          any(nchar(testWellForm$column) == 0) ) {
           test_data$wellForm <- T
       } else {
-            if(nrow(testWellForm$row %>% distinct) != 2) {
-                test_data$wellForm <- T }
-                    if(nrow(testWellForm$column %>%
-                                distinct) != 3) {
+            if(length(testWellForm$row %>% unique) != 2) { test_data$wellForm <- T }
+                    if(length(testWellForm$column %>% unique) != 3) {
                         test_data$wellForm <- T
                     }  else {
                         tabInput$rows <- 2
