@@ -13,9 +13,9 @@ conditionalPanel(condition="output.showPanels",
                              content = "Set a custom color scale for the 
                              plate heatmap below by typing the lower and upper 
                              limits in the boxes. The default color scale 
-                             ranges from the minium to maximum value
+                             ranges from the minimum to maximum value
                              on each plate. The default color scale can be restored 
-                            with the restet button.",
+                            with the reset button.",
                              iconClass = "fa fa-question")
         ),
        column(     2,
@@ -28,7 +28,7 @@ conditionalPanel(condition="output.showPanels",
                              heatmaps. 
                             Selections and settings (selected plate 
                             and color scale) made on the upper left plate can be 
-                            transferred to the remaining plates by pusing the 
+                            transferred to the remaining plates by using the 
                             buttons on the panel.
 ",
                              iconClass = "fa fa-question")

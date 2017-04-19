@@ -892,14 +892,15 @@ scatter_plot <- function(df){
 
 
 
-#render plot by calling the function
+#render plot by calling the function 
+#(testInput function with "try" is defined in server_dataUpload.R)
 output$scatterPlot <- renderPlot({
   validate(need(input$feature_selection_sp_x, message=FALSE))
   validate(need(input$feature_selection_sp_y, message=FALSE))
   validate(need(input$screens_selection_sp_x, message=FALSE))
   validate(need(input$screens_selection_sp_y, message=FALSE))
   if(!is.null(featureFrame())) {
-    scatter_plot(df=featureFrame())
+    testInput(scatter_plot(df=featureFrame()))
   }
 },
 height = function() {

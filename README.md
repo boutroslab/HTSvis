@@ -1,5 +1,5 @@
 <p>
-<img align="right" max-width="75%" src="https://github.com/cscheeder/HTSvis/blob/master/inst/appdir/WWW/logo.png">
+<img align="right" max-width="75%" src="https://github.com/boutroslab/HTSvis/blob/master/inst/appdir/WWW/logo.png">
 </p>
 
 </br> 
@@ -21,7 +21,7 @@ Input data can either be a result file obtained upon analysis with the Bioconduc
 a generic table with raw or analyzed data from, e.g. a high-content microscopy screen. </br> 
 </br> 
 ## Installation
-HTSvis is provided as an R package and and requires R version 2.3.2 for installation 
+HTSvis is provided as an R package and and requires R version 3.3.2 for installation 
 (the R version dependency can be changed in the DESCRIPTION file of the package).</br>
 </br> 
 Run the following lines of code in your R session to download and install the package:
@@ -96,7 +96,8 @@ The package also depends on other R-packages that should be automatically downlo
     gplots (>= 3.0.1),
     DT (>= 0.2),
     gtools (>= 3.5.0),
-    shiny (>= 0.14.2)
+    shiny (>= 0.14.2),
+    readxl (>= 1.0.0)
 
 ## Contact 
 #### Christian Scheeder c.scheeder@dkfz.de

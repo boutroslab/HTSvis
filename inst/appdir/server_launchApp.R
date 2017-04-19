@@ -13,7 +13,7 @@ test_data <- reactiveValues(na=T,
                             cellHTSform=T,
                             cellHTScols=F,
                             whiteSpace=F)
-col <- reactiveValues()
+col2 <- reactiveValues()
 TabDimensions <- reactiveValues(experiment=F,well=F,plate=F,annotation=F)
 brush_container <- reactiveValues()
 observer <- reactiveValues(click=NULL, click2=NULL)
@@ -35,6 +35,9 @@ observeEvent(input$MeasuredValues,{
 
   session$sendCustomMessage(type = "resetValue",
                             message = "featuresPlate4")
+  
+  session$sendCustomMessage(type = "resetValue",
+                            message = "platesQC")
 
   session$sendCustomMessage(type = "resetValue",
                             message = "feature_selection_ft")
@@ -400,17 +403,12 @@ observeEvent(input$startApp,{
                             test_data$wellForm <- T
                             tabInput$rows <- 1
                             tabInput$cols <-1 }
+                        }
                     }
                 }
             }
         }
-    }
-    col$population = rep("undefined", tabInput$rows*tabInput$cols)
-    col$well = paste0(rep(LETTERS[1:tabInput$rows], tabInput$cols),
-                      unlist(lapply(1:tabInput$cols, rep, tabInput$rows)))
-    col$color = rep("white",tabInput$rows*tabInput$cols)
-    col$opa = rep(0.3,tabInput$rows*tabInput$cols)
-      }
+     }
   }
 })
 

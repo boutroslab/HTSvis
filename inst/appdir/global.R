@@ -1,8 +1,26 @@
 ##Define global settings and variables
 
 ##clean workspace and console window
-rm(list=setdiff(ls(), "x"))
+#rm(list=setdiff(ls(), "x"))
 cat("\014")
+
+#load packages
+library(tools)
+library(tibble)
+library(stringr) 
+library(tidyr)
+library(data.table)
+library(shinyjs)
+library(ggplot2) 
+library(reshape2) 
+library(dplyr) 
+library(ggvis) 
+library(RColorBrewer) 
+library(scales) 
+library(gplots) 
+library(DT) 
+library(gtools) 
+library(shiny) 
 
 #Increase max file size for upload (default is 5MB)
 options(shiny.maxRequestSize = 10000*1024^2)
@@ -27,7 +45,7 @@ source("./helpPopup2.R")
 #population_colors for scatter plot tab
 col_palette <- colorRampPalette(c("blue", "white", "red"))(n = 500)
 col_dfHeatmap <- rev(colorRampPalette(brewer.pal(9, "RdBu"))(500))
-nt_col <-  "limegreen"
+nt_col <-  "#1B9E77"
 pp_col <- "blue"
 pn_col <- "red"
 population_colors <- c("#E31A1C","#1F78B4","#33A02C","#6A3D9A","#FF7F00",

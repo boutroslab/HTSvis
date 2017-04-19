@@ -107,6 +107,16 @@ conditionalPanel(condition='output.showPanels',
                                               type='text/css',
                                               "#helpQC2{ margin-top: 38px;
                                               margin-left:-25px;}")
+                                ),
+                                column(3,
+                                       align="center",
+                                       uiOutput("platesQC") ,
+                                    tags$style(
+                                        type='text/css',
+                                        "#platesQC{ margin-top: 25px;}"),
+                                    h6("set check to select all plates"),
+                                    #h6("all Plates"),
+                                    checkboxInput("allPlates","")
                                 )
                                ),
                        HTML("<div style='height: 25px;'>"),

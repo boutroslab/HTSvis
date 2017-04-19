@@ -1,5 +1,21 @@
 ####Feature Table##############################################################################################################
 
+features_Table <- reactiveValues(selected_features=0)
+
+observeEvent(input$feature_selection_ft,{
+    features_Table$selected_features = input$feature_selection_ft
+})
+
+observeEvent(input$selectAllFeatures,{
+    features_Table$selected_features = tabInput$inputFeatures
+    updateSelectInput(session, 
+                      "feature_selection_ft",
+                      selected = tabInput$inputFeatures)
+    
+})
+
+
+
 
 feature_table_print <-   reactive({
   validate(need(input$feature_selection_ft, message=FALSE))
@@ -9,7 +25,7 @@ feature_table_print <-   reactive({
             select(one_of(c(TabDimensions$annotation,
                         TabDimensions$well,
                         TabDimensions$plate,
-                        input$feature_selection_ft))) %>%
+                        features_Table$selected_features))) %>%
                 mutate_each_(
                     funs(round(.,digits=3)),
                     paste0("-",c(TabDimensions$annotation,
@@ -21,7 +37,7 @@ feature_table_print <-   reactive({
                             TabDimensions$well,
                             TabDimensions$plate,
                             TabDimensions$experiment,
-                            input$feature_selection_ft))) %>%
+                            features_Table$selected_features))) %>%
                 mutate_each_(funs(round(.,digits=3)),
                              paste0("-",c(TabDimensions$annotation,
                                           TabDimensions$plate,
@@ -92,14 +108,14 @@ feature_table_final <- feature_table_print()[inter,
                                              c(TabDimensions$annotation,
                                                TabDimensions$well,
                                                TabDimensions$plate,
-                                               input$feature_selection_ft)]
+                                               features_Table$selected_features)]
         } else {
             feature_table_final <- feature_table_print()[inter,
                                                  c(TabDimensions$annotation,
                                                    TabDimensions$well,
                                                    TabDimensions$plate,
                                                    TabDimensions$experiment,
-                                                   input$feature_selection_ft)]
+                                                   features_Table$selected_features)]
 
       }
     }
@@ -147,13 +163,13 @@ row_selection <- reactive ({
 
 dfHeatmap <- reactive({
     validate(need(input$feature_selection_ft, message=FALSE))
-        if(length(input$feature_selection_ft)<2) {
+        if(length(features_Table$selected_features)<2) {
             return(NULL)
         } else {
             rows <- row_selection()
                 if(length(rows)>1) {
                     df_heatmap <- rbind.data.frame(
-                        feature_table2$data[rows ,input$feature_selection_ft])
+                        feature_table2$data[rows ,features_Table$selected_features])
                     rownames  <- paste(feature_table2$data[rows ,1],
                                        feature_table2$data[rows ,2],
                                        feature_table2$data[rows ,3],
@@ -213,6 +229,7 @@ FTheatmap_plot <- function(){
                                  pch='',
                                  ylab='',xlab='')}
   else {
+
     min_dfHeatmap <- min(dfHeatmap(),na.rm = T)
     max_dfHeatmap <- max(dfHeatmap(),na.rm = T)
     breaks_dfHeatmap <- sort(
@@ -232,28 +249,54 @@ FTheatmap_plot <- function(){
     keySize <- vector()
     ifelse(nrow(dfHeatmap()) < 6, keySize<-1.25,
            ifelse(nrow(dfHeatmap())< 12, keySize<-1, keySize<-0.75 ))
-
-
-    heatmap.2(as.matrix(dfHeatmap()),
-              col = col_dfHeatmap,
-              breaks = breaks_dfHeatmap,
-              dendrogram = doCluster[1],
-              Rowv = as.logical(doCluster[2]),
-              Colv = as.logical(doCluster[3]),
-              na.color="black",
-              density.info="none",
-              trace = "none",
-              cexCol = 1.5,
-              cexRow = 1.5,
-              lmat=rbind(c(4,3),c(2,1)),
-              lhei=c(keySize,4),
-              lwid=c(1,4),
-              margins = c(20,20),
-              colsep = 1:ncol(dfHeatmap()),
-              rowsep = 1:nrow(dfHeatmap()),
-              sepcolor = "grey",
-              sepwidth = c(0.01,0.05)
-    )
+    
+    kexSize <- vector()
+    ifelse(nrow(dfHeatmap()) < 6, kexSize<-1.5,
+           ifelse(nrow(dfHeatmap())< 12, kexSize<-1, kexSize<-0.75 ))
+    
+    if(input$scaleFTheatmap %in% "none"){
+        heatmap.2(as.matrix(dfHeatmap()),
+                  col = col_dfHeatmap,
+                  breaks = breaks_dfHeatmap,
+                  dendrogram = doCluster[1],
+                  Rowv = as.logical(doCluster[2]),
+                  Colv = as.logical(doCluster[3]),
+                  na.color="black",
+                  density.info="none",
+                  trace = "none",
+                  cexCol = kexSize,
+                  cexRow = kexSize,
+                  lmat=rbind(c(4,3),c(2,1)),
+                  lhei=c(keySize,4),
+                  lwid=c(1,4),
+                  margins = c(20,20),
+                  colsep = 1:ncol(dfHeatmap()),
+                  rowsep = 1:nrow(dfHeatmap()),
+                  sepcolor = "grey",
+                  sepwidth = c(0.01,0.05),
+                  scale = as.character(input$scaleFTheatmap))
+    } else {
+            heatmap.2(as.matrix(dfHeatmap()),
+                      col = col_dfHeatmap,
+                      dendrogram = doCluster[1],
+                      Rowv = as.logical(doCluster[2]),
+                      Colv = as.logical(doCluster[3]),
+                      na.color="black",
+                      density.info="none",
+                      trace = "none",
+                      cexCol = kexSize,
+                      cexRow = kexSize,
+                      lmat=rbind(c(4,3),c(2,1)),
+                      lhei=c(keySize,4),
+                      lwid=c(1,4),
+                      margins = c(20,20),
+                      colsep = 1:ncol(dfHeatmap()),
+                      rowsep = 1:nrow(dfHeatmap()),
+                      sepcolor = "grey",
+                      sepwidth = c(0.01,0.05),
+                      scale = as.character(input$scaleFTheatmap)
+            )
+    }
   }
 }#end of fucntion
 

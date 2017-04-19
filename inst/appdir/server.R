@@ -1,8 +1,9 @@
     ##shiny server function
-shinyServer(function(input, output,session) {
+server <- function(input, output,session) {
 
 ##helper functions for js in scatter plot tab
     source("./helperFunctions.R",local=T)
+    source("./global.R")
 
 ##Data upload
     source("./server_dataUpload.R",local=T)
@@ -34,8 +35,11 @@ shinyServer(function(input, output,session) {
 
 ##Scatter Plot
     source("./server_scatterPlot.R",local=T)
+    
+##Options Page
+    source("./server_options.R",local=T)
 
 ##Help Page
     source("./server_helpPage.R",local=T)
 
-}) # end of shinyServer
+} # end of shinyServer

@@ -7,7 +7,7 @@ conditionalPanel(condition='output.showPanels',
                      helpPopup("Help: Feature Table",
                                id="helpFT",
                                content = "Below you will find your uploaded
-                            data represented as a interactive table. 
+                            data represented as an interactive table. 
                             If the uploaded table contains more than one 
                             measured value per well 
                             only the first one will be shown by default. 
@@ -44,7 +44,7 @@ conditionalPanel(condition='output.showPanels',
                        helpPopup("Attention:",
                                  id="helpDowFT",
                                  content = "Depending on the size of the table
-                                 a download might take several minutes. The
+                                 the download might take several minutes. The
                                  table will be downloaded as a .csv table
                                  with columns separated by ',' and '.' as 
                                  decimal separator.",
@@ -74,6 +74,18 @@ conditionalPanel(condition='output.showPanels',
                                                         margin-right:50px}")
                      )
                    ),
+            # #Spacer row  
+            HTML("</div>"),
+            HTML("<div style='height: 25px;'>"),
+            HTML("</div>"),
+            HTML("<div style='width:1048px;'>"), 
+            fixedRow(
+                column( 3,
+                        style="vertical-align: middle;",
+                        actionButton(   'selectAllFeatures',                       
+                                        label="Or click to select all channels")
+                )
+            ),
             #Spacer row  
             HTML("</div>"),
             HTML("<div style='height: 50px;'>"), 
@@ -107,23 +119,50 @@ conditionalPanel(condition='output.showPanels',
                 ),
                 conditionalPanel(condition='output.showFt',
                     column( 12,
-                            plotOutput('featureHeatmap'),
-
-                            textInput(   'fileNameFTheatmap',                    
-                                         label = h6('Enter filename'),
-                                         placeholder  = "filename") ,
-                            radioButtons( 'fileFormatFTheatmap',        
-                                          label = h6("Coose file format"),
-                                          choices = c(".png" = ".png",
-                                                      ".tiff" = ".tiff",
-                                                      ".jpeg" = ".jpeg"),
-                                          selected = ".png",
-                                          inline = T ),  
-                            downloadButton('downloadFTheatmap',
-                                           'Click to Download Plot'),
-                            tags$style(type='text/css',
-                                "#downloadFTheatmap {    margin-bottom:25px;")
-                         )
+                            plotOutput('featureHeatmap')
+                            )
+                ),
+                conditionalPanel(condition='output.showFt',
+                        column(3,
+                               radioButtons( 'scaleFTheatmap',        
+                                             label = h6("Coose scaling method"),
+                                             choices = c("none" = "none",
+                                                         "row" = "row",
+                                                         "column" = "column"),
+                                             selected = "none",
+                                             inline = T )
+                        ),
+                        column(1,
+                               helpPopup("Help: Heatmap Scaling",
+                                         id="helpScaleFT",
+                                         content = "By default ('none') the 
+                                         color scale of the heatmap is spanned
+                                         between the min and max value of the 
+                                         all data points. If 'row/column' 
+                                         is set, the values will be centered and 
+                                         scaled per row/column. See the documentation
+                                         of the R package heatmap.2 for more
+                                         details.",
+                                         iconClass = "fa fa-question"),
+                               tags$style(type='text/css',"#helpScaleFT {
+                                          margin-top: 25px;}")),
+                        column(4,
+                               offset = 4,
+                               textInput(   'fileNameFTheatmap',                    
+                                            label = h6('Enter filename'),
+                                            placeholder  = "filename") ,
+                               radioButtons( 'fileFormatFTheatmap',        
+                                             label = h6("Coose file format"),
+                                             choices = c(".png" = ".png",
+                                                         ".tiff" = ".tiff",
+                                                         ".jpeg" = ".jpeg"),
+                                             selected = ".png",
+                                             inline = T ),  
+                               downloadButton('downloadFTheatmap',
+                                              'Click to Download Plot'),
+                               tags$style(type='text/css',
+                                          "#downloadFTheatmap {    margin-bottom:25px;")
+                        )
                 )
                ),
             HTML("</div>")
