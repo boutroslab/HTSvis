@@ -25,6 +25,8 @@ observe({
     getParams$plate_input <- NULL
     getParams$experiment_input <- NULL
     getParams$anno_input <- NULL
+    getParams$cellHTS_state <- NULL
+    getParams$singleExperiment_state <- NULL
 })
 
 
@@ -226,19 +228,22 @@ observe({
 
 #capture of 'cellHTS' or 'singleExperiment' input type 
 observe({
-  if(!is.null(input$IsSingleExperiment)){
-    if(isTRUE(input$IsSingleExperiment)) {
-      updateSelectInput(session, 
-                        "PlatesQC",
-                        choices = "all_plates",
-                        selected = "all_plates")
-      hideMeasuredValues$state = F
-    } else {
-      updateSelectInput(session, 
-                        "ExperimentDimension",
-                        choices = colnames(feature_table2$data_pre))
-      }
-  }
+    if(!is.null(input$IsSingleExperiment)){
+        if(isTRUE(input$IsSingleExperiment)) {
+            updateSelectInput(session, 
+                              "ExperimentDimension",
+                              choices = "single_experiment",
+                              selected = "single_experiment")
+            updateCheckboxInput(session,
+                                "cellHTSstyle",
+                                value = F)
+            hideMeasuredValues$state = F
+        } else {
+            updateSelectInput(session, 
+                              "ExperimentDimension",
+                              choices = colnames(feature_table2$data_pre))
+        }
+    }
 })
 
  observe({

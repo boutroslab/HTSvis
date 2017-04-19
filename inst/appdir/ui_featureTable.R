@@ -119,23 +119,50 @@ conditionalPanel(condition='output.showPanels',
                 ),
                 conditionalPanel(condition='output.showFt',
                     column( 12,
-                            plotOutput('featureHeatmap'),
-
-                            textInput(   'fileNameFTheatmap',                    
-                                         label = h6('Enter filename'),
-                                         placeholder  = "filename") ,
-                            radioButtons( 'fileFormatFTheatmap',        
-                                          label = h6("Coose file format"),
-                                          choices = c(".png" = ".png",
-                                                      ".tiff" = ".tiff",
-                                                      ".jpeg" = ".jpeg"),
-                                          selected = ".png",
-                                          inline = T ),  
-                            downloadButton('downloadFTheatmap',
-                                           'Click to Download Plot'),
-                            tags$style(type='text/css',
-                                "#downloadFTheatmap {    margin-bottom:25px;")
-                         )
+                            plotOutput('featureHeatmap')
+                            )
+                ),
+                conditionalPanel(condition='output.showFt',
+                        column(3,
+                               radioButtons( 'scaleFTheatmap',        
+                                             label = h6("Coose scaling method"),
+                                             choices = c("none" = "none",
+                                                         "row" = "row",
+                                                         "column" = "column"),
+                                             selected = "none",
+                                             inline = T )
+                        ),
+                        column(1,
+                               helpPopup("Help: Heatmap Scaling",
+                                         id="helpScaleFT",
+                                         content = "By default ('none') the 
+                                         color scale of the heatmap is spanned
+                                         between the min and max value of the 
+                                         all data points. If 'row/column' 
+                                         is set, the values will be centered and 
+                                         scaled per row/column. See the documentation
+                                         of the R package heatmap.2 for more
+                                         details.",
+                                         iconClass = "fa fa-question"),
+                               tags$style(type='text/css',"#helpScaleFT {
+                                          margin-top: 25px;}")),
+                        column(4,
+                               offset = 4,
+                               textInput(   'fileNameFTheatmap',                    
+                                            label = h6('Enter filename'),
+                                            placeholder  = "filename") ,
+                               radioButtons( 'fileFormatFTheatmap',        
+                                             label = h6("Coose file format"),
+                                             choices = c(".png" = ".png",
+                                                         ".tiff" = ".tiff",
+                                                         ".jpeg" = ".jpeg"),
+                                             selected = ".png",
+                                             inline = T ),  
+                               downloadButton('downloadFTheatmap',
+                                              'Click to Download Plot'),
+                               tags$style(type='text/css',
+                                          "#downloadFTheatmap {    margin-bottom:25px;")
+                        )
                 )
                ),
             HTML("</div>")

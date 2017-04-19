@@ -9,8 +9,7 @@ ParmsUpload <- reactiveValues(state=F)
 observe({
     
     params_df <- data.frame(
-                    c("well_input","plate_input","experiment_input","anno_input",
-                      "measuredValues_input",
+                    c("well_input","plate_input","experiment_input","anno_input","measuredValues_input",
                       "cellHTS_state","singleExperiment_state"),
                     c(rep(NA,7))
                     )
@@ -53,6 +52,7 @@ observe({
         if(isTRUE(input$IsSingleExperiment)) 
             params_df[7,2] <- "on"
             params$data = params_df
+            
 })
 
 
@@ -106,7 +106,9 @@ observe({
     validate(need(input$file2, message=FALSE))
     if(!is.null(input$applyParms))
         if(isTRUE(input$applyParms)) 
-            if(!is.null(params$input[,1]) && !is.null(params$input[,2])){
+          if(!is.null(params$input)) {
+            if(is.data.frame(params$input)) {
+              if(!is.null(params$input[,1]) && !is.null(params$input[,2])){
                 if(length(params$input[,1]) > 0 && length(params$input[,2]) > 0) {
                     for(i in 1:nrow(params$input)) {
                         if(is.na(params$input[i,2])) {
@@ -124,8 +126,9 @@ observe({
                         }
                     }
                 } else {falseParmas = T}
+             } else {falseParmas = T}
             } else {falseParmas = T}
-    
+          } else {falseParmas = T}
 
     if(isTRUE(falseParmas)) {
         js_string <- 'alert("SOMETHING");'
@@ -152,7 +155,7 @@ outputOptions(output, "showParmsUpload", suspendWhenHidden=FALSE)
 
 
 output$ParmCheckLabel<- renderUI({
-    "set check to apply loaded session parameter"
+    h5("set check to apply loaded session parameter")
 })
 
 

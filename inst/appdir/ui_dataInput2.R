@@ -2,13 +2,7 @@ conditionalPanel(condition='output.showParmsUpload',
                  fixedRow(
                      column(4,
                             fileInput('file2', 'optional: upload a session parameter file',
-                                      accept = c(
-                                          'text/csv',
-                                          'text/comma-separated-values',
-                                          'text/plain',
-                                          '.csv',
-                                          '.Rdata',
-                                          '.RData')
+                                      accept = c('.csv')
                             )
                      ),
                      column(1,
@@ -34,7 +28,7 @@ conditionalPanel(condition='output.showParmsUpload',
                      column(6,
                             htmlOutput("ParmCheckLabel"),
                             tags$style(HTML("#ParmCheckLabel {
-                                            margin-top: 25px;
-                                            margin-left:-25px;}")))
+                                            margin-top: 30px;
+                                            margin-left:-60px;}")))
                      )
 )#end of conditionalPanel

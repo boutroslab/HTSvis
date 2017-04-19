@@ -8,6 +8,10 @@ observeEvent(input$feature_selection_ft,{
 
 observeEvent(input$selectAllFeatures,{
     features_Table$selected_features = tabInput$inputFeatures
+    updateSelectInput(session, 
+                      "feature_selection_ft",
+                      selected = tabInput$inputFeatures)
+    
 })
 
 
@@ -225,6 +229,7 @@ FTheatmap_plot <- function(){
                                  pch='',
                                  ylab='',xlab='')}
   else {
+
     min_dfHeatmap <- min(dfHeatmap(),na.rm = T)
     max_dfHeatmap <- max(dfHeatmap(),na.rm = T)
     breaks_dfHeatmap <- sort(
@@ -248,27 +253,50 @@ FTheatmap_plot <- function(){
     kexSize <- vector()
     ifelse(nrow(dfHeatmap()) < 6, kexSize<-1.5,
            ifelse(nrow(dfHeatmap())< 12, kexSize<-1, kexSize<-0.75 ))
-
-    heatmap.2(as.matrix(dfHeatmap()),
-              col = col_dfHeatmap,
-              breaks = breaks_dfHeatmap,
-              dendrogram = doCluster[1],
-              Rowv = as.logical(doCluster[2]),
-              Colv = as.logical(doCluster[3]),
-              na.color="black",
-              density.info="none",
-              trace = "none",
-              cexCol = kexSize,
-              cexRow = kexSize,
-              lmat=rbind(c(4,3),c(2,1)),
-              lhei=c(keySize,4),
-              lwid=c(1,4),
-              margins = c(20,20),
-              colsep = 1:ncol(dfHeatmap()),
-              rowsep = 1:nrow(dfHeatmap()),
-              sepcolor = "grey",
-              sepwidth = c(0.01,0.05)
-    )
+    
+    if(input$scaleFTheatmap %in% "none"){
+        heatmap.2(as.matrix(dfHeatmap()),
+                  col = col_dfHeatmap,
+                  breaks = breaks_dfHeatmap,
+                  dendrogram = doCluster[1],
+                  Rowv = as.logical(doCluster[2]),
+                  Colv = as.logical(doCluster[3]),
+                  na.color="black",
+                  density.info="none",
+                  trace = "none",
+                  cexCol = kexSize,
+                  cexRow = kexSize,
+                  lmat=rbind(c(4,3),c(2,1)),
+                  lhei=c(keySize,4),
+                  lwid=c(1,4),
+                  margins = c(20,20),
+                  colsep = 1:ncol(dfHeatmap()),
+                  rowsep = 1:nrow(dfHeatmap()),
+                  sepcolor = "grey",
+                  sepwidth = c(0.01,0.05),
+                  scale = as.character(input$scaleFTheatmap))
+    } else {
+            heatmap.2(as.matrix(dfHeatmap()),
+                      col = col_dfHeatmap,
+                      dendrogram = doCluster[1],
+                      Rowv = as.logical(doCluster[2]),
+                      Colv = as.logical(doCluster[3]),
+                      na.color="black",
+                      density.info="none",
+                      trace = "none",
+                      cexCol = kexSize,
+                      cexRow = kexSize,
+                      lmat=rbind(c(4,3),c(2,1)),
+                      lhei=c(keySize,4),
+                      lwid=c(1,4),
+                      margins = c(20,20),
+                      colsep = 1:ncol(dfHeatmap()),
+                      rowsep = 1:nrow(dfHeatmap()),
+                      sepcolor = "grey",
+                      sepwidth = c(0.01,0.05),
+                      scale = as.character(input$scaleFTheatmap)
+            )
+    }
   }
 }#end of fucntion
 
