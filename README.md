@@ -96,7 +96,8 @@ The package also depends on other R-packages that should be automatically downlo
     gplots (>= 3.0.1),
     DT (>= 0.2),
     gtools (>= 3.5.0),
-    shiny (>= 0.14.2)
+    shiny (>= 0.14.2),
+    readxl (>= 1.0.0)
 
 ## Contact 
 #### Christian Scheeder c.scheeder@dkfz.de
