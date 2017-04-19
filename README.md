@@ -1,5 +1,5 @@
 <p>
-<img align="right" max-width="75%" src="https://github.com/cscheeder/HTSvis/blob/master/inst/appdir/WWW/logo.png">
+<img align="right" max-width="75%" src="https://github.com/boutroslab/HTSvis/blob/master/inst/appdir/WWW/logo.png">
 </p>
 
 </br> 
