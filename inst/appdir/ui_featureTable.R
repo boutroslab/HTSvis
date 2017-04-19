@@ -7,7 +7,7 @@ conditionalPanel(condition='output.showPanels',
                      helpPopup("Help: Feature Table",
                                id="helpFT",
                                content = "Below you will find your uploaded
-                            data represented as a interactive table. 
+                            data represented as an interactive table. 
                             If the uploaded table contains more than one 
                             measured value per well 
                             only the first one will be shown by default. 
@@ -44,7 +44,7 @@ conditionalPanel(condition='output.showPanels',
                        helpPopup("Attention:",
                                  id="helpDowFT",
                                  content = "Depending on the size of the table
-                                 a download might take several minutes. The
+                                 the download might take several minutes. The
                                  table will be downloaded as a .csv table
                                  with columns separated by ',' and '.' as 
                                  decimal separator.",
@@ -74,6 +74,18 @@ conditionalPanel(condition='output.showPanels',
                                                         margin-right:50px}")
                      )
                    ),
+            # #Spacer row  
+            HTML("</div>"),
+            HTML("<div style='height: 25px;'>"),
+            HTML("</div>"),
+            HTML("<div style='width:1048px;'>"), 
+            fixedRow(
+                column( 3,
+                        style="vertical-align: middle;",
+                        actionButton(   'selectAllFeatures',                       
+                                        label="Or click to select all channels")
+                )
+            ),
             #Spacer row  
             HTML("</div>"),
             HTML("<div style='height: 50px;'>"), 

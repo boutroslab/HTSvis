@@ -3,6 +3,10 @@ source("./DropDownInput.R",local=T)
 
 hideMeasuredValues <- reactiveValues(state=F)
 
+getParams <- reactiveValues()
+
+
+
 overviewTablesOptions = list(
   searching = FALSE, 
   bFilter = FALSE,
@@ -13,66 +17,85 @@ overviewTablesOptions = list(
   iDisplayLength = 5)
 
 
-
 #Dropdown lists
 #usage of custom wrapper function 'DropDownInput'
- 
 
 observe({
+    getParams$well_input <- NULL
+    getParams$plate_input <- NULL
+    getParams$experiment_input <- NULL
+    getParams$anno_input <- NULL
+})
+
+
+
+## getParams$well has to be called once 
+observe({
   validate(need(input$file1, message=FALSE))
+    getParams$well_input
     output$WellDimensionOut <-  DropDownInput(
                                     identifier="WellDimension",
                                     input=colnames(feature_table2$data_pre), 
                                     label=HTML(paste("Choose",
                                                "<em> well </em>",
                                                "<br/> column")),
-                                    multiState=F)
+                                    multiState=F,
+                                    sel=getParams$well_input)
 })
+
 
 
 observe({
   validate(need(input$file1, message=FALSE))
+    getParams$plate_input
     output$PlateDimensionOut <-  DropDownInput(
                                     identifier="PlateDimension",
                                     input=colnames(feature_table2$data_pre),
                                     label=HTML(paste("Choose",
                                                "<em> plate </em>",
                                                "<br/> column")),
-                                    multiState=F)  
+                                    multiState=F,
+                                    sel=getParams$plate_input)  
 })
 
 
 observe({
   validate(need(input$file1, message=FALSE))
+    getParams$experiment_input
     output$ExperimentDimensionOut <-  DropDownInput(
                                         identifier="ExperimentDimension",
                                         input=colnames(feature_table2$data_pre),
                                         label=HTML(paste("Choose",
                                                    "<em> experiment </em>",
                                                    "<br/> column")),
-                                        multiState=F)
+                                        multiState=F,
+                                        sel=getParams$experiment_input)
 })
 
 observe({
   validate(need(input$file1, message=FALSE))
+    getParams$measuredValues_input
     output$MeasuredValuesOut <-  DropDownInput(
                                     identifier="MeasuredValues",
                                     input=colnames(feature_table2$data_pre),
                                     label=HTML(paste("Choose",
                                        "<em> channel </em>",
                                        "<br/>column(s)")),
-                                    multiState=T)  
+                                    multiState=T,
+                                    sel=getParams$measuredValues_input)  
 })
 
 observe({
     validate(need(input$file1, message=FALSE))
+    getParams$anno_input
         output$AnnoDimensionOut <-  DropDownInput(
                                         identifier= "AnnoDimension", 
                                         input=colnames(feature_table2$data_pre), 
                                         label=HTML(paste("Choose",
                                        "<em> annotation </em>",
                                        "<br/>column")),
-                                       multiState=F)
+                                       multiState=F,
+                                       sel=getParams$anno_input)
 })
 
 
@@ -97,6 +120,8 @@ observe({
   validate(need(input$AnnoDimension, message=FALSE))
     InputStartTables$anno <- input$AnnoDimension
 })
+  
+
 
 
 output$definedWells <- DT::renderDataTable({
@@ -182,16 +207,31 @@ output$cellHTSstyleOut <- renderUI({
 })
 
 
+#if input from parameter file
+observe({
+       if(!is.null(getParams$cellHTS_state))
+        if(getParams$cellHTS_state %in% "on")
+            updateCheckboxInput(session,
+                                "cellHTSstyle",
+                                value = T)
+})
+
+observe({
+    if(!is.null(getParams$singleExperiment_state))
+        if(getParams$singleExperiment_state %in% "on")
+            updateCheckboxInput(session,
+                                "IsSingleExperiment",
+                                value = T)
+})
+
+#capture of 'cellHTS' or 'singleExperiment' input type 
 observe({
   if(!is.null(input$IsSingleExperiment)){
     if(isTRUE(input$IsSingleExperiment)) {
       updateSelectInput(session, 
-                        "ExperimentDimension",
-                        choices = "single_experiment",
-                        selected = "single_experiment")
-      updateCheckboxInput(session,
-                          "cellHTSstyle",
-                          value = F)
+                        "PlatesQC",
+                        choices = "all_plates",
+                        selected = "all_plates")
       hideMeasuredValues$state = F
     } else {
       updateSelectInput(session, 
@@ -210,22 +250,26 @@ observe({
                                             HTML(paste("Choose",
                                                "<em> experiment/channel </em>",
                                                        "<br/> column(s)")),
-                                            T)
+                                            T,
+                                            sel=getParams$experiment_input)
         hideMeasuredValues$state <-  T
         updateCheckboxInput(session,
                             "IsSingleExperiment",
                             value = F) 
     }else{
-       if(!isTRUE(input$IsSingleExperiment)) {
-      output$ExperimentDimensionOut <-  DropDownInput(
-                                            "ExperimentDimension",
-                                            colnames(feature_table2$data_pre),
-                                            HTML(paste("Choose",
-                                                       "<em> experiment </em>",
-                                                       "<br/> column")),
-                                            F)
-      hideMeasuredValues$state = F
-         }
+        if(!is.null(input$IsSingleExperiment)){
+            if(!isTRUE(input$IsSingleExperiment)) {
+              output$ExperimentDimensionOut <-  DropDownInput(
+                                                    "ExperimentDimension",
+                                                    colnames(feature_table2$data_pre),
+                                                    HTML(paste("Choose",
+                                                               "<em> experiment </em>",
+                                                               "<br/> column")),
+                                                    F,
+                                                    sel=getParams$experiment_input)
+              hideMeasuredValues$state = F
+            }
+        }
      }
     }
 })

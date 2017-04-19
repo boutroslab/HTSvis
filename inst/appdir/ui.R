@@ -1,7 +1,8 @@
 source("./helperFunctions.R")
+source("./global.R")
 #################################################################################################################################
 ##Start of UI
-shinyUI(
+ui <- function(request) {
   fixedPage(
             theme = "bootstrap.css",
             title = "HTS-Vis",
@@ -94,21 +95,21 @@ shinyUI(
 
                        HTML("<div style='height: 25px;'>"),
                        HTML("</div>"),
-
                             source("./ui_dataInput1.R",local=T)[1],
 
-
                             source("./ui_dataInput2.R",local=T)[1],
-
-                       HTML("<div style='height: 25px;'>"),
-                       HTML("</div>"),
-
+                       
                             source("./ui_dataInput3.R",local=T)[1],
 
                        HTML("<div style='height: 25px;'>"),
                        HTML("</div>"),
 
-                           source("./ui_dataInput4.R",local=T)[1],
+                            source("./ui_dataInput4.R",local=T)[1],
+
+                       HTML("<div style='height: 25px;'>"),
+                       HTML("</div>"),
+
+                           source("./ui_dataInput5.R",local=T)[1],
 
                        HTML("<div style='height: 200px;'>"),
                        HTML("</div>")
@@ -142,8 +143,14 @@ shinyUI(
                        source("./ui_dummy.R",local=T)[1],
                        source("./ui_scatterPlot.R",local=T)[1]
               ),
+              
+              #Options Tab
+              tabPanel("Options",
+                       source("./ui_dummy.R",local=T)[1],
+                       source("./ui_options.R",local=T)[1]
+              ),
 
-              #Scatter Plot Tab
+              #Help Tab
               tabPanel("Help Page",
                        source("./ui_helpPage.R",local=T)[1]
               )
@@ -151,4 +158,4 @@ shinyUI(
 
         ),  style='width: 1048px; height: auto;' #end of tabsetPanel
     )#end of global fluidPage
-)#end of shiny UI
+}#end of shiny UI

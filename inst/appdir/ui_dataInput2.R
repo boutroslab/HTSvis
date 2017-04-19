@@ -1,83 +1,40 @@
-fixedRow(
-  ####Spacer row
-  HTML("<div style='height: 25px;'>"),
-  HTML("</div>"),
-
-
-  column(2,
-         uiOutput("WellDimensionOut")
-  ),
-  conditionalPanel(condition = "output.showQM",
-    column(1,
-         helpPopup("Help: Wells",
-                   id="helpWells",
-                   content = "Select the column of the uploaded data table
-                    that contains the well annotation.
-                    Row and column annotation for the wells
-                    need to have the following format: 'RowColmn' with rows as
-                    letters and columns as numbers (e.g. A1 or A01).
-                    Letters can be upper- or lowercase.
-                    Letters and numbers may be separated by
-                    characters like '-' or '_'.",
-                   iconClass = "fa fa-question"),
-         tags$style(
-             type='text/css',
-             "#helpWells{ margin-left:-25px;}")
-    )
-  ),
-  column(2,
-         uiOutput("PlateDimensionOut")
-  ),
-  conditionalPanel(condition = "output.showQM",
-    column(1,
-      helpPopup("Help: Plates",
-                id="helpPlates",
-                content = "Select the column of the uploaded data table
-                    that contains the plate annotation.
-                    Plate identifiers have to be unique within one experiment.
-                    If more than one experiment is investigated, all
-                    experiments have to contain the identical
-                    set of plates",
-                iconClass = "fa fa-question"),
-      tags$style(
-          type='text/css',
-          "#helpPlates{ margin-left:-25px;}")
-      )
-  ),
-  column(2,
-         uiOutput("ExperimentDimensionOut")
-  ),
-  conditionalPanel(condition = "output.showQM",
-       column(1,
-              helpPopup("Help: Experiments",
-                        id="helpExperiments",
-                        content = "
-                        If you want to investigate multiple experiments,
-                        select the column of the uploaded data table
-                        that contains the experiment information.
-                        Experiment identifiers have to be unique.
-                        If more than one experiment is investigated, all
-                        experiments have to contain the identical
-                        set of plates.
-                        If you upload the result table of cellHTS set the upper check at the right. 
-                        If you want
-                        to investiagte only a single experiment
-                        (and the experiment column is missing) you should set
-                        the lower check at the right.
-                        (more detailed information can be found
-                        on the help page)",
-                        iconClass = "fa fa-question"),
-              tags$style(
-                  type='text/css',
-                  "#helpExperiments{ margin-left:-25px;}")
-              )
-  ),
-  column(3,
-         uiOutput("cellHTSstyleOut"),
-         uiOutput("IsSingleExperimentOut")
-         )
-)#end of fixedRow
-
-
-
-
+conditionalPanel(condition='output.showParmsUpload',
+                 fixedRow(
+                     column(4,
+                            fileInput('file2', 'optional: upload a session parameter file',
+                                      accept = c(
+                                          'text/csv',
+                                          'text/comma-separated-values',
+                                          'text/plain',
+                                          '.csv',
+                                          '.Rdata',
+                                          '.RData')
+                            )
+                     ),
+                     column(1,
+                            helpPopup("Help: Session Paramter File",
+                                      id="helpParms",
+                                      content = "You can upload a session parameter file
+                                      saved from a previous session (see 'option' tab).
+                                      If you don't want to load a session parameter file you 
+                                      you can ignore this field and perform your settings below.",
+                                      iconClass = "fa fa-question"),
+                            tags$style(
+                                type='text/css',
+                                "#helpParms{ margin-top: 25px;
+                                margin-left:-25px;}")
+                            ),
+                     column(1,
+                            checkboxInput("applyParms",""),
+                            tags$style(
+                                type='text/css',
+                                "#applyParms{ margin-top: 25px;
+                                margin-right:-25px;}")
+                            ),
+                     column(6,
+                            htmlOutput("ParmCheckLabel"),
+                            tags$style(HTML("#ParmCheckLabel {
+                                            margin-top: 25px;
+                                            margin-left:-25px;}")))
+                     )
+)#end of conditionalPanel
