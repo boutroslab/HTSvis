@@ -166,14 +166,17 @@ conditionalPanel(condition="output.showPanels",
 #dropdown lists for plates 1 & 2
     fixedRow(
         column(12,
-               helpPopup("Help: Plate Heatmaps",
+               helpPopup("Help: Plate plots",
                          id="helpDropDown",
                          content = "Select a plate from the data set 
                          to be shown as a heatmap. If a single 
                         experiment is investigated, the 'select experiment'
-                         option is inactive. The measured value for which
-                         the plate heatmap will be shown is defined from
-                         the 'select feature' list",
+                         option is inactive. The measured value shown as
+                         the plate plot is defined from
+                         the 'select feature' list.
+                         Each plot can be downloaded using
+                         the small toothwheel icon in the upper 
+                         right of every plate plot.",
                          iconClass = "fa fa-question"),
                tags$style(type='text/css', "#helpDropDown {margin-top: 35px;}"),
                height="50"

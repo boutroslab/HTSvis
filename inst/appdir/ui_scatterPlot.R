@@ -3,10 +3,10 @@ conditionalPanel(condition='output.showPanels',
         conditionalPanel(condition = 'output.controlSB',
             column(6,
             switchButton( inputId = "popman",
-                           type = "OO",
+                           type = "TF",
                            value = TRUE,
                            col="GB",
-                           label = h6("Open/Close Population Manager")
+                           label = h6("Switch to Population Manager")
                           )
                       )
             ),
@@ -102,7 +102,7 @@ conditionalPanel(condition='output.showPanels',
                                  created can be defined from drop down lists.
                                 You can zoom into a plot region by
                                 drawing a window in a drag-and-drop manner
-                                 with your mouse. This action also opens the
+                                 with your mouse. This action also sitches to the
                                  population manager. The population manager can be closed again
                                 by a switch-button appearing at the top. If only one
                                  experiment is loaded, individual plates can be
@@ -148,7 +148,7 @@ conditionalPanel(condition='output.showPanels',
          ),
 
     fixedRow(
-        conditionalPanel(condition='output.showGeneTable',
+        conditionalPanel(condition='output.showGeneTable && output.showPopMan',
             column(   6,
                       align = "center",
                       DT::dataTableOutput('geneTable'),
