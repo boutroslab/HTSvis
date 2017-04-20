@@ -519,7 +519,7 @@ onclick = 'Shiny.onInputChange(\"gene_button\", (this.id + \"@\" + Date()))' ),
                                              value=FALSE,
                                              label="",
                                              width="25px"),
-                        info_text="check to highlight in plot",
+                        info_text="mark center in plot",
                         id = idi,
                         color=as.character(orderAndColors$data$col[i])
                     )
