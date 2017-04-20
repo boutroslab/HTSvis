@@ -81,7 +81,7 @@ RTools can be downloaded from https://cran.r-project.org/bin/windows/Rtools/
 
 The package also depends on other R-packages that should be automatically downloaded and installed by devtools. However, a detailed list can be found below:
     R (>= 3.3.2),
-    tools (>= 3.3.2),
+    tools (>= 3.0.0),
     tibble (>= 1.2),
     stringr (>= 1.1.0),
     tidyr (>= 0.6.0),
