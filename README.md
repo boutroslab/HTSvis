@@ -7,7 +7,7 @@
 
 # A shiny app for exploratory data analysis and visualization of arrayed high-throughput screens 
 
-Version 1.02
+Version 1.1
 </br> 
 
 
