@@ -44,7 +44,7 @@ Following test data sets are provided, please check the help page in the app for
 
 | File | Description |
 | --- | --- |
-| topTable.txt<sup>1</sup> | result table from an analysis of an RNAi screen using cellHTS2 (also available als .xlsx) |
+| topTable.txt<sup>1</sup> | result table from an analysis of an RNAi screen using cellHTS2 (also available as .xlsx) |
 | topTable_dc.txt<sup>1</sup>  | result table from an analysis of a dual channel RNAi screen using cellHTS2 |
 | humanSGI.RData<sup>2</sup> |  multiparametric data set from an image-based screen |
 | 96wellFACS.csv   |  multiparametric data set from a flowcytometry screen (unpublished) |
