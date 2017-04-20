@@ -32,7 +32,7 @@ observeEvent(input$allPlates,{
         plateStateQC$state = F
         updateSelectInput(session, 
                           "platesQC",
-                          choices = tabInput$inputPlates)
+                          choices = input$platesQC[1])
         }
 })
 
@@ -464,13 +464,14 @@ final <- reactive ({
   validate(need(input$platesQC, message=FALSE))
   
   if(!isTRUE(IsSingleExperimentTabs$state)) {
-      feature_table2$data %>%
+      returnFinal <- feature_table2$data %>%
         filter_(lazyeval::interp(quote(x == y),
                                  x = as.name(TabDimensions$experiment),
                                  y = input$screen_selection_qc)) %>%
           select_(TabDimensions$well,
                   TabDimensions$plate,
                   "value"=input$feature_selection_qc)
+      return(returnFinal)
     } else {
       feature_table2$data %>%
         select_(TabDimensions$well,
@@ -757,15 +758,19 @@ platePlotOut <- function(){
                             pos_meds <- storeMeans$pos_plates
                             pos_meds[,"plate"] <- as.numeric(as.factor(pos_meds[,"plate"]))
                         } else {
-                            x <- final()
-                            test <- x %>% group_by_(TabDimensions$plate) %>% 
-                                dplyr::filter_(lazyeval::interp(quote(x == y),
-                                                                x=as.name(TabDimensions$well),
-                                                                y=unlist(pos_wellStore[[input$platesQC]]))) %>%
-                                summarise(mean=mean(value,na.rm=T)) %>% data.frame()
-                            
-                            storeMeans$pos_plates[,"med"] <- test$mean
-                            storeMeans$pos_plates[,"plate"] <- test[,TabDimensions$plate]
+                            posWellsMean <- unlist(reactiveValuesToList(pos_wellStore),use.names=F)
+                            posFrame <- cbind.data.frame(   unique(final()[,TabDimensions$plate]),
+                                                        rep(NA,length(unique(final()[,TabDimensions$plate]))))
+                            names(posFrame) <- c(TabDimensions$plate,"mean")
+                            sapply(seq_along(1:nrow(posFrame)),function(id,df,wells){
+                                plato <- posFrame[id,TabDimensions$plate]
+                                platos <- df[which(df[,TabDimensions$plate] %in% plato),]
+                                wellos <- platos[which(platos[,TabDimensions$well] %in% wells),]
+                                meanos <- mean(wellos[,"value"],na.rm=T)
+                                posFrame[id,"mean"] <<- meanos   
+                            },df=final(),wells=posWellsMean)
+                            storeMeans$pos_plates[,"med"] <- posFrame$mean
+                            storeMeans$pos_plates[,"plate"] <- posFrame[,TabDimensions$plate]
                             storeMeans$pos_plates[,"status"] <- "positive"
                             storeMeans$pos_plates[,"color"] <- pp_col
                             storeMeans$pos_plates[,"cex"] <- 1
@@ -803,15 +808,20 @@ platePlotOut <- function(){
                             neg_meds <- storeMeans$neg_plates
                             neg_meds[,"plate"] <- as.numeric(as.factor(neg_meds[,"plate"]))
                         } else {
-                            x <- final()
-                            test <- x %>% group_by_(TabDimensions$plate) %>% 
-                                dplyr::filter_(lazyeval::interp(quote(x == y),
-                                                                x=as.name(TabDimensions$well),
-                                                                y=unlist(neg_wellStore[[input$platesQC]]))) %>%
-                                summarise(mean=mean(value,na.rm=T)) %>% data.frame()
-                            
-                            storeMeans$neg_plates[,"med"] <- test$mean
-                            storeMeans$neg_plates[,"plate"] <- test[,TabDimensions$plate]
+                            negWellsMean <- unlist(reactiveValuesToList(neg_wellStore),use.names=F)
+                            negFrame <- cbind.data.frame(   unique(final()[,TabDimensions$plate]),
+                                                            rep(NA,length(unique(final()[,TabDimensions$plate]))))
+                            names(negFrame) <- c(TabDimensions$plate,"mean")
+                            sapply(seq_along(1:nrow(negFrame)),function(id,df,wells){
+                                plato <- negFrame[id,TabDimensions$plate]
+                                platos <- df[which(df[,TabDimensions$plate] %in% plato),]
+                                wellos <- platos[which(platos[,TabDimensions$well] %in% wells),]
+                                meanos <- mean(wellos[,"value"],na.rm=T)
+                                negFrame[id,"mean"] <<- meanos   
+                            },df=final(),wells=negWellsMean)
+                            print(negFrame)
+                            storeMeans$neg_plates[,"med"] <- negFrame$mean
+                            storeMeans$neg_plates[,"plate"] <- negFrame[,TabDimensions$plate]
                             storeMeans$neg_plates[,"status"] <- "negative"
                             storeMeans$neg_plates[,"color"] <- pn_col
                             storeMeans$neg_plates[,"cex"] <- 1
@@ -849,15 +859,20 @@ platePlotOut <- function(){
                             nt_meds <- storeMeans$nt_plates
                             nt_meds[,"plate"] <- as.numeric(as.factor(nt_meds[,"plate"]))
                         } else {
-                            x <- final()
-                            test <- x %>% group_by_(TabDimensions$plate) %>% 
-                                dplyr::filter_(lazyeval::interp(quote(x == y),
-                                                                x=as.name(TabDimensions$well),
-                                                                y=unlist(nt_wellStore[[input$platesQC]]))) %>%
-                                summarise(mean=mean(value,na.rm=T)) %>% data.frame()
+                            ntWellsMean <- unlist(reactiveValuesToList(nt_wellStore),use.names=F)
+                            ntFrame <- cbind.data.frame(   unique(final()[,TabDimensions$plate]),
+                                                            rep(NA,length(unique(final()[,TabDimensions$plate]))))
+                            names(ntFrame) <- c(TabDimensions$plate,"mean")
+                            sapply(seq_along(1:nrow(ntFrame)),function(id,df,wells){
+                                plato <- ntFrame[id,TabDimensions$plate]
+                                platos <- df[which(df[,TabDimensions$plate] %in% plato),]
+                                wellos <- platos[which(platos[,TabDimensions$well] %in% wells),]
+                                meanos <- mean(wellos[,"value"],na.rm=T)
+                                ntFrame[id,"mean"] <<- meanos   
+                            },df=final(),wells=ntWellsMean)
                             
-                            storeMeans$nt_plates[,"med"] <- test$mean
-                            storeMeans$nt_plates[,"plate"] <- test[,TabDimensions$plate]
+                            storeMeans$nt_plates[,"med"] <- ntFrame$mean
+                            storeMeans$nt_plates[,"plate"] <- ntFrame[,TabDimensions$plate]
                             storeMeans$nt_plates[,"status"] <- "non-targeting"
                             storeMeans$nt_plates[,"color"] <- nt_col
                             storeMeans$nt_plates[,"cex"] <- 1
