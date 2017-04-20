@@ -819,7 +819,6 @@ platePlotOut <- function(){
                                 meanos <- mean(wellos[,"value"],na.rm=T)
                                 negFrame[id,"mean"] <<- meanos   
                             },df=final(),wells=negWellsMean)
-                            print(negFrame)
                             storeMeans$neg_plates[,"med"] <- negFrame$mean
                             storeMeans$neg_plates[,"plate"] <- negFrame[,TabDimensions$plate]
                             storeMeans$neg_plates[,"status"] <- "negative"

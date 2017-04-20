@@ -28,7 +28,7 @@ conditionalPanel(condition='output.showParmsUpload',
                      column(6,
                             htmlOutput("ParmCheckLabel"),
                             tags$style(HTML("#ParmCheckLabel {
-                                            margin-top: 30px;
+                                            margin-top: 33px;
                                             margin-left:-60px;}")))
                      )
 )#end of conditionalPanel
