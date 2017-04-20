@@ -28,7 +28,7 @@ Run the following lines of code in your R session to download and install the pa
 ```
 install.packages("devtools", dependencies = TRUE)
 
-devtools::install_github("boutroslab/HTSvis", build_vignettes = F)
+devtools::install_github("boutroslab/HTSvis", build_vignettes = F, type="source")
 ```
 ## Usage 
 ### Load the package and call the funtion 'HTSvis' to start the web application
