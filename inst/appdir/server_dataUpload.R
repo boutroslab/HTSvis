@@ -84,10 +84,7 @@ observeEvent(input$file1,{
     )
     colnames(params_df) <- NULL
     params$data = params_df
-    validate(need(input$applyParms, message=FALSE))
-    updateCheckboxInput(session,
-                        "applyParms",
-                        value = F)
+
 })
 
 

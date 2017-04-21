@@ -32,14 +32,7 @@ conditionalPanel(condition='output.showPanels',
                         style="vertical-align: middle;",
                         uiOutput("features_ft")
                     ),  
-                column( 3,
-                        style="vertical-align: middle;",
-                        actionButton(   'resetSelection',                       
-                                        label="Click to reset row selection"),
-                        tags$style(
-                            type='text/css', 
-                            "#resetSelection { margin-top: 38px;}")
-                        ),  
+                column(3),  
                 column(1,
                        helpPopup("Attention:",
                                  id="helpDowFT",
@@ -107,6 +100,35 @@ conditionalPanel(condition='output.showPanels',
             #Heatmap
             HTML("<div style='width:1000px;'>"), 
             fixedRow(
+                conditionalPanel(condition='output.showSelectAll',
+                                 column(4,
+                                        actionButton("selectAllRows",
+                                                     label = "Click to select all rows from the filtered table"),
+                                        tags$style(HTML(
+                                            "#selectAllRows {     margin-top:25px;
+                                             margin-bottom: 25px;"))
+                                 ),
+                                 helpPopup("Help: Select Rows",
+                                           id="helpSR",
+                                           content = "Rows to be shown in the heatmap can either be selected 
+                                           manually by clicking on single rows, or 
+                                           by clicking the button on the left. This 
+                                           will select all rows of the current table above
+                                           (if the shown table has less than 200 rows).
+                                           Note: If rows are selected cumulatively, those will not be highlighted.",
+                                           iconClass = "fa fa-question"),
+                                 tags$style(type='text/css',"#helpSR {
+                                            margin-top: 25px;}"),
+                                 column(3,
+                                        actionButton(   'resetSelection',                       
+                                                        label="Click to reset row selection"),
+                                        tags$style(
+                                            type='text/css', 
+                                            "#resetSelection { margin-top: 25px;
+                                            margin-bottom: 25px;}")
+                                 ),
+                                 column(5)
+                ),
                 conditionalPanel(condition='output.hideFt',
                                  column(12,
                                         align="center",

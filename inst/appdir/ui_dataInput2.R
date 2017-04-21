@@ -17,18 +17,6 @@ conditionalPanel(condition='output.showParmsUpload',
                                 type='text/css',
                                 "#helpParms{ margin-top: 25px;
                                 margin-left:-25px;}")
-                            ),
-                     column(1,
-                            checkboxInput("applyParms",""),
-                            tags$style(
-                                type='text/css',
-                                "#applyParms{ margin-top: 25px;
-                                margin-right:-25px;}")
-                            ),
-                     column(6,
-                            htmlOutput("ParmCheckLabel"),
-                            tags$style(HTML("#ParmCheckLabel {
-                                            margin-top: 33px;
-                                            margin-left:-60px;}")))
+                            )
                      )
 )#end of conditionalPanel

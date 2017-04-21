@@ -12,7 +12,8 @@ test_data <- reactiveValues(na=T,
                             multiFalse=F,
                             cellHTSform=T,
                             cellHTScols=F,
-                            whiteSpace=F)
+                            whiteSpace=F,
+                            manyPlates=F)
 col2 <- reactiveValues()
 TabDimensions <- reactiveValues(experiment=F,well=F,plate=F,annotation=F)
 brush_container <- reactiveValues()
@@ -531,6 +532,12 @@ observeEvent(input$startApp,{
                             CSdiffB110 = CSuni_platesB110 != unique_plates) %>%
                                 dplyr::select(CSdiffB110) %>%
                                     unlist(use.names = F) %>% any
+        } else {
+            uniquePlates <- feature_table2$data %>% select_(input$PlateDimension) %>% 
+                unique()
+            allPlates <- feature_table2$data %>% select_(input$PlateDimension)
+            if(nrow(uniquePlates) != nrow(allPlates))
+                test_data$manyPlates <- TRUE
         }
       }
     }
@@ -560,29 +567,36 @@ observeEvent(input$startApp,{
         warnWF <- "Incorrect well dimension"
         warnWF_js_string <- sub("SOMETHING",warnWF,js_string)
         session$sendCustomMessage(type='jsCode', list(value = warnWF_js_string))
-        } else {
-          if(isTRUE(test_data$numeric)) {
-            warnNum <- "Measured Values have to be numeric"
-            warnNum_js_string <- sub("SOMETHING",
-                                     warnNum,
-                                     js_string)
+    } else {
+      if(isTRUE(test_data$numeric)) {
+        warnNum <- "Measured Values have to be numeric"
+        warnNum_js_string <- sub("SOMETHING",
+                                 warnNum,
+                                 js_string)
+        session$sendCustomMessage(type='jsCode',
+                                  list(value = warnNum_js_string))
+      } else  {
+        if(isTRUE(test_data$missingPlates)) {
+          warnMP <- paste("Error: Experiments do not",
+                            "contain equal number of plates or plate identifiers between experiments not identical",sep = " ")
+          warnMP_js_string <- sub("SOMETHING",warnMP,js_string)
+          session$sendCustomMessage(type='jsCode',
+                                    list(value = warnMP_js_string ))
+        } else  {
+        if(isTRUE(test_data$manyPlates)) {
+            warnMP2 <- paste("Error: For the 'single experiment'",
+                            "setting each plate needs a unique identifier",sep = " ")
+            warnMP2_js_string <- sub("SOMETHING",warnMP2,js_string)
             session$sendCustomMessage(type='jsCode',
-                                      list(value = warnNum_js_string))
-          } else  {
-            if(isTRUE(test_data$missingPlates)) {
-              warnMP <- paste("Error: Experiments do not",
-                                "contain equal number of plates or plate identifiers between experiments not identical",sep = " ")
-              warnMP_js_string <- sub("SOMETHING",warnMP,js_string)
-              session$sendCustomMessage(type='jsCode',
-                                        list(value = warnMP_js_string ))
-          } else {
-              if(isTRUE(test_data$na)) {
-                warnNA <- paste("The data input contains missing values,",
-                                "those will be ignored",
-                                "in the shown representations",sep=" ")
-                warnNA_js_string <- sub("SOMETHING",warnNA,js_string)
-                session$sendCustomMessage(type='jsCode',
-                                          list(value = warnNA_js_string ))
+                                      list(value = warnMP2_js_string ))
+      } else {
+          if(isTRUE(test_data$na)) {
+            warnNA <- paste("The data input contains missing values,",
+                            "those will be ignored",
+                            "in the shown representations",sep=" ")
+            warnNA_js_string <- sub("SOMETHING",warnNA,js_string)
+            session$sendCustomMessage(type='jsCode',
+                                      list(value = warnNA_js_string ))
             } else{
               warnMP <- ""
               warnWF <- ""
@@ -592,6 +606,7 @@ observeEvent(input$startApp,{
               warnTT <- ""
               warnWS <- ""
               warnTTC <- ""
+              warnMP2 <- ""
            }
           }
          }
@@ -600,6 +615,7 @@ observeEvent(input$startApp,{
       }
      }
     }
+   }
 })
 
 
@@ -637,6 +653,7 @@ observeEvent(input$startApp,{
                       test_data$duplicateCols,
                       test_data$wellForm,
                       test_data$missingPlates,
+                      test_data$manyPlates,
                       test_data$multiFalse,
                       test_data$cellHTSform,
                       test_data$cellHTScols,
@@ -657,6 +674,7 @@ observeEvent(input$startApp,{
                       test_data$duplicateCols,
                       test_data$wellForm,
                       test_data$missingPlates,
+                      test_data$manyPlates,
                       test_data$multiFalse,
                       test_data$cellHTSform,
                       test_data$cellHTScols,

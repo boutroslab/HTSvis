@@ -59,10 +59,10 @@ fixedRow(
                         If more than one experiment is investigated, all
                         experiments have to contain the identical
                         set of plates.
-                        If you upload the result table of cellHTS set the upper check at the right. 
+                        If you upload the result table of cellHTS, set the upper check at the right. 
                         If you want
-                        to investiagte only a single experiment
-                        (and the experiment column is missing) you should set
+                        to investigate only a single experiment
+                        (i.e. each plate is only present once in the data set) you should set
                         the lower check at the right.
                         (more detailed information can be found
                         on the help page)",

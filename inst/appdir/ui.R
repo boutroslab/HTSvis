@@ -92,7 +92,6 @@ ui <- function(request) {
             ##Tab for Data Input
             tabsetPanel(
                     tabPanel("Data Input",
-
                        HTML("<div style='height: 25px;'>"),
                        HTML("</div>"),
                             source("./ui_dataInput1.R",local=T)[1],

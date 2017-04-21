@@ -1,6 +1,9 @@
 ####Feature Table##############################################################################################################
 
 features_Table <- reactiveValues(selected_features=0)
+catchAllRows <- reactiveValues(state=F)
+row_selection <- reactiveValues()
+
 
 observeEvent(input$feature_selection_ft,{
     features_Table$selected_features = input$feature_selection_ft
@@ -11,9 +14,7 @@ observeEvent(input$selectAllFeatures,{
     updateSelectInput(session, 
                       "feature_selection_ft",
                       selected = tabInput$inputFeatures)
-    
 })
-
 
 
 
@@ -29,8 +30,9 @@ feature_table_print <-   reactive({
                 mutate_each_(
                     funs(round(.,digits=3)),
                     paste0("-",c(TabDimensions$annotation,
-                                 input$PlateDimension,
-                                 TabDimensions$well)))
+                                 TabDimensions$plate,
+                                 TabDimensions$well))) %>% 
+                    mutate(rowsFT=seq(1:nrow(.)))
     } else {
         feature_table2$data %>%
             select(one_of(c(TabDimensions$annotation,
@@ -42,21 +44,24 @@ feature_table_print <-   reactive({
                              paste0("-",c(TabDimensions$annotation,
                                           TabDimensions$plate,
                                           TabDimensions$well,
-                                          TabDimensions$experiment)))
+                                          TabDimensions$experiment))) %>% 
+                    mutate(rowsFT=seq(1:nrow(.)))
     }
   }
 })
 
 
 output$featureTable <- DT::renderDataTable ({
-                                feature_table_print()
+                                feature_table_print() %>% select(-rowsFT)
                             },server=T, rownames = T, filter = "top")
 
 
 proxy = dataTableProxy('featureTable')
 
 observeEvent(input$resetSelection, {
-  selectRows(proxy, NULL)
+    selectRows(proxy, NULL)
+    row_selection$rows <- c()
+    catchAllRows$state <- F
 })
 
 
@@ -108,20 +113,38 @@ feature_table_final <- feature_table_print()[inter,
                                              c(TabDimensions$annotation,
                                                TabDimensions$well,
                                                TabDimensions$plate,
-                                               features_Table$selected_features)]
+                                               features_Table$selected_features,
+                                               "rowsFT")]
         } else {
-            feature_table_final <- feature_table_print()[inter,
-                                                 c(TabDimensions$annotation,
-                                                   TabDimensions$well,
-                                                   TabDimensions$plate,
-                                                   TabDimensions$experiment,
-                                                   features_Table$selected_features)]
+            feature_table_final <- feature_table_print() %>% 
+                                    slice(inter) %>% 
+                                        select(one_of( c(TabDimensions$annotation,
+                                                          TabDimensions$well,
+                                                          TabDimensions$plate,
+                                                          TabDimensions$experiment,
+                                                          features_Table$selected_features,
+                                                         "rowsFT")))
+
 
       }
     }
     return(feature_table_final)
   }
 }) #end of reactive
+
+
+observe({
+    validate(need(input$feature_selection_ft, message=FALSE))
+    validate(need(input$featureTable_search_columns, message=FALSE))
+    if(!is.null(feature_table_save())) {
+        catchAllRows$state=F
+        } 
+})
+
+
+observeEvent(input$selectAllRows,{
+    catchAllRows$state=T
+})
 
 
 fileNameFeatureTable <-  reactive({
@@ -140,7 +163,7 @@ output$downloadFeatureTable <- downloadHandler (
                                             "csv",
                                             sep=".") },
                                   content = function(file) {
-                                      write.table(feature_table_save(),
+                                      write.table(feature_table_save() %>% select(-rowsFT),
                                                  file,
                                                  row.names = F,
                                                  sep=",",
@@ -149,31 +172,46 @@ output$downloadFeatureTable <- downloadHandler (
 )
 
 
+
 ##Heatmap of feature vector for clicked rows
-#clicked rows in reactive element input$..._rows_selected
-row_selection <- reactive ({
-  input$featureTable_rows_selected
+
+# clicked rows in reactive element input$..._rows_selected
+observe({
+    validate(need(input$feature_selection_ft, message=FALSE))
+         if(isTRUE(catchAllRows$state) && nrow(feature_table_save())<200) {
+             row_selection$rows <- c(isolate(row_selection$rows),
+                                        feature_table_save() %>% select(rowsFT) %>% unlist(use.names=F))
+         } 
 })
 
-
+observe({
+    validate(need(input$featureTable_rows_selected, message=FALSE))
+    if(length(input$featureTable_rows_selected>0))
+        row_selection$rows <- c(isolate(row_selection$rows),input$featureTable_rows_selected)
+})
 
 
 # heatmap from clicked rows
 # dfHeatmap reactive data frame of clicked rows
-
 dfHeatmap <- reactive({
     validate(need(input$feature_selection_ft, message=FALSE))
         if(length(features_Table$selected_features)<2) {
             return(NULL)
         } else {
-            rows <- row_selection()
+            rows <- row_selection$rows
                 if(length(rows)>1) {
                     df_heatmap <- rbind.data.frame(
                         feature_table2$data[rows ,features_Table$selected_features])
-                    rownames  <- paste(feature_table2$data[rows ,1],
-                                       feature_table2$data[rows ,2],
-                                       feature_table2$data[rows ,3],
-                                       sep = "_")
+                    if(TabDimensions$annotation %in% TabDimensions$well) {
+                        rownames  <- paste(feature_table2$data[rows ,TabDimensions$well],
+                                           feature_table2$data[rows ,TabDimensions$experiment],
+                                           sep = "_")
+                    } else {
+                        rownames  <- paste(feature_table2$data[rows ,TabDimensions$well],
+                                           feature_table2$data[rows ,TabDimensions$annotation],
+                                           feature_table2$data[rows ,TabDimensions$experiment],
+                                           sep = "_")
+                    }
                     test_duplicates  <- duplicated(rownames)
                     indices_duplicates  <- which(test_duplicates)
                     if(isTRUE(any(test_duplicates))) {
@@ -343,7 +381,7 @@ output$downloadFTheatmap <- downloadHandler(
 )#end of download function
 
 #control of conditional panel for heatmap dummy
-DummyFt <- reactiveValues(state=F)
+DummyFt <- reactiveValues(state=F,state2=F)
 
 observe({
     if(!is.null(dfHeatmap())) {
@@ -351,6 +389,12 @@ observe({
         } else {
             DummyFt$state = F
         }
+})
+
+observe({
+    validate(need(input$feature_selection_ft, message=FALSE))
+        if(length(features_Table$selected_features)>1)
+                DummyFt$state2 <- T
 })
 
 
@@ -365,6 +409,11 @@ output$showFt <- reactive({
 })
 outputOptions(output, "showFt", suspendWhenHidden=FALSE)
 
+
+output$showSelectAll <- reactive({
+        return(DummyFt$state2)
+})
+outputOptions(output, "showSelectAll", suspendWhenHidden=FALSE)
 
 
 #dummy text for heatmap
