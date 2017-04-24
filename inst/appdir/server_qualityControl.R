@@ -609,7 +609,7 @@ observe({
     if(isTRUE(loadCtrlWells$allPlates)) {
         if(!is.null(wellsLoaded$posWells)) {
             if(length(wellsLoaded$posWells)>0) {
-                if(wellsLoaded$posWells != "EMPTY") {
+                if(wellsLoaded$posWells[1] != "EMPTY") {
                     if(!isTRUE(any(wellsLoaded$posWells %in% df_qc()[,TabDimensions$well]))){
                         errorPosWells <- T
                     } else {
@@ -625,7 +625,7 @@ observe({
         
         if(!is.null(wellsLoaded$negWells)) {
             if(length(wellsLoaded$negWells)>0) {
-                if(wellsLoaded$negWells != "EMPTY") {
+                if(wellsLoaded$negWells[1] != "EMPTY") {
                     if(!isTRUE(any(wellsLoaded$negWells %in% df_qc()[,TabDimensions$well])) | 
                        isTRUE(any(errorPosWells))){
                         errorNegWells <- T
@@ -642,7 +642,7 @@ observe({
         
         if(!is.null(wellsLoaded$ntWells)) {
             if(length(wellsLoaded$ntWells)>0) {
-                if(wellsLoaded$ntWells != "EMPTY") {
+                if(wellsLoaded$ntWells[1] != "EMPTY") {
                     if(!isTRUE(any(wellsLoaded$ntWells %in% df_qc()[,TabDimensions$well]))| 
                        isTRUE(any(errorNegWells,errorPosWells))){
                         errorNtWells <- T
