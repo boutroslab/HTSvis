@@ -163,7 +163,7 @@ conditionalPanel(condition='output.showPanels',
                                                            id="helpScaleFT",
                                                            content = "By default ('none') the 
                                                            color scale of the heatmap is spanned
-                                                           between the min and max value of the 
+                                                           between the minimum and maximum value of the 
                                                            all data points. If 'row/column' 
                                                            is set, the values will be centered and 
                                                            scaled per row/column. See the documentation
