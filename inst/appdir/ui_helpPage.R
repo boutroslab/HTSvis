@@ -16,7 +16,7 @@ fixedRow(
             tags$style(type="text/css","#showStructure {margin-top:50px;"),
 
            actionButton("showUpload",
-                        label="Data Uplaod"),
+                        label="Data Upload"),
            tags$style(type="text/css","#showUpload {
                       margin-top:50px;
                       margin-left:25px;"),

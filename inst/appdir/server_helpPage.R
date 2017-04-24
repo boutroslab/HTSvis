@@ -334,7 +334,7 @@ output$uploadText2 <- renderUI(
         The default setting is this respect matches a generic data table with multiple series of
         plates (e.g. multiple experiments/replicates). 
         In this case, a column with the experiment allocation has to be present 
-        (compare I.2 in the 'data structure' help) which is selected from the corresponing 
+        (compare I.2 in the 'data structure' help) which is selected from the corresponding 
         drop down list. Sample values per well are selected from a 
         separate drop down list as illustrated below. 
         
@@ -348,7 +348,7 @@ output$uploadText3 <- renderUI(
                 (<i>topTable.txt</i>), the first checkbox next to the experiment 
                 drop down list has to be set.
                 As the experiment annotation and <i>channel</i> dimension are combined
-                in one column, the channel selection drop dowm list will be hidden
+                in one column, the channel selection drop down list will be hidden
                 subsequently (see illustration below). All columns of interest 
                 containing numeric values per well can be chosen from the drop down list.
                 An annotation column can be chosen optionally. 
@@ -362,7 +362,7 @@ output$uploadText4 <- renderUI(
         If a single experiment is investigated (i.e. a single series
         of plates with one or more measures values per well),
         the well, plate and channel dimension have to be
-        defined. To indiacte that only a single exeriment is investigated,
+        defined. To indicate that only a single experiment is investigated,
         the lower checkbox on the overview panel has to be set.
         A 'single_experiment' placeholder will
         be pasted in all dropdown lists for the experiment dimension.
@@ -375,7 +375,7 @@ output$uploadText4 <- renderUI(
 output$uploadText5 <- renderUI(
     HTML(paste("
                 Once the data input is complete and all required inputs
-                are defined, the data can be subitted to the application
+                are defined, the data can be submitted to the application
                 with the 'Explore Data' button (button will only appear if 
                 all required settings are defined). If inputs are changed afterwards
                 those have to be submitted by pushing this button again.
@@ -404,15 +404,15 @@ output$pvNum1 <- renderUI(
 output$PVtext1 <- renderUI(
     HTML(paste("
 The plate viewer tab provides heatmap representation of the data
-in the mutiwell plate format. Four plates can be investiagted
+in the muti-well plate format. Four plates can be investigated
 simultaneously and each of the four plates has a separate adjustment panel.
 This panel allows the user to define which plate of the screen is shown as a
 heatmap. In addition, the channel for which the data should be shown can be set
 (e.g. cell number). The selection of screen, plate and channel is done by
 choosing from dropdown lists. The content of the dropdown lists is extracted
 from the annotations of the loaded data set.
-Hovering ovter the heatmap will show the well ids
-(and annotation if defined, see <i>data uplaod</i> section) and measured values.
+Hovering over the heatmap will show the well ids
+(and annotation if defined, see <i>data upload</i> section) and measured values.
                "
     ))
 )
@@ -439,7 +439,7 @@ By opening the synchronization panel, the selections and settings (selected plat
 and color scale) made on the upper left plate can be transferred to the
 remaining plates. Heatmaps can be downloaded by clicking on the small
 icons in the upper right corner of each heatmap. If the <i>single experiment </i>
-setting is made (see <i>data uplaod </i> help page), the 'select experiment'
+setting is made (see <i>data upload </i> help page), the 'select experiment'
 drop down list will be inactive."
     ))
 )
@@ -471,7 +471,7 @@ output$FTtext1 <- renderUI(
 output$FTtext2 <- renderUI(
     HTML(paste("
                By default, only the first measured value is shown in the table.
-               If more than one meadured values per well are defined, those can
+               If more than one measured values per well are defined, those can
                be selected from a drop down list ('select channel') and added. Each column carries
                either a sort (for identifier columns) or a filter option
                (for numeric columns). Note that the data values shown in the table are rounded to 3 digits.
@@ -486,7 +486,7 @@ output$FTtext3 <- renderUI(
                If the table contains more than one measured value per well, a
                 reactive heatmap can be created from selected rows. Rows are
                selected and unselected by clicking. The heatmap will be
-               hierarchically clustered and can be downloaded using the downlaod
+               hierarchically clustered and can be downloaded using the download
                handler below."
     ))
 )
@@ -539,7 +539,7 @@ controls. Populations are defined by selecting the corresponding wells. A
 heatmap which represents the plate layout is provided to select (and unselect)
 the wells by clicking. The population to define is determined by setting a check above the heatmap.
 If at least one population is defined, a box plot will be generated and the median
-of the population will plotted as colored dots in the upper left plot.</br>
+of the population will be plotted as colored dots in the upper left plot.</br>
 </br><b>Important note:</b> the
 position of the controls is fixed for all plates within one experiment. The drop
 down list to choose the plate changes exclusively the visualized heatmap and
@@ -549,9 +549,9 @@ does not allow to define plate specific control wells."
 
 output$QCtext3 <- renderUI(
     HTML(paste("
-    Two populations, namely positive and negative cotrols are
+    Two populations, namely positive and negative controls are
     required to generate the KDE plot at the upper right panel.
-    A quantitative assesment of the statistical effect size is provided
+    A quantitative assessment of the statistical effect size is provided
     by the robust Z'-factor which is printed in the legend of the KDE plot.
 
 "
@@ -562,8 +562,8 @@ output$QCtext4 <- renderUI(
     HTML(paste("
 A third population is reserved for non-targeting controls. The data points
 allocated to this population will be added to all representations. Single wells
-can be unselected by a second click, all populations can be emtied by with the
-rseset button.
+can be unselected by a second click, all populations can be emptied by with the
+reset button.
 
                "
     ))
@@ -594,7 +594,7 @@ output$SPtext1 <- renderUI(
 The 'Scatter Plot' tab is an additional visualization tool to interpret the data.
 A two-dimensional graphical visualization of the relation between two data series is possible.
 Each of the two data series represents values for one channel.
-The two data series are supposed to be of uniform length and are plotted against each other in a cartesian grid.
+The two data series are supposed to be of uniform length and are plotted against each other in a Cartesian grid.
 As an example, the correlation between replicate screens can be estimated based on the plot.
                "
     ))
@@ -604,10 +604,10 @@ As an example, the correlation between replicate screens can be estimated based 
 output$SPtext2 <- renderUI(
     HTML(paste("
 Which experiment and channel the data should be plotted for, is defined by choosing from drop-down lists.
-If the'single experiment' choice is set, data series of single plates within one experiment
+If the 'single experiment' choice is set, data series of single plates within one experiment
 can be plotted against each other. A regression line can be added to the plot
 by setting the corresponding action in the control panel. The equation,
-goodness of the linear mdoel fit and correlation coefficients (Pearson and Spearman) will be displayed
+goodness of the linear model fit and correlation coefficients (Pearson and Spearman) will be displayed
 along with the regression line.
 "
     ))
@@ -619,7 +619,7 @@ output$SPtext3 <- renderUI(
 By drawing a rectangle (move the pushed mouse cursor) on the plot
 region further options become available. Those options include a zoom window and
 the 'population manager'. Upon brushing, a zoom button and a second control panel appear.
-A button which appears on to top allows to switch between the inital panel and the
+A button which appears on to top allows to switch between the initial panel and the
 population manager."
     ))
 )
@@ -629,7 +629,7 @@ output$SPtext4 <- renderUI(
 The population manager allows to define the data points which are embedded
 by the rectangle as a subpopulation. The population name is typed in the
 provided text input bar. Upon submission by clicking the 'create subpopulation'
-bytton, the population will be created. A random color will be assigned to the
+button, the population will be created. A random color will be assigned to the
 population. All defined populations are listed in a reactive table.
                "
     ))
