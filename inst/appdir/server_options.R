@@ -4,7 +4,7 @@
 
 ## paramters are captured as a data frame in a reactiveValues object
 params = reactiveValues()
-ParmsUpload <- reactiveValues(state=F)
+ParmsUpload <- reactiveValues(state=F,state2=F)
 
 
 observe({
@@ -55,31 +55,77 @@ observe({
             params_df[7,2] <- "on"
     params$data = params_df
     
-    #here comes stuff from server_qualityControl.R
+    
     posWellsOut <- c()
     negWellsOut <- c()
     ntWellsOut <- c()
+    
+    posWellsOut_sp <- c()
+    negWellsOut_sp <- c()
+    ntWellsOut_sp <- c()
+    
     ctrlWellsOut <- c()
+    ctrlWellsList <- list()
     
     validate(need(input$platesQC, message=FALSE))
-    if(isTRUE(plateStateQC$state))
+    if(isTRUE(plateStateQC$state)) {
         params_df[8,2] <- "on"
-    if(!is.null(pos_wellStore))
-        posWellsOut <- unlist(reactiveValuesToList(pos_wellStore),use.names=F)
-    if(!is.null(neg_wellStore))
-        negWellsOut <- unlist(reactiveValuesToList(neg_wellStore),use.names=F)
-    if(!is.null(nt_wellStore))
-        ntWellsOut <- unlist(reactiveValuesToList(nt_wellStore),use.names=F)
-    
-    posWellsOut <- paste(posWellsOut,collapse = "_:_")
-    negWellsOut <- paste(negWellsOut,collapse = "_:_")
-    ntWellsOut <- paste(ntWellsOut,collapse = "_:_")
-    
-    ctrlWellsOut <- paste(posWellsOut,negWellsOut,ntWellsOut,sep = "_@_")
-    
-    params_df[c(9:(8+length(tabInput$inputPlates))),2] <- ctrlWellsOut
-    params$data = params_df
-    
+        if(!is.null(pos_wellStore)) {
+            if(length(unlist(reactiveValuesToList(pos_wellStore),use.names=F))>0){
+                posWellsOut <- unlist(reactiveValuesToList(pos_wellStore),use.names=F)
+            } else {posWellsOut <- "EMPTY"}
+        }
+        
+        if(!is.null(neg_wellStore)) {
+            if(length(unlist(reactiveValuesToList(neg_wellStore),use.names=F))>0){
+                negWellsOut <- unlist(reactiveValuesToList(neg_wellStore),use.names=F)
+            } else {negWellsOut <- "EMPTY"}
+        }
+        if(!is.null(nt_wellStore)) {
+            if(length(unlist(reactiveValuesToList(nt_wellStore),use.names=F))>0){
+                ntWellsOut <- unlist(reactiveValuesToList(nt_wellStore),use.names=F)
+            } else {ntWellsOut <- "EMPTY"}
+        }
+        
+        posWellsOut <- paste(posWellsOut,collapse = "_:_")
+        negWellsOut <- paste(negWellsOut,collapse = "_:_")
+        ntWellsOut <- paste(ntWellsOut,collapse = "_:_")
+        
+        
+        
+        
+        ctrlWellsOut <- paste(posWellsOut,negWellsOut,ntWellsOut,sep = "_@_")
+        
+        params_df[c(9:(8+length(tabInput$inputPlates))),2] <- ctrlWellsOut
+        params$data = params_df
+    } else {
+        for(i in names(getWells)) {
+            posWellsOut_sp <- which(getWells[[i]][[1]] == "positive")
+            negWellsOut_sp <- which(getWells[[i]][[1]] == "negative")
+            ntWellsOut_sp <- which(getWells[[i]][[1]] == "nt")
+            
+            
+            ctrlWellsList[[i]][1] <- i
+            sumWellsOut_sp <- paste(
+                paste(df_qc()[posWellsOut_sp,TabDimensions$well],collapse = "_:_"),
+                paste(df_qc()[negWellsOut_sp,TabDimensions$well],collapse = "_:_"),
+                paste(df_qc()[ntWellsOut_sp,TabDimensions$well],collapse = "_:_"),
+                sep="_@_"
+            )
+            if(!sumWellsOut_sp %in% "_@__@_"){
+                ctrlWellsList[[i]][2] <- sumWellsOut_sp
+            } else {
+                ctrlWellsList[[i]][1] <- i
+                ctrlWellsList[[i]][2] <- NA
+            }
+        }
+        ctrlWellsOut_sp <- data.frame(do.call(rbind,ctrlWellsList),stringsAsFactors=F)
+        colnames(ctrlWellsOut_sp) <- NULL
+        row.names(ctrlWellsOut_sp) <- NULL
+        params_df[c(9:(8+length(tabInput$inputPlates))),1] <- ctrlWellsOut_sp[,1]
+        params_df[c(9:(8+length(tabInput$inputPlates))),2] <- ctrlWellsOut_sp[,2]
+        params$data = params_df
+    }
 })
 
 
@@ -213,8 +259,16 @@ output$showParmsUpload <- reactive({
 })
 outputOptions(output, "showParmsUpload", suspendWhenHidden=FALSE)
 
+observe({
+    validate(need(input$file1, message=FALSE))
+    validate(need(input$file2, message=FALSE))
+    if(any(!is.na(params$input[9:nrow(params$input),2])))
+        ParmsUpload$state2 <- T
+})
 
-
-
+output$showControlsUpload <- reactive({
+    return(ParmsUpload$state2)
+})
+outputOptions(output, "showControlsUpload", suspendWhenHidden=FALSE)
 
 

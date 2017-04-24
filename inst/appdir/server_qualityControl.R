@@ -14,8 +14,90 @@
 
 getWells <- reactiveValues()
 storeMeans <- reactiveValues()
-loadCtrlWells <- reactiveValues(state=F)
+loadCtrlWells <- reactiveValues(allPlates=F,singlePlates=F)
+wellsLoaded <- reactiveValues()
+wellsLoaded_sp <- reactiveValues()
 
+## control wells can be loaded from the session parameter file 
+observeEvent(input$applyCtrls,{
+    returnCtrlWells <-    function(x){  
+        validate(need(input$file2, message=FALSE))
+        falseCtrlWells = F
+        if(!is.null(x)) {
+            if(is.data.frame(x)) {
+                if(!is.null(x[,1]) && !is.null(x[,2])){
+                    if(length(x[,1]) > 0 && length(x[,2]) > 0) {
+                        if(nrow(x)-8 != length(tabInput$inputPlates)){
+                            falseCtrlWells <- T
+                            return(falseCtrlWells)
+                        } else {
+                            if(x[8,2] %in% "on") {
+                                updateCheckboxInput(session,
+                                                    "allPlates",
+                                                    value=T)
+                                allCtrlWells <-  unlist(
+                                    strsplit(x[9,2],
+                                             "_@_")
+                                )
+                                wellsLoaded$posWells <- unlist(
+                                    strsplit(allCtrlWells[1],
+                                             "_:_")
+                                )
+                                wellsLoaded$negWells <- unlist(
+                                    strsplit(allCtrlWells[2],
+                                             "_:_")
+                                )
+                                wellsLoaded$ntWells <- unlist(
+                                    strsplit(allCtrlWells[3],
+                                             "_:_")
+                                )
+                                loadCtrlWells$allPlates=T
+                                loadCtrlWells$singlePlates=F
+                            } else {
+                                updateCheckboxInput(session,
+                                                    "allPlates",
+                                                    value=F)
+                                for(i in 9:nrow(x) ) {
+                                    allCtrlWells_sp <-  unlist(strsplit(x[i,2],
+                                                                        "_@_"))
+                                    plateID_sp <- x[i,1]
+                                    wellsLoaded_sp[[plateID_sp]] <- list(
+                                        unlist(
+                                            strsplit(allCtrlWells_sp[1],
+                                                     "_:_")),
+                                        unlist(
+                                            strsplit(allCtrlWells_sp[2],
+                                                     "_:_")),
+                                        unlist(
+                                            strsplit(allCtrlWells_sp[3],
+                                                     "_:_"))
+                                    )
+                                }
+                                loadCtrlWells$allPlates=F
+                                loadCtrlWells$singlePlates=T
+                            }
+                        }
+                    } else {falseCtrlWells = T}
+                } else {falseCtrlWells = T}
+            } else {falseCtrlWells = T}
+        } else {falseCtrlWells = T}
+        
+        if(isTRUE(falseCtrlWells)) {
+            js_string <- 'alert("SOMETHING");'
+            warnCtrlWells <- paste("The loaded session parameter file",
+                                   "does not match the input data",sep=" ")
+            warnCtrlWells_js_string <- sub("SOMETHING",warnCtrlWells,js_string)
+            session$sendCustomMessage(type='jsCode',
+                                      list(value = warnCtrlWells_js_string ))
+        } else {
+            falseCtrlWells <- ''
+        }
+    }
+    validate(need(input$file2, message=FALSE))
+    validate(need(input$applyCtrls, message=FALSE))
+    try(returnCtrlWells(params$input),
+        silent=T)
+})
 
 ## observer to check if plate selection is set to "all"
 ## plateStateQC is a reactiveValues object to capture teh "all" selection
@@ -77,8 +159,6 @@ observe({
         cex = rep(0.0,length(inputPlates))
     )
 })
-
-
 
 
 
@@ -435,6 +515,228 @@ observe({
             bind_shiny("heatmap_qc")
     }
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+observeEvent(input$applyCtrls,{
+    for(i in tabInput$inputPlates) {
+        getWells[[i]] <- list(rep("undefined", tabInput$rows*tabInput$cols),
+                              paste0(rep(LETTERS[1:tabInput$rows], tabInput$cols),
+                                     unlist(lapply(1:tabInput$rows, rep, tabInput$cols))),
+                              rep("white",tabInput$rows*tabInput$cols),
+                              rep(0.3,tabInput$rows*tabInput$cols)
+        )
+    }
+    storeMeans$pos_plates <-  cbind.data.frame(
+        plate=tabInput$inputPlates,
+        med=rep(0,length(tabInput$inputPlates)),
+        status=rep(NA,length(tabInput$inputPlates)),
+        color = rep(0,length(tabInput$inputPlates)),
+        cex = rep(0.0,length(tabInput$inputPlates))
+    )
+    
+    storeMeans$neg_plates <- cbind.data.frame(
+        plate=tabInput$inputPlates,
+        med=rep(0,length(tabInput$inputPlates)),
+        status=rep(NA,length(tabInput$inputPlates)),
+        color = rep(0,length(tabInput$inputPlates)),
+        cex = rep(0.0,length(tabInput$inputPlates))
+    )
+    
+    storeMeans$nt_plates <- cbind.data.frame(
+        plate=tabInput$inputPlates,
+        med=rep(0,length(tabInput$inputPlates)),
+        status=rep(NA,length(tabInput$inputPlates)),
+        color = rep(0,length(tabInput$inputPlates)),
+        cex = rep(0.0,length(tabInput$inputPlates))
+    )
+    
+    for(i in names(pos_wellStore)) {
+        pos_wellStore[[i]] <- NULL}
+    
+    for(i in names(neg_wellStore)) {
+        neg_wellStore[[i]] <- NULL}
+    
+    for(i in names(nt_wellStore)) {
+        nt_wellStore[[i]] <- NULL}
+    
+    for(i in names(data_ntWells)) {
+        data_ntWells[[i]] <- NULL}
+    
+    for(i in names(data_posWells)) {
+        data_posWells[[i]] <- NULL}
+    
+    for(i in names(data_negWells)) {
+        data_negWells[[i]] <- NULL}
+})
+
+
+
+observe({
+    validate(need(input$applyCtrls, message=FALSE))
+    
+    errorPosWells <- F
+    errorNegWells <- F
+    errorNtWells <- F
+    errorPlates <- F
+    
+    if(isTRUE(loadCtrlWells$allPlates)) {
+        if(!is.null(wellsLoaded$posWells)) {
+            if(length(wellsLoaded$posWells)>0) {
+                if(wellsLoaded$posWells != "EMPTY") {
+                    if(!isTRUE(any(wellsLoaded$posWells %in% df_qc()[,TabDimensions$well]))){
+                        errorPosWells <- T
+                    } else {
+                        errorPosWells <- F
+                        loadPosID <- df_qc()[which(df_qc()[,TabDimensions$well] %in% wellsLoaded$posWells),'CSidB110'] 
+                        isolate(getWells[[input$platesQC]][[1]][loadPosID] <-  "positive")
+                        isolate(getWells[[input$platesQC]][[3]][loadPosID] <-  pp_col)
+                        isolate(getWells[[input$platesQC]][[4]][loadPosID] <-  1)
+                    }
+                }
+            }
+        }
+        
+        if(!is.null(wellsLoaded$negWells)) {
+            if(length(wellsLoaded$negWells)>0) {
+                if(wellsLoaded$negWells != "EMPTY") {
+                    if(!isTRUE(any(wellsLoaded$negWells %in% df_qc()[,TabDimensions$well])) | 
+                       isTRUE(any(errorPosWells))){
+                        errorNegWells <- T
+                    } else {
+                        errorNegWells <- F
+                        loadNegID <- df_qc()[which(df_qc()[,TabDimensions$well] %in% wellsLoaded$negWells),'CSidB110'] 
+                        isolate(getWells[[input$platesQC]][[1]][loadNegID] <-  "negative")
+                        isolate(getWells[[input$platesQC]][[3]][loadNegID] <-  pn_col)
+                        isolate(getWells[[input$platesQC]][[4]][loadNegID] <-  1)
+                    }
+                }
+            }
+        }
+        
+        if(!is.null(wellsLoaded$ntWells)) {
+            if(length(wellsLoaded$ntWells)>0) {
+                if(wellsLoaded$ntWells != "EMPTY") {
+                    if(!isTRUE(any(wellsLoaded$ntWells %in% df_qc()[,TabDimensions$well]))| 
+                       isTRUE(any(errorNegWells,errorPosWells))){
+                        errorNtWells <- T
+                    } else {
+                        errorNtWells <- F
+                        loadNtID <- df_qc()[which(df_qc()[,TabDimensions$well] %in% wellsLoaded$ntWells),'CSidB110'] 
+                        isolate(getWells[[input$platesQC]][[1]][loadNtID] <-  "nt")
+                        isolate(getWells[[input$platesQC]][[3]][loadNtID] <-  nt_col)
+                        isolate(getWells[[input$platesQC]][[4]][loadNtID] <-  1)
+                    }
+                }
+            }
+        }
+    } else {
+        if(isTRUE(loadCtrlWells$singlePlates)) {
+            for(i in names(wellsLoaded_sp)){
+                if(i %in% tabInput$inputPlates){
+                    PosWellsToFind <- unlist(wellsLoaded_sp[[i]][1],use.names=F)
+                    if(!is.null(PosWellsToFind)) {
+                        if(length(PosWellsToFind)>0) {
+                            if(!is.na(PosWellsToFind)[1]) {
+                                if(!isTRUE(any(PosWellsToFind %in% df_qc()[,TabDimensions$well]))){
+                                    errorPosWells <- T
+                                } else {
+                                    errorPosWells <- F
+                                    loadPosID <- df_qc()[which(df_qc()[,TabDimensions$well] %in% PosWellsToFind ),'CSidB110'] 
+                                    isolate(getWells[[i]][[1]][loadPosID] <-  "positive")
+                                    isolate(getWells[[i]][[3]][loadPosID] <-  pp_col)
+                                    isolate(getWells[[i]][[4]][loadPosID] <-  1)
+                                }
+                            }
+                        }
+                    }
+                    NegWellsToFind <- unlist(wellsLoaded_sp[[i]][2],use.names=F)
+                    if(!is.null(NegWellsToFind)) {
+                        if(length(NegWellsToFind)>0) {
+                            if(!is.na(NegWellsToFind)[1]) {
+                                if(!isTRUE(any(NegWellsToFind %in% df_qc()[,TabDimensions$well]))|
+                                   isTRUE(errorPosWells)){
+                                    errorNegWells <- T
+                                } else {
+                                    errorNegWells <- F
+                                    loadNegID <- df_qc()[which(df_qc()[,TabDimensions$well] %in% NegWellsToFind ),'CSidB110'] 
+                                    isolate(getWells[[i]][[1]][loadNegID] <-  "negative")
+                                    isolate(getWells[[i]][[3]][loadNegID] <-  pn_col)
+                                    isolate(getWells[[i]][[4]][loadNegID] <-  1)
+                                }
+                            }
+                        }
+                    }
+                    NtWellsToFind <- unlist(wellsLoaded_sp[[i]][3],use.names=F)
+                    if(!is.null(NtWellsToFind)) {
+                        if(length(NtWellsToFind)>0) {
+                            if(!is.na(NtWellsToFind)[1]) {
+                                if(!isTRUE(any(NtWellsToFind %in% df_qc()[,TabDimensions$well]))|
+                                   isTRUE(any(errorPosWells,errorNegWells))){
+                                    errorNtWells <- T
+                                } else {
+                                    errorNtWells <- F
+                                    loadNtID <- df_qc()[which(df_qc()[,TabDimensions$well] %in% NtWellsToFind ),'CSidB110'] 
+                                    isolate(getWells[[i]][[1]][loadNtID] <-  "nt")
+                                    isolate(getWells[[i]][[3]][loadNtID] <-  nt_col)
+                                    isolate(getWells[[i]][[4]][loadNtID] <-  1)
+                                }
+                            }
+                        }
+                    }
+                } else {errorPlates <- F}
+            }#end of for loop 
+        } 
+    }
+    
+    
+    if(isTRUE(any(errorPosWells,errorNegWells,errorNtWells,errorPlates))) {
+        js_string <- 'alert("SOMETHING");'
+        warnCtrlWells2 <- paste("Error: The well format of the loaded session", 
+                                "sparameter file does not match the data",sep=" ")
+        warnCtrlWells2_js_string <- sub("SOMETHING",warnCtrlWells2,js_string)
+        session$sendCustomMessage(type='jsCode',
+                                  list(value = warnCtrlWells2_js_string ))
+    } else {
+        js_string <- ''
+    }
+})
+
+
+
+
+
+
+
+
+
+
 
 ## after clicking the selected wells are stored in reactiveValues objects 
 pos_wellStore <- reactiveValues()
