@@ -84,17 +84,17 @@ observeEvent(input$file1,{
     )
     colnames(params_df) <- NULL
     params$data = params_df
-
+    
 })
 
 
 output$dataInfo <- renderUI({
     validate(need(input$file1, message=FALSE))
     if(is.null(feature_table2$data_pre)){
-        h6("Incorrect data format (.RData data frames, .txt and .csv are supported)")
+        h3("Incorrect data format (.RData data frames, .txt, .csv and .xlsx files are supported)")
     } else {
         if(inherits(feature_table2$data_pre,"try-error",which=F)){
-            h6("Data input failed due to an unkown reason)")
+            h3("Data input failed due to an unkown reason")
         } else {
             test_cols <- feature_table2$data_pre
             if(any(duplicated(colnames(test_cols)))) {
@@ -106,12 +106,12 @@ output$dataInfo <- renderUI({
                             nrow(feature_table2$data_pre),
                             " rows</b>",
                             "<br/> Select columns with the annotation
-                    and measured values from the drop down lists.")
+                            and measured values from the drop down lists.")
                 )
             }
+            }
         }
-    }
-})
+    })
 
 
 

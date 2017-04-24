@@ -11,8 +11,9 @@ observe({
     params_df <- data.frame(
         c("well_input","plate_input","experiment_input","anno_input","measuredValues_input",
           "cellHTS_state","singleExperiment_state",
+          "allPlates_state",
           tabInput$inputPlates),
-        c(rep(NA,7+length(tabInput$inputPlates)))
+        c(rep(NA,8+length(tabInput$inputPlates)))
     )
     colnames(params_df) <- NULL
     
@@ -54,15 +55,29 @@ observe({
             params_df[7,2] <- "on"
     params$data = params_df
     
-    posWellsOut <- c()
     #here comes stuff from server_qualityControl.R
+    posWellsOut <- c()
+    negWellsOut <- c()
+    ntWellsOut <- c()
+    ctrlWellsOut <- c()
+    
     validate(need(input$platesQC, message=FALSE))
     if(isTRUE(plateStateQC$state))
-        if(!is.null(pos_wellStore))
-            posWellsOut <- unlist(reactiveValuesToList(pos_wellStore),use.names=F)
-    if(!is.null(posWellsOut))
-        if(length(posWellsOut)>0)
-            params_df[8:length(tabInput$inputPlates),2] <- paste(posWellsOut,collapse = "_:_")
+        params_df[8,2] <- "on"
+    if(!is.null(pos_wellStore))
+        posWellsOut <- unlist(reactiveValuesToList(pos_wellStore),use.names=F)
+    if(!is.null(neg_wellStore))
+        negWellsOut <- unlist(reactiveValuesToList(neg_wellStore),use.names=F)
+    if(!is.null(nt_wellStore))
+        ntWellsOut <- unlist(reactiveValuesToList(nt_wellStore),use.names=F)
+    
+    posWellsOut <- paste(posWellsOut,collapse = "_:_")
+    negWellsOut <- paste(negWellsOut,collapse = "_:_")
+    ntWellsOut <- paste(ntWellsOut,collapse = "_:_")
+    
+    ctrlWellsOut <- paste(posWellsOut,negWellsOut,ntWellsOut,sep = "_@_")
+    
+    params_df[c(9:(8+length(tabInput$inputPlates))),2] <- ctrlWellsOut
     params$data = params_df
     
 })
@@ -86,7 +101,7 @@ output$downloadParms <- downloadHandler (
         write.table(params$data,
                     file,
                     row.names = F,
-                    sep=",",
+                    sep=";",
                     dec ="."
         )}
 )
@@ -105,7 +120,8 @@ observe({
                     inFile$datapath,
                     na.strings = c("NA","N/A",
                                    "NaN","null",""),
-                    header=F
+                    header=F,
+                    sep = ";"
                 )
                 ,row.names = NULL)
         )
@@ -114,59 +130,59 @@ observe({
 
 
 observe({
-validate(need(input$file2, message=FALSE))
-returnParms <-    function(x){  
-    falseParams = F
-    falseParams2 = F
     validate(need(input$file2, message=FALSE))
-            if(!is.null(x)) {
-                if(is.data.frame(x)) {
-                    if(!is.null(x[,1]) && !is.null(x[,2])){
-                        if(length(x[,1]) > 0 && length(x[,2]) > 0) {
-                            for(i in 1:7) {
-                                if(is.na(x[i,2])) {
-                                    getParams[[x[i,1]]] <- NULL
-                                } else {
-                                    inputParm <-  unlist(
-                                        strsplit(x[i,2],
-                                                 ":_:")
-                                    )
-                                    if(inputParm[1] %in% c(colnames(feature_table2$data_pre),
-                                                           "on")) {
-                                        getParams[[x[i,1]]] <- inputParm
-                                    } else {falseParams2 = T}
-                                }
+    returnParms <-    function(x){  
+        falseParams = F
+        falseParams2 = F
+        validate(need(input$file2, message=FALSE))
+        if(!is.null(x)) {
+            if(is.data.frame(x)) {
+                if(!is.null(x[,1]) && !is.null(x[,2])){
+                    if(length(x[,1]) > 0 && length(x[,2]) > 0) {
+                        for(i in 1:7) {
+                            if(is.na(x[i,2])) {
+                                getParams[[x[i,1]]] <- NULL
+                            } else {
+                                inputParm <-  unlist(
+                                    strsplit(x[i,2],
+                                             ":_:")
+                                )
+                                if(inputParm[1] %in% c(colnames(feature_table2$data_pre),
+                                                       "on")) {
+                                    getParams[[x[i,1]]] <- inputParm
+                                } else {falseParams2 = T}
                             }
-                        } else {falseParams = T}
+                        }
                     } else {falseParams = T}
                 } else {falseParams = T}
             } else {falseParams = T}
-    
-    if(isTRUE(falseParams)) {
-        js_string <- 'alert("SOMETHING");'
-        warnParms <- paste("The loaded session parameter file",
-                           "does not match the input data",sep=" ")
-        warnParms_js_string <- sub("SOMETHING",warnParms,js_string)
-        session$sendCustomMessage(type='jsCode',
-                                  list(value = warnParms_js_string ))
-    } else {
-        if(isTRUE(falseParams2)) {
+        } else {falseParams = T}
+        
+        if(isTRUE(falseParams)) {
             js_string <- 'alert("SOMETHING");'
-            warnParms2 <- paste("Not all loaded parameter from the session file",
-                                "do match the input data",sep=" ")
-            warnParms2_js_string <- sub("SOMETHING",warnParms2,js_string)
+            warnParms <- paste("The loaded session parameter file",
+                               "does not match the input data",sep=" ")
+            warnParms_js_string <- sub("SOMETHING",warnParms,js_string)
             session$sendCustomMessage(type='jsCode',
-                                      list(value = warnParms2_js_string ))
+                                      list(value = warnParms_js_string ))
         } else {
-            warnParms <- ''
-            warnParms2 <- ''
+            if(isTRUE(falseParams2)) {
+                js_string <- 'alert("SOMETHING");'
+                warnParms2 <- paste("Not all loaded parameter from the session file",
+                                    "do match the input data",sep=" ")
+                warnParms2_js_string <- sub("SOMETHING",warnParms2,js_string)
+                session$sendCustomMessage(type='jsCode',
+                                          list(value = warnParms2_js_string ))
+            } else {
+                warnParms <- ''
+                warnParms2 <- ''
+            }
         }
     }
-}
-
-try(returnParms(params$input),
-    silent=T)
-
+    
+    try(returnParms(params$input),
+        silent=T)
+    
 })
 
 
@@ -182,18 +198,21 @@ observe({
     } else {
         warnParms3 <- ''
     }
-        
+    
 })
 
 observe({
-    if(!is.null(feature_table2$data_pre) && nrow(feature_table2$data_pre)>0)
-        ParmsUpload$state <- T
+    validate(need(input$file1, message=FALSE))
+    if(!inherits(feature_table2$data_pre,"try-error",which=F))
+        if(!is.null(feature_table2$data_pre) & nrow(feature_table2$data_pre)>0) 
+            ParmsUpload$state <- T
 })
 
 output$showParmsUpload <- reactive({
     return(ParmsUpload$state)
 })
 outputOptions(output, "showParmsUpload", suspendWhenHidden=FALSE)
+
 
 
 

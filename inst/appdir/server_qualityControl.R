@@ -14,6 +14,8 @@
 
 getWells <- reactiveValues()
 storeMeans <- reactiveValues()
+loadCtrlWells <- reactiveValues(state=F)
+
 
 ## observer to check if plate selection is set to "all"
 ## plateStateQC is a reactiveValues object to capture teh "all" selection
@@ -77,6 +79,9 @@ observe({
 })
 
 
+
+
+
 ## Heatmap to define control populations by clickin'
 ## a data frame is created and saved as a reactive using the function 'plotHeatmap'
 df_qc <- reactive({
@@ -94,9 +99,13 @@ df_qc <- reactive({
             dplyr::mutate_(column=lazyeval::interp(~gsub("[^0-9]","",x),
                                                    x=as.name(TabDimensions$well))) %>%
             dplyr::mutate(value = 1) %>%
-            dplyr::mutate(def.color = "white") %>%
-            dplyr::mutate(CSidB110 = seq(1:nrow(.)))
+            dplyr::mutate(def.color = "white") 
         allPlatesDummy <- allPlatesDummy[gtools::mixedorder(allPlatesDummy[,TabDimensions$well]),]
+        allPlatesDummy$column <- factor(
+            as.character(as.numeric(allPlatesDummy$column)),
+            levels=seq(1:n_distinct(allPlatesDummy$column))
+        )
+        allPlatesDummy$CSidB110 <- 1:nrow(allPlatesDummy)
         return(allPlatesDummy)
         
     } else {
