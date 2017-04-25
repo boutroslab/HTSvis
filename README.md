@@ -15,8 +15,8 @@ Version 1.1.3
 
 ## About 
 HTSvis is an R/Shiny open-source web application for interactive visualization and 
-exploratory analysis of data from arrayed high-throughput screens. 
-The application can be installed as an R package and is started from the R console using HTSvis().
+exploratory analysis of data from arrayed high-throughput screens. The web application 
+is either available via https://htsvis.dkfz.de/ or can be installed as an R package as described here.
 Shiny allows that the usage of the application in the default web browser does not require any bioinformatics training.
 Input data can either be a result file obtained upon analysis with the Bioconductor/R package cellHTS or a generic table with raw or analyzed data from, e.g. a high-content microscopy screen. Any data has to be aggregated per well. Tools to aggregate single cell data from microscopy screens are available in CellProfiler analyst, for example.  </br> 
 </br> 
@@ -39,8 +39,7 @@ library(HTSvis)
 HTSvis()
 ```
 ## Test Data
-Some sample datasets can be downloaded from http://b110-wiki.dkfz.de/confluence/display/HTSvis. This page also contains detailed descriptions of each test dataset.
-Alternatively, test data can be found in the GitHub repository ('test_data' folder), you can get it by dowloading the repository ('clone or download' option). Please note that Safari does not support the upload of RData files.<br />
+Some sample datasets can be downloaded from http://b110-wiki.dkfz.de/confluence/display/HTSvis. This page also contains detailed descriptions of each test dataset.<br />
 Following test data sets are provided, please check the help page in the app for instructions on how to upload them. A description file of the tets data is provided as a pdf in the 'test_data' folder.<br />
 
 | File | Description |
@@ -104,6 +103,7 @@ The package also depends on other R-packages that should be automatically downlo
 
 ## Contact 
 #### Christian Scheeder c.scheeder@dkfz.de
+#### Florain Heigwer f.heigwer@dkfz.de
 #### Michael Boutros m.boutros@dkfz.de 
 
 
