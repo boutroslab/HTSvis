@@ -173,7 +173,7 @@ df_qc <- reactive({
         
         
         allPlatesDummy <- feature_table2$data %>%
-            dplyr::select_(TabDimensions$well) %>% unique() %>%
+            dplyr::select_(TabDimensions$well,TabDimensions$annotation) %>% unique() %>%
             dplyr::mutate_(row=lazyeval::interp(~gsub("[^A-z]","",x),
                                                 x=as.name(TabDimensions$well))) %>%
             dplyr::mutate_(column=lazyeval::interp(~gsub("[^0-9]","",x),
@@ -450,7 +450,16 @@ fu_qc_hover <- reactive({print_out <- function(x) {
     if(is.null(x)) return(NULL)
     
     if(isTRUE(plateStateQC$state)) {
-        return(df_qc()[df_qc()$CSidB110 == x$CSidB110,TabDimensions$well])
+
+        if(TabDimensions$well == TabDimensions$annotation) {
+            return(df_qc()[df_qc()$CSidB110 == x$CSidB110,TabDimensions$well])
+        } else {
+            return(
+            paste(df_qc()[df_qc()$CSidB110 == x$CSidB110,TabDimensions$well],
+                  df_qc()[df_qc()$CSidB110 == x$CSidB110,TabDimensions$annotation],sep="<br />") 
+            )
+            }
+
     } else {
         if(TabDimensions$well == TabDimensions$annotation) {
             paste(df_qc()[df_qc()$CSidB110 == x$CSidB110,TabDimensions$well],

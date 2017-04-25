@@ -2,7 +2,7 @@
 
 ##control of conditional panels
 helpTabs <- reactiveValues(structure=T,upload=F, plateViewer=F,featureTable=F,
-                           qualityControl=F,scatterPlot=F,testData=F)
+                           qualityControl=F,scatterPlot=F,options=F,testData=F)
 
 observeEvent(input$showStructure,{
     for(i in names(helpTabs)) {
@@ -58,6 +58,13 @@ observeEvent(input$showHelpSP,{
     helpTabs$scatterPlot<- T
 })
 
+observeEvent(input$showHelpOp,{
+    for(i in names(helpTabs)) {
+        helpTabs[[i]] <- F
+    }
+    helpTabs$options<- T
+})
+
 observeEvent(input$showTestData,{
     for(i in names(helpTabs)) {
         helpTabs[[i]] <- F
@@ -103,6 +110,11 @@ output$showHelpSPOut <- reactive({
 })
 outputOptions(output, "showHelpSPOut", suspendWhenHidden=FALSE)
 
+output$showOptionsOut <- reactive({
+    return(helpTabs$options)
+})
+outputOptions(output, "showOptionsOut", suspendWhenHidden=FALSE)
+
 
 output$showHelpTestDataOut <- reactive({
     return(helpTabs$testData)
@@ -120,7 +132,14 @@ output$helpHeader <- renderUI(
 
 output$helpSubHeader <- renderUI(
     HTML(paste("
-               Click on the tabs to open the sub pages. You can restart the app
+                Below you will find detailed explanations 
+                and instructions for each tab which can be opened 
+                by clicking on the tabs below. 
+                The tab 'examples' contains a link to example data sets
+                and an example step-by-step analysis workflow.
+                <br/>
+                <br/>
+                <b>Tipp</b>: You can restart the app
                by refreshing your browser."
     ))
     )
@@ -313,6 +332,11 @@ output$uploadText1 <- renderUI(
                 A file browser is available to read data into the application.
                 Once the data is uploaded, a short notice with a summary of the
                 uploaded data table's dimensions will appear on the right. 
+                Upon successful data upload, a second file browser 
+                will appear below the first one. This uploader can be used 
+                to upload a session parameter file which is described in the 
+                help page. If no session parameter file is used, the second uploader
+                can be ignored (as in the illustrations below).
                 Drop down lists containing the column
                 names will appear below the file browser (see illustration below).
                "
@@ -472,7 +496,10 @@ output$FTtext2 <- renderUI(
     HTML(paste("
                By default, only the first measured value is shown in the table.
                If more than one measured values per well are defined, those can
-               be selected from a drop down list ('select channel') and added. Each column carries
+               be selected from a drop down list ('select channel') and added. 
+                The button 'select all channels' can be used to select all 
+                loaded channels. 
+                Each column carries
                either a sort (for identifier columns) or a filter option
                (for numeric columns). Note that the data values shown in the table are rounded to 3 digits.
                 The sorted and filtered table can be
@@ -485,9 +512,17 @@ output$FTtext3 <- renderUI(
     HTML(paste("
                If the table contains more than one measured value per well, a
                 reactive heatmap can be created from selected rows. Rows are
-               selected and unselected by clicking. The heatmap will be
+               selected and unselected by clicking. If the shown table has less 
+                than 200 row entries, the button 'select all rows' below 
+                the table can be used to select all rows. The table size can be reduced by 
+                the column filters above each column.
+                The heatmap will be
                hierarchically clustered and can be downloaded using the download
-               handler below."
+               handler below. By default, the color scale of the heatmap is spanned
+               between the minimum and maximum value of the data used for the heatmap.
+               Row and column scaling can be applied using radio buttons below the heatmap. 
+               For further information concerning the row/column scaling can be found 
+            in the documentation of the R package <i>heatmap.2</i>"
     ))
 )
 
@@ -511,8 +546,9 @@ output$QCtext1 <- renderUI(
 A statistical assessment of the data is provided in the 'Quality Control' tab.
 Statistical metrics and plots are calculated on the basis of positive and negative controls which
 are user-defined.
-Controls are selected by defining their position on the plate. <b>Importantly</b>, the
-position of the controls is fixed for all plates within one experiment upon selection.
+Controls are selected by defining their position on the plate. 
+This can be done by either defining the control wells per single plate
+or cumulatively for all plates within one experiment.
 The upper left plot shows all data points of one screen as plate-wise data
 series (data points of one plate are plotted at one x-axis position). If control populations are defined,
 the arithmetic mean of control samples will be plotted as colored dots.
@@ -540,10 +576,13 @@ heatmap which represents the plate layout is provided to select (and unselect)
 the wells by clicking. The population to define is determined by setting a check above the heatmap.
 If at least one population is defined, a box plot will be generated and the median
 of the population will be plotted as colored dots in the upper left plot.</br>
-</br><b>Important note:</b> the
-position of the controls is fixed for all plates within one experiment. The drop
-down list to choose the plate changes exclusively the visualized heatmap and
-does not allow to define plate specific control wells."
+The controls can be defined for each plate separately from the drop down list 
+above the plate map.
+A checkbox above the plate map can be used to enable the option to define 
+the controls for all plates within the data set. This is useful, 
+if the controls are always on the same position within the set. When the 
+'all plates' check is set, the plate map will be white and the dropdown list will
+be inactive."
     ))
 )
 
@@ -635,11 +674,111 @@ population. All defined populations are listed in a reactive table.
     ))
 )
 
+## Options
+output$headerOp <- renderUI(
+    HTML(paste("
+               <b>Options</b>"
+    ))
+)
+
+output$OpNum1 <- renderUI(
+    HTML(paste("
+               <b>I. General notes</b>"
+    ))
+)
+
+output$Optext1 <- renderUI(
+    HTML(paste("
+             HTSvis provides an option to download a session 
+                parameter file. The downloaded
+               file contains the Data Input parameters as set 
+               on the 'Data Input tab' and the controls 
+               defined in the 'Quality Control tab'.
+               The session parameter file is a .csv file and
+               should not be edited. As ';' will be used to 
+               format the .csv, the columns of the input table
+               for which the parameters will be saved 
+               should not contain ';'.
+               "
+    ))
+)
+
+
+output$OpNum2 <- renderUI(
+    HTML(paste("
+               <b>II. Downloading the session parameter file</b>"
+    ))
+)
+output$Optext2 <- renderUI(
+    HTML(paste("
+                The option to download a session parameter file is provided via 
+                a download button on the 'Options' tab. 
+                The session parameter file will be saved as a .csv and contains 
+                the settings made on the 'Data Input' as well as 
+                the control wells chosen on the 'Quality Control' tab.
+               "
+    ))
+)
+
+output$OpNum3 <- renderUI(
+    HTML(paste("
+               <b>III. Uploading the session parameter file</b>"
+    ))
+)
+output$Optext3 <- renderUI(
+    HTML(paste("
+                After uploading a data set as described on 
+                'Data Input' help tab, a second file uploader appears below. 
+                This file uploader can be used to upload a session parameter file. 
+                If the parameter saved in the session parameter file match the 
+                input data those will be directly applied as soon as the session parameter 
+                file is uploaded. 
+                If the session parameter do not match the input data a pop
+                with a corresponding notice will appear.              "
+    ))
+)
+
+output$Optext4 <- renderUI(
+    HTML(paste("
+                In addition to the parameter on the 'Data Input' tab,
+                the session parameter file further contains the position of controls wells 
+                as set in 'Quality Control' tab. 
+                If the session parameter file contains this information (not mandatory),
+                this will be recognized and a corresponding button ('load controls) to apply the loaded control
+                positions, will appear in the quality control tab. 
+                           "
+    ))
+)
+
+output$Optext5 <- renderUI(
+    HTML(paste("
+               Once the button is clicked,
+                the position of the control wells be applied 
+                to the loaded data and also indicated on the plate map.
+                If the session parameter file contains 
+                individual controls per plate (i.e. 'all plates' is unchecked upon
+                saving the session parameter file), each plate hat to be selected from 
+                the drop down list to apply the controls per plate after pushing the 
+                button. 
+               "
+               ))
+)
+
+output$Optext6 <- renderUI(
+    HTML(paste("
+               "
+    ))
+)
+
+
+
+
+## Examples 
 output$headerTD <- renderUI(
     HTML(paste("
-               <b>Test Data</b>"
+               <b>Example Data</b>"
     ))
-    )
+)
 
 output$TDNum1 <- renderUI(
     HTML(paste("
@@ -650,17 +789,306 @@ output$TDNum1 <- renderUI(
 
 output$TDtext1 <- renderUI(
     HTML(paste("
-               Following test data sets can be downloaded from the HTSvis github repository
-                (https://github.com/boutroslab/HTSvis):
+               Example data sets and description file of those can be found 
+                under the following link:
                "
     ))
 )
+
+output$TDlink <- renderUI(
+    h5(a("http://b110-wiki.dkfz.de/confluence/display/HTSvis", href="http://b110-wiki.dkfz.de/confluence/display/HTSvis"))
+    )
 
 output$TDtext2 <- renderUI(
     HTML(paste("
-              A help file with explainations is provided as a pdf in the test_data folder on the github repository
+              The following example data sets are provided:
                "
     ))
 )
 
+output$TDNum2 <- renderUI(
+    HTML(paste("
+               <b>II. Example workflow</b>"
+    ))
+)
+
+output$TDtext3 <- renderUI(
+    HTML(paste("
+               Below  you will find an step-by-step example workflow using HTSvis to explore and
+                analyze the humanSGI data set from the example data repository.
+               "
+    ))
+)
+
+output$TDwf1 <- renderUI(
+    HTML(paste("
+               <b>Data Upload</b>
+               "
+    ))
+)
+
+output$TDwfT1 <- renderUI(
+    HTML(paste("
+            After downloading the example data set 'humanSDI.RData' from 
+            the above mentioned link, the app is started by opening it 
+            in a web browser. When the app is launched, the file uploader appears on the 
+            'Data Input' tab and we can
+            upload the 'humanSGI.RData' data set. All other besides than the 'Data Input' and
+            the 'Help Page' are initially inactive. After the upload,
+            further options appear as shown on the screenshot below. An info text
+            with a brief summary of the uploaded table to the right of the 
+               file uploader indicates a successful upload."
+    ))
+)
+
+output$TDwfT2 <- renderUI(
+    HTML(paste("
+               Below the file uploader which we used to upload the main data set, a
+                second file uploader has appeared. This uploader can be used to 
+                upload a session parameter file from a previous session. 
+                As we do not have such a session parameter file yet, 
+                we do not use this uploader. 
+               "
+    ))
+)
+
+output$TDwf2 <- renderUI(
+    HTML(paste("
+               <b>App Configuration</b>
+               "
+    ))
+)
+
+output$TDwfT3 <- renderUI(
+    HTML(paste("
+               In the next step we have to define which column of the data set 
+               contains which information.
+              As mentioned in the 'Data Structure' part of the 'Help Page',
+               HTSvis has been designed for data from arrayed high-throughput screens 
+            in a tabular format. Columns containing the annotation of each 
+               measured value have to be chosen accordingly. 
+               A dropdown list with the column names of the uploaded table is available
+               for each of the required annotation columns:
+               well, plate, experiment and channel. The annotation column is optional.
+                <br/>
+                <br/>
+               We now select the corresponding columns from the data set for each of the dimensions.
+               The columns containing the 'well' and 'plate' dimension are named accordingly. 
+               The 'humanSGI' contains multiple experiments, in this case replicates. This is annotated in
+               'replicate' column. As the 'humanGSI' data set contains more than one experiment and 
+               has not been analyzed using cellHTS, none of the check boxes on the checkboxes on has to be set. 
+                For the loaded set a per-well annotation is available and we choose the column. 
+                In the final step the column/s containing the measured values per well are defined. 
+                in this case we have multiple measured values per well (called 'channels' in HTSvis) and we select all
+                columns that do not contain annotations.
+              If all required settings are made, the 'explore data' button will appear on the lower right corner. 
+               When the user hits this button, the data will be loaded into the application and all 
+               tabs will be activated. As the data set contains some missing values you will get a note indicating this."
+              
+    ))
+)
+
+output$TDwf3 <- renderUI(
+    HTML(paste("
+               <b>Data exploration</b>
+               "
+    ))
+)
+
+output$TDwfT4 <- renderUI(
+    HTML(paste("
+                After the data upload and app configuration, we can now explore the data set
+                using the visualization  tools available on the tabs. 
+                The order in which the tabs is up to the user,
+                for reasons of simplicity we will use them from left to right as they appear 
+                in the application. 
+              "
+               
+    ))
+)
+
+output$TDwf4 <- renderUI(
+    HTML(paste("
+               <b>Plate Viewer</b>
+               "
+    ))
+)
+
+output$TDwfT5 <- renderUI(
+    HTML(paste("
+                The 'Plate Viewer' tab provides a tool to visualize the data in the 
+                muti-well format and to check for experimental artifacts, e.g. edge
+                effects. For our example data sets we see that all values of 
+                the first row and last column are plotted in black, by hovering over 
+                those wells we see that those wells contain 'NA' values. In this
+                case this resulted from the experimental design and the corresponding 
+                wells were left empty and flagged with 'NA' during data collection. 
+                Another possible application of the 'Plate Viewer' is to identify strong outliers, 
+                as for example wells 'N23' and 'P23' on all plates. Further features are explained in
+                'Plate Viewer tab' section of the help page. 
+               "
+               
+    ))
+)
+
+output$TDwf5 <- renderUI(
+    HTML(paste("
+               <b>Feature Table</b>
+               "
+    ))
+    )
+
+output$TDwfT6 <- renderUI(
+    HTML(paste("
+               The 'Feature Table' tab provides a tabular representation of the 
+                input table. We can for example apply column filters to define 
+                a subset of the table and save the filtered table. 
+                Another helpful tool is the heatmap which can be created 
+                by selecting rows (if more than one measured channel per well 
+                is available) which will then be added to the heatmap. 
+                The shown table initially only contains the first measured channel 
+                per well. We click the 'select all channels' button to add all 
+                measured channels to the table. We can then select interesting 
+                wells by clicking, for example well 'B1' on all plates containing the
+                string 'N1, to get a heatmap representation of those.  Further features are explained in
+                'Feature Table tab' section of the help page. 
+               "
+               
+    ))
+)
+
+output$TDwf6 <- renderUI(
+    HTML(paste("
+               <b>Quality Control</b>
+               "
+    ))
+    )
+
+output$TDwfT7 <- renderUI(
+    HTML(paste("
+               The 'Quality Control' tab provides the possibility to 
+                perform quality control checks per experiment based on visualizations and 
+                quality control metrics using control wells.
+                We first select a measured channel and an experiment. Due to it's biological 
+                meaning we select the 'cell count' channel for this example.  
+                As explained in the example data repository, positive controls 
+                for cell viability of different strength are located in wells of every second row 
+                of column 23 starting from row B (B23 – P23). 
+                Negative controls are located in the alternating pattern of the 
+                positive controls in column 23 (C23 - 023). 
+                Controls can be selected by clicking on the corresponding 
+                wells on a plate map at the lower right. 
+                For this example, 
+                the controls are on the same position on each plate, we set the 
+                'all plates' check above the plate map. 
+                We then select the controls well as mentioned above. 
+                For this example, we have only tow control populations: positive 
+                and negative controls. When the controls are set, the quality control 
+                plots are created. As indicated in the description text of the 
+                'humanSGI' data set, the positive controls are of different strength and 
+                we can unselect wells again by clicking on the corresponding positions on the 
+                plate map again. 
+                Further features are explained in
+                'Quality control tab' section of the help page. 
+               "
+               
+    ))
+)
+
+output$TDwf7 <- renderUI(
+    HTML(paste("
+               <b>Scatter Plot</b>
+               "
+    ))
+)
+
+output$TDwfT8 <- renderUI(
+    HTML(paste("
+               The 'Scatter Plot' tab provides features for 
+                further quality controls steps as well as 
+                for exploratory data analysis. 
+                In a first step we use the scatter plot tab to 
+                assess the correlation between to two replicates 
+                based on the cell count and set the 
+                required selections in the drop down lists.
+                We also set the check below the drop down 
+                lists to get numerical values describing the 
+                relation between the two replicate data sets. 
+               "
+               
+    ))
+)
+
+
+output$TDwfT9 <- renderUI(
+    HTML(paste("
+               We next would like investigate the data in a more 
+                exploratory manner. For this purpose we initially uncheck 
+                the linear model checkbox for reasons of clarity. 
+                In this example we are interested in the data points 
+                located close to the point of origin for which a low cell viability
+                was observed in both replicate measurements. 
+                We can get the identity of those points by drawing a rectangle 
+                around those using the left mouse button.
+                Once the rectangle is drawn, the panel on the left will change
+                to the so called 'population manager'.
+                population (here we name it 'low_viability'). 
+                As soon as we create the population by clicking the 'create population' 
+                button a table will appear. 
+                This table will contain all population we create. 
+                Inside the table, we can push the 'get info' button
+                in the row of our 'low-viability' population. 
+                Triggering of the 'get info' button will open a table providing 
+                the info from the data table associated with the brushed points. 
+                In this way we can review certain hypothesis, for example which reagents 
+                induce a strong viability effect. This information can then be used to review 
+                certain hypotheses.  "
+               
+    ))
+)
+
+output$TDwfT10 <- renderUI(
+    HTML(paste("
+               "
+               
+    ))
+)
+
+output$TDwfT11 <- renderUI(
+    HTML(paste("
+               Once a population is defined it will be saved also if the input 
+                data changes. To change the input data we can use the button at the 
+                top of the panel (initially has the status TRUE because the
+                population manager is active). We use this button and then change 
+                the data in respect to the selected channel. We select 'cell eccentricity'
+                to review whether the reagent that induced a low cell viability also
+                influence cell eccentricity. As all other plots in the application the 
+                scatter plot can be saved. 
+                Further features are explained in
+                'Scatter Plot tab' section of the help page. 
+               "
+               
+    ))
+)
+
+output$TDwf8 <- renderUI(
+    HTML(paste("
+               <b>Options</b>
+               "
+    ))
+)
+
+output$TDwfT12 <- renderUI(
+    HTML(paste("
+               Once we end the session we can save some of the parameter 
+                of the current session. This can be done on the 
+            'options' tab by clicking the download button. A .csv table 
+                will be saved subsequently that can be loaded when the app is started. 
+                Further information concerning the session parameter option
+                can be found on the 
+                'option tab' section of the help page. 
+               "
+               
+    ))
+)
 

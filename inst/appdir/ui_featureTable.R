@@ -9,16 +9,17 @@ conditionalPanel(condition='output.showPanels',
                                           content = "Below you will find your uploaded
                                           data represented as an interactive table. 
                                           If the uploaded table contains more than one 
-                                          measured value per well 
+                                          measured value per well,
                                           only the first one will be shown by default. 
                                           Measured values can be added to the table
                                           by selecting them from the list below 
-                                          ('select feature').
+                                          ('select channel') or using the button below (to select all channels).
                                           If the shown table contains more than one measured 
                                           value per well, a reactive heatmap of 
                                           selected rows (select/unselect rows by clicking) 
-                                          can be created. The entire selection can be reset 
-                                          with the 'reset' button.",
+                                          can be created. Buttons to select more than one row at a time 
+                                          and to delete the entire selection are provided 
+                                          below the table.",
                                           iconClass = "fa fa-question"),
                                 tags$style(type='text/css',"#helpFT {
                                            margin-top: 25px;}")
@@ -36,7 +37,7 @@ conditionalPanel(condition='output.showPanels',
                          column(1,
                                 helpPopup("Attention:",
                                           id="helpDowFT",
-                                          content = "Depending on the size of the table
+                                          content = "Depending on the size of the table,
                                           the download might take several minutes. The
                                           table will be downloaded as a .csv table
                                           with columns separated by ',' and '.' as 
@@ -116,7 +117,9 @@ conditionalPanel(condition='output.showPanels',
                                                     will select all rows of the current table as shown above
                                                     (if the shown table has less than 500 rows).
                                                     Note: If rows are selected cumulatively, the table will be refreshed
-                                                    without previously set filters. The selected rows are highlighted.",
+                                                    without previously set filters. The selected rows are highlighted.
+                                                    The entire selection can be reset 
+                                                    with the 'reset' button.",
                                                     iconClass = "fa fa-question"),
                                           tags$style(type='text/css',"#helpSR {
                                                      margin-top: 25px;}"),

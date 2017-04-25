@@ -75,7 +75,8 @@ ui <- function(request) {
             tags$style(    type='text/css',
                            ".popover{width:300px!important;}"
                         ),
-    HTML("<div style='height: 50px;'>"),
+            
+    HTML("<div style='height: 40px;'>"),
     HTML("</div>"),
 
             ##Bind logo as .png
@@ -88,9 +89,15 @@ ui <- function(request) {
                  ),
             HTML("</div>"),
 
-
+            tags$head(tags$style( HTML(' .nav {margin-top:30px;}'))),
+    
             ##Tab for Data Input
             tabsetPanel(
+                    tabPanel(title = "Home",
+                             
+                             HTML("<div style='height: 25px;'>"),
+                             HTML("</div>"),
+                             source("./ui_welcome.R",local=T)[1]),
                     tabPanel("Data Input",
                        HTML("<div style='height: 25px;'>"),
                        HTML("</div>"),

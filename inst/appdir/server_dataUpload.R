@@ -9,6 +9,7 @@
 
 feature_table2 <- reactiveValues()
 
+
 testInput <- function(toEval) {
     try(toEval,silent=T)
 }
@@ -112,7 +113,5 @@ output$dataInfo <- renderUI({
             }
         }
     })
-
-
 
 

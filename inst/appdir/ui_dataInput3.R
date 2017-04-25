@@ -37,7 +37,7 @@ fixedRow(
                                       Plate identifiers have to be unique within one experiment.
                                       If more than one experiment is investigated, all
                                       experiments have to contain the identical
-                                      set of plates",
+                                      set of plates.",
                                       iconClass = "fa fa-question"),
                             tags$style(
                                 type='text/css',

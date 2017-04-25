@@ -16,11 +16,11 @@ fixedRow(
                    helpPopup("Help: Data upload",
                              id="helpUpload",
                              content = "Select a data table to upload.
-                             Supported file formats are: .txt, .csv and .RData.
+                             Supported file formats are: .txt, .csv, .xlsx and .RData.
                              Delimited tables should be uniformly separated
                             by tab, comma, semicolon or space and all columns
                             should be named.
-                            Detailed information concerning data
+                            Detailed information concerning the data
                              structure requirements can be found on the help page.",
                              iconClass = "fa fa-question"),
                       tags$style(

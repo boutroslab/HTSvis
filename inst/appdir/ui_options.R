@@ -13,10 +13,10 @@ fixedPage(
                                     file contains the Data Input parameters as set 
                                     on the 'Data Input tab' and the controls 
                                     defined in the 'Quality Control tab'.
-                                    The session paramter file is a .csv file and
+                                    The session parameter file is a .csv file and
                                     should not be edited. As ';' will be used to 
-                                    format the .csv the columns of the input table
-                                    for which the parameters should be saved 
+                                    format the .csv, the columns of the input table
+                                    for which the parameters will be saved 
                                     should not contain ';'."),
                                  style="vertical-align: middle;",
                                  downloadButton( 'downloadParms',                     

@@ -6,7 +6,6 @@
 params = reactiveValues()
 ParmsUpload <- reactiveValues(state=F,state2=F)
 
-
 observe({
     params_df <- data.frame(
         c("well_input","plate_input","experiment_input","anno_input","measuredValues_input",
@@ -258,6 +257,7 @@ output$showParmsUpload <- reactive({
     return(ParmsUpload$state)
 })
 outputOptions(output, "showParmsUpload", suspendWhenHidden=FALSE)
+
 
 observe({
     validate(need(input$file1, message=FALSE))
