@@ -100,6 +100,12 @@ The package also depends on other R-packages that should be automatically downlo
     gtools (>= 3.5.0),
     shiny (>= 0.14.2),
     readxl (>= 1.0.0)
+  
+### HTSvis on local servers 
+HTSvis can be deployed on local servers using shiny server. 
+In brief, the reposiroty has the downloaded and the inst/appdir has to be copied 
+to a designated folder on the shiny server. The detailled procedure depends 
+on the local server.Further instructions can be found in the shiny server administrator's guide: http://docs.rstudio.com/shiny-server/
 
 ## Contact 
 #### Christian Scheeder c.scheeder@dkfz.de
