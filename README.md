@@ -102,7 +102,7 @@ The package also depends on other R-packages that should be automatically downlo
     readxl (>= 1.0.0)
   
 ### HTSvis on local servers 
-HTSvis can be deployed on local servers using shiny-server. This way local IT-departments can provide their own instance of HTSvis as web-server. In brief, the GitHub repository has to be downloaded and the inst/appdir folder has to be copied to a designated folder on the shiny-server (e.g. /var/www/webapps). The detailed procedure depends on the local computing infrastructure. Further, detailed instructions on how to deploy shiny apps for the local network can be found in the shiny-server administrator's guide: http://docs.rstudio.com/shiny-server/
+HTSvis can be deployed on local servers using shiny-server. This way local IT-departments can provide their own instance of HTSvis as web server. In brief, the GitHub repository has to be downloaded and the inst/appdir folder has to be copied to a designated folder on the shiny-server (e.g. /var/www/webapps). The detailed procedure depends on the local computing infrastructure. Further, detailed instructions on how to deploy shiny apps for the local network can be found in the shiny-server administrator's guide: http://docs.rstudio.com/shiny-server/
 
 ## Contact 
 #### Christian Scheeder c.scheeder@dkfz.de
