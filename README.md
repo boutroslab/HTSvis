@@ -40,7 +40,7 @@ HTSvis()
 ```
 ## Test Data
 Some sample datasets can be downloaded from http://b110-wiki.dkfz.de/confluence/display/HTSvis. This page also contains detailed descriptions of each test dataset.<br />
-Following test data sets are provided, please check the help page in the app for instructions on how to upload them. A description file of the tets data is provided as a pdf in the 'test_data' folder.<br />
+Following test data sets are provided, please check the help page in the app for instructions on how to upload them. <br />
 
 | File | Description |
 | --- | --- |
@@ -102,10 +102,7 @@ The package also depends on other R-packages that should be automatically downlo
     readxl (>= 1.0.0)
   
 ### HTSvis on local servers 
-HTSvis can be deployed on local servers using shiny server. 
-In brief, the GitHub reposiroty has the downloaded and the inst/appdir folder has to be copied 
-to a designated folder on the shiny server. The detailled procedure depends 
-on the local server. Further instructions can be found in the shiny server administrator's guide: http://docs.rstudio.com/shiny-server/
+HTSvis can be deployed on local servers using shiny-server. This way local IT-departments can provide their own instance of HTSvis as web-server. In brief, the GitHub repository has to be downloaded and the inst/appdir folder has to be copied to a designated folder on the shiny-server (e.g. /var/www/webapps). The detailled procedure depends on the local computing infrastructure. Further, detailed instructions on how to deploy shiny apps for the local network can be found in the shiny-server administrator's guide: http://docs.rstudio.com/shiny-server/
 
 ## Contact 
 #### Christian Scheeder c.scheeder@dkfz.de
