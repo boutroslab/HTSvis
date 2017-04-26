@@ -164,7 +164,10 @@ output$helpChOneOneNum <- renderUI(
 output$helpChOne <- renderUI(
     HTML(paste("
                 <i> HTSvis </i> is a web application for the visualization of
-               data from arrayed high-throughput screening (HTS) experiments.
+               data from arrayed high-throughput screening (HTS) experiments
+                with per well measurements.
+                Tools to aggregate data with sub-well single cell measurements from microscopy screens are 
+               available in CellProfiler Analyst, for example.
                Such experiments typically spread over sets of plates, which are
                screened in replicates and possibly under different conditions
                (see illustration below). Formats supported by the application
