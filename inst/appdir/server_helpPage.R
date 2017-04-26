@@ -988,12 +988,24 @@ output$TDwfT7 <- renderUI(
                 the controls are on the same position on each plate, we set the 
                 'all plates' check above the plate map. 
                 We then select the controls well as mentioned above. 
-                For this example, we have only tow control populations: positive 
+                For this example, we have only two control populations: positive 
                 and negative controls. When the controls are set, the quality control 
-                plots are created. As indicated in the description text of the 
+                plots are created.
+                The scatter plot at the upper left gives an overview over the entire 
+                screen. This can be helpful to assess the overall performance of the screen, 
+                for example to estimate whether and how many plates failed. 
+                The box plot complements the information from the scatter plot 
+                by providing summary statistics. 
+                The density plot at the upper right shows the density distribution of the control populations.
+                In this example we see that the positive control populations show 
+                a bipartite distribution. In addition, the Z'-factor
+                is given in the legend of the density plot (for more information 
+                concerning the Z'-factor see Birmingham, A. et al., <i>Nat. Methods</i>, 2009). 
+                As indicated in the description text of the 
                 'humanSGI' data set, the positive controls are of different strength and 
                 we can unselect wells again by clicking on the corresponding positions on the 
-                plate map again. 
+                plate map. This allows to compare how well the control populations are 
+                separated depending on which wells are selected. 
                 Further features are explained in
                 'Quality control tab' section of the help page. 
                "
