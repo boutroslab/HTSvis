@@ -105,7 +105,7 @@ The package also depends on other R-packages that should be automatically downlo
 HTSvis can be deployed on local servers using shiny server. 
 In brief, the GitHub reposiroty has the downloaded and the inst/appdir folder has to be copied 
 to a designated folder on the shiny server. The detailled procedure depends 
-on the local server.Further instructions can be found in the shiny server administrator's guide: http://docs.rstudio.com/shiny-server/
+on the local server. Further instructions can be found in the shiny server administrator's guide: http://docs.rstudio.com/shiny-server/
 
 ## Contact 
 #### Christian Scheeder c.scheeder@dkfz.de
