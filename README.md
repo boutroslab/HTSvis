@@ -18,7 +18,7 @@ HTSvis is an R/Shiny open-source web application for interactive visualization a
 exploratory analysis of data from arrayed high-throughput screens. The web application 
 is either available via http://htsvis.dkfz.de/ or can be installed as an R package as described here.
 Shiny allows that the usage of the application in the default web browser does not require any bioinformatics training.
-Input data can either be a result file obtained upon analysis with the Bioconductor/R package cellHTS or a generic table with raw or analyzed data from, e.g. a high-content microscopy screen. Any data has to be aggregated per well. Tools to aggregate single cell data from microscopy screens are available in CellProfiler analyst, for example.  </br> 
+Input data can either be a result file obtained upon analysis with the Bioconductor/R package cellHTS or a generic table with raw or analyzed data from, e.g. a high-content microscopy screen. Any data has to be aggregated per well. Tools to aggregate single cell data from microscopy screens are available in CellProfiler Analyst, for example.  </br> 
 </br> 
 ## Installation
 HTSvis is provided as an R package and requires R version 3.1.2 for installation 
