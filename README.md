@@ -31,7 +31,7 @@ install.packages("devtools", dependencies = TRUE)
 devtools::install_github("boutroslab/HTSvis", build_vignettes = F, type="source")
 ```
 ## Usage 
-### Load the package and call the funtion 'HTSvis' to start the web application
+### Load the package and call the function 'HTSvis' to start the web application
 We recommend to start a new session and clear the workspace when using the application 
 ```
 library(HTSvis)
