@@ -139,8 +139,14 @@ output$helpSubHeader <- renderUI(
                 and an example step-by-step analysis workflow.
                 <br/>
                 <br/>
-                <b>Tipp</b>: You can restart the app
-               by refreshing your browser."
+                <b>Tips</b>: 
+                <br/>
+                <br/>
+                - You can restart the app by refreshing your browser
+                <br/>
+                <br/>
+                - If you're running HTSvis on a laptop, low battery might slow down the application 
+               "
     ))
     )
 

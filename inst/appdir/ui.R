@@ -89,12 +89,11 @@ ui <- function(request) {
                  ),
             HTML("</div>"),
 
-            tags$head(tags$style( HTML(' .nav {margin-top:30px;margin-bottom:75px;}'))),
+            tags$head(tags$style( HTML(' .nav {margin-top:30px;}'))),
     
             ##Tab for Data Input
             tabsetPanel(
                     tabPanel(title = "Home",
-                             
                              HTML("<div style='height: 25px;'>"),
                              HTML("</div>"),
                              source("./ui_welcome.R",local=T)[1]),
