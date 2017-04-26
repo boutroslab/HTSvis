@@ -79,7 +79,7 @@ ui <- function(request) {
     HTML("<div style='height: 40px;'>"),
     HTML("</div>"),
 
-            ##Bind logo as .png
+            # ##Bind logo as .png
             HTML("<div>"),
             HTML(paste(img(src='logo.png',
                            align = "left",
@@ -89,7 +89,7 @@ ui <- function(request) {
                  ),
             HTML("</div>"),
 
-            tags$head(tags$style( HTML(' .nav {margin-top:30px;}'))),
+            tags$head(tags$style( HTML(' .nav {margin-top:30px;margin-bottom:75px;}'))),
     
             ##Tab for Data Input
             tabsetPanel(

@@ -170,24 +170,49 @@ df_qc <- reactive({
     validate(need(input$platesQC, message=FALSE))
     
     if(isTRUE(plateStateQC$state)) {
-        
-        
-        allPlatesDummy <- feature_table2$data %>%
-            dplyr::select_(TabDimensions$well,TabDimensions$annotation) %>% unique() %>%
-            dplyr::mutate_(row=lazyeval::interp(~gsub("[^A-z]","",x),
-                                                x=as.name(TabDimensions$well))) %>%
-            dplyr::mutate_(column=lazyeval::interp(~gsub("[^0-9]","",x),
-                                                   x=as.name(TabDimensions$well))) %>%
-            dplyr::mutate(value = 1) %>%
-            dplyr::mutate(def.color = "white") 
-        allPlatesDummy <- allPlatesDummy[gtools::mixedorder(allPlatesDummy[,TabDimensions$well]),]
-        allPlatesDummy$column <- factor(
-            as.character(as.numeric(allPlatesDummy$column)),
-            levels=seq(1:n_distinct(allPlatesDummy$column))
-        )
+        if(!isTRUE(IsSingleExperimentTabs$state)) {
+            allPlatesDummy <- feature_table2$data %>%
+                dplyr::select_(TabDimensions$well,
+                               TabDimensions$annotation,
+                               TabDimensions$experiment,
+                               TabDimensions$plate) %>%
+                dplyr::filter_(lazyeval::interp(quote(x == y),
+                                                x=as.name(TabDimensions$plate), y=input$platesQC)) %>%
+                dplyr::filter_(lazyeval::interp(quote(x == y),
+                                                x=as.name(TabDimensions$experiment), 
+                                                y=input$screen_selection_qc)) %>% 
+                dplyr::mutate_(row=lazyeval::interp(~gsub("[^A-z]","",x),
+                                                    x=as.name(TabDimensions$well))) %>%
+                dplyr::mutate_(column=lazyeval::interp(~gsub("[^0-9]","",x),
+                                                       x=as.name(TabDimensions$well))) %>%
+                dplyr::mutate(value = 1) %>%
+                dplyr::mutate(def.color = "white") 
+            allPlatesDummy <- allPlatesDummy[gtools::mixedorder(allPlatesDummy[,TabDimensions$well]),]
+            allPlatesDummy$column <- factor(
+                as.character(as.numeric(allPlatesDummy$column)),
+                levels=seq(1:n_distinct(allPlatesDummy$column))
+            )
+        } else {
+            allPlatesDummy <- feature_table2$data %>%
+                dplyr::select_(TabDimensions$well,
+                               TabDimensions$annotation,
+                               TabDimensions$plate) %>%
+                dplyr::filter_(lazyeval::interp(quote(x == y),
+                                                x=as.name(TabDimensions$plate), y=input$platesQC)) %>%
+                dplyr::mutate_(row=lazyeval::interp(~gsub("[^A-z]","",x),
+                                                    x=as.name(TabDimensions$well))) %>%
+                dplyr::mutate_(column=lazyeval::interp(~gsub("[^0-9]","",x),
+                                                       x=as.name(TabDimensions$well))) %>%
+                dplyr::mutate(value = 1) %>%
+                dplyr::mutate(def.color = "white") 
+            allPlatesDummy <- allPlatesDummy[gtools::mixedorder(allPlatesDummy[,TabDimensions$well]),]
+            allPlatesDummy$column <- factor(
+                as.character(as.numeric(allPlatesDummy$column)),
+                levels=seq(1:n_distinct(allPlatesDummy$column))
+            )
+        }
         allPlatesDummy$CSidB110 <- 1:nrow(allPlatesDummy)
         return(allPlatesDummy)
-        
     } else {
         
         if(!isTRUE(IsSingleExperimentTabs$state)) {
@@ -450,16 +475,16 @@ fu_qc_hover <- reactive({print_out <- function(x) {
     if(is.null(x)) return(NULL)
     
     if(isTRUE(plateStateQC$state)) {
-
+        
         if(TabDimensions$well == TabDimensions$annotation) {
             return(df_qc()[df_qc()$CSidB110 == x$CSidB110,TabDimensions$well])
         } else {
             return(
-            paste(df_qc()[df_qc()$CSidB110 == x$CSidB110,TabDimensions$well],
-                  df_qc()[df_qc()$CSidB110 == x$CSidB110,TabDimensions$annotation],sep="<br />") 
+                paste(df_qc()[df_qc()$CSidB110 == x$CSidB110,TabDimensions$well],
+                      df_qc()[df_qc()$CSidB110 == x$CSidB110,TabDimensions$annotation],sep="<br />") 
             )
-            }
-
+        }
+        
     } else {
         if(TabDimensions$well == TabDimensions$annotation) {
             paste(df_qc()[df_qc()$CSidB110 == x$CSidB110,TabDimensions$well],

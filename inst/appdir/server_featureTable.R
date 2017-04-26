@@ -294,8 +294,8 @@ FTheatmap_plot <- function(){
         kexSize <- vector()
         ifelse(nrow(dfHeatmap()) < 6, kexSize<-1.5,
                ifelse(nrow(dfHeatmap())< 12, kexSize<-1, 
-                      ifelse(nrow(dfHeatmap())< 50, kexSize<-0.5, 
-                             ifelse(nrow(dfHeatmap())< 100, kexSize<-0.25))))
+                      ifelse(nrow(dfHeatmap())< 50, kexSize<-0.75, 
+                             ifelse(nrow(dfHeatmap()) < 100, kexSize<-0.5,kexSize<-0.25 ))))
         
         if(input$scaleFTheatmap %in% "none"){
             heatmap.2(as.matrix(dfHeatmap()),
@@ -428,7 +428,7 @@ output$textFtDummy <- renderUI(
                "(a heatmap can only be created with more than one measured value
                per well)",
                sep="<br/>"))
-    )
+)
 
 
 

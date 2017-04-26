@@ -698,7 +698,7 @@ output$Optext1 <- renderUI(
                should not be edited. As ';' will be used to 
                format the .csv, the columns of the input table
                for which the parameters will be saved 
-               should not contain ';'.
+               should not contain ';'. 
                "
     ))
 )
@@ -716,6 +716,9 @@ output$Optext2 <- renderUI(
                 The session parameter file will be saved as a .csv and contains 
                 the settings made on the 'Data Input' as well as 
                 the control wells chosen on the 'Quality Control' tab.
+                Please start a new session 
+                (open a new browser window) when loading a session 
+               parameter file. 
                "
     ))
 )

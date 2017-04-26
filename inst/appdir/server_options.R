@@ -7,124 +7,132 @@ params = reactiveValues()
 ParmsUpload <- reactiveValues(state=F,state2=F)
 
 observe({
-    params_df <- data.frame(
-        c("well_input","plate_input","experiment_input","anno_input","measuredValues_input",
-          "cellHTS_state","singleExperiment_state",
-          "allPlates_state",
-          tabInput$inputPlates),
-        c(rep(NA,8+length(tabInput$inputPlates)))
-    )
-    colnames(params_df) <- NULL
-    
-    if(!is.null(input$WellDimension))
-        params_df[1,2] <- input$WellDimension
-    params$data = params_df
-    
-    if(!is.null(input$PlateDimension))     
-        params_df[2,2] <- input$PlateDimension
-    params$data = params_df
-    
-    if(!is.null(input$ExperimentDimension))    
-        if(isTRUE(input$cellHTSstyle)) {
-            params_df[3,2] <-  paste(input$ExperimentDimension,collapse=":_:")
-            params$data = params_df
-        } else {    
-            if(isTRUE(input$IsSingleExperiment)) {
-                params_df[3,2] <- NA
-            } else {
-                params_df[3,2] <- input$ExperimentDimension
-                params$data = params_df }
-        }
-    
-    if(!is.null(input$AnnoDimension))           
-        params_df[4,2] <- input$AnnoDimension
-    params$data = params_df
-    
-    if(!is.null(input$MeasuredValues))
-        params_df[5,2] <-  paste(input$MeasuredValues,collapse=":_:")
-    params$data = params_df
-    
-    if(!is.null(input$cellHTSstyle))
-        if(isTRUE(input$cellHTSstyle)) 
-            params_df[6,2] <- "on"
-    params$data = params_df
-    
-    if(!is.null(input$IsSingleExperiment))
-        if(isTRUE(input$IsSingleExperiment)) 
-            params_df[7,2] <- "on"
-    params$data = params_df
-    
-    
-    posWellsOut <- c()
-    negWellsOut <- c()
-    ntWellsOut <- c()
-    
-    posWellsOut_sp <- c()
-    negWellsOut_sp <- c()
-    ntWellsOut_sp <- c()
-    
-    ctrlWellsOut <- c()
-    ctrlWellsList <- list()
-    
-    validate(need(input$platesQC, message=FALSE))
-    if(isTRUE(plateStateQC$state)) {
-        params_df[8,2] <- "on"
-        if(!is.null(pos_wellStore)) {
-            if(length(unlist(reactiveValuesToList(pos_wellStore),use.names=F))>0){
-                posWellsOut <- unlist(reactiveValuesToList(pos_wellStore),use.names=F)
-            } else {posWellsOut <- "EMPTY"}
-        }
+    makeParams <- function(inputParams){
+        params_df <- data.frame(
+            c("well_input","plate_input","experiment_input","anno_input","measuredValues_input",
+              "cellHTS_state","singleExperiment_state",
+              "allPlates_state",
+              tabInput$inputPlates),
+            c(rep(NA,8+length(tabInput$inputPlates)))
+        )
+        colnames(params_df) <- NULL
         
-        if(!is.null(neg_wellStore)) {
-            if(length(unlist(reactiveValuesToList(neg_wellStore),use.names=F))>0){
-                negWellsOut <- unlist(reactiveValuesToList(neg_wellStore),use.names=F)
-            } else {negWellsOut <- "EMPTY"}
-        }
-        if(!is.null(nt_wellStore)) {
-            if(length(unlist(reactiveValuesToList(nt_wellStore),use.names=F))>0){
-                ntWellsOut <- unlist(reactiveValuesToList(nt_wellStore),use.names=F)
-            } else {ntWellsOut <- "EMPTY"}
-        }
-        
-        posWellsOut <- paste(posWellsOut,collapse = "_:_")
-        negWellsOut <- paste(negWellsOut,collapse = "_:_")
-        ntWellsOut <- paste(ntWellsOut,collapse = "_:_")
-        
-        
-        
-        
-        ctrlWellsOut <- paste(posWellsOut,negWellsOut,ntWellsOut,sep = "_@_")
-        
-        params_df[c(9:(8+length(tabInput$inputPlates))),2] <- ctrlWellsOut
+        if(!is.null(input$WellDimension))
+            params_df[1,2] <- input$WellDimension
         params$data = params_df
-    } else {
-        for(i in names(getWells)) {
-            posWellsOut_sp <- which(getWells[[i]][[1]] == "positive")
-            negWellsOut_sp <- which(getWells[[i]][[1]] == "negative")
-            ntWellsOut_sp <- which(getWells[[i]][[1]] == "nt")
-            
-            
-            ctrlWellsList[[i]][1] <- i
-            sumWellsOut_sp <- paste(
-                paste(df_qc()[posWellsOut_sp,TabDimensions$well],collapse = "_:_"),
-                paste(df_qc()[negWellsOut_sp,TabDimensions$well],collapse = "_:_"),
-                paste(df_qc()[ntWellsOut_sp,TabDimensions$well],collapse = "_:_"),
-                sep="_@_"
-            )
-            if(!sumWellsOut_sp %in% "_@__@_"){
-                ctrlWellsList[[i]][2] <- sumWellsOut_sp
-            } else {
-                ctrlWellsList[[i]][1] <- i
-                ctrlWellsList[[i]][2] <- NA
+        
+        if(!is.null(input$PlateDimension))     
+            params_df[2,2] <- input$PlateDimension
+        params$data = params_df
+        
+        if(!is.null(input$ExperimentDimension))    
+            if(isTRUE(input$cellHTSstyle)) {
+                params_df[3,2] <-  paste(input$ExperimentDimension,collapse=":_:")
+                params$data = params_df
+            } else {    
+                if(isTRUE(input$IsSingleExperiment)) {
+                    params_df[3,2] <- NA
+                } else {
+                    params_df[3,2] <- input$ExperimentDimension
+                    params$data = params_df }
             }
-        }
-        ctrlWellsOut_sp <- data.frame(do.call(rbind,ctrlWellsList),stringsAsFactors=F)
-        colnames(ctrlWellsOut_sp) <- NULL
-        row.names(ctrlWellsOut_sp) <- NULL
-        params_df[c(9:(8+length(tabInput$inputPlates))),1] <- ctrlWellsOut_sp[,1]
-        params_df[c(9:(8+length(tabInput$inputPlates))),2] <- ctrlWellsOut_sp[,2]
+        
+        if(!is.null(input$AnnoDimension))           
+            params_df[4,2] <- input$AnnoDimension
         params$data = params_df
+        
+        if(!is.null(input$MeasuredValues))
+            params_df[5,2] <-  paste(input$MeasuredValues,collapse=":_:")
+        params$data = params_df
+        
+        if(!is.null(input$cellHTSstyle))
+            if(isTRUE(input$cellHTSstyle)) 
+                params_df[6,2] <- "on"
+        params$data = params_df
+        
+        if(!is.null(input$IsSingleExperiment))
+            if(isTRUE(input$IsSingleExperiment)) 
+                params_df[7,2] <- "on"
+        params$data = params_df
+        
+        
+        posWellsOut <- c()
+        negWellsOut <- c()
+        ntWellsOut <- c()
+        
+        posWellsOut_sp <- c()
+        negWellsOut_sp <- c()
+        ntWellsOut_sp <- c()
+        
+        ctrlWellsOut <- c()
+        ctrlWellsList <- list()
+        
+        validate(need(input$platesQC, message=FALSE))
+        if(isTRUE(plateStateQC$state)) {
+            params_df[8,2] <- "on"
+            if(!is.null(pos_wellStore)) {
+                if(length(unlist(reactiveValuesToList(pos_wellStore),use.names=F))>0){
+                    posWellsOut <- unlist(reactiveValuesToList(pos_wellStore),use.names=F)
+                } else {posWellsOut <- "EMPTY"}
+            }
+            
+            if(!is.null(neg_wellStore)) {
+                if(length(unlist(reactiveValuesToList(neg_wellStore),use.names=F))>0){
+                    negWellsOut <- unlist(reactiveValuesToList(neg_wellStore),use.names=F)
+                } else {negWellsOut <- "EMPTY"}
+            }
+            if(!is.null(nt_wellStore)) {
+                if(length(unlist(reactiveValuesToList(nt_wellStore),use.names=F))>0){
+                    ntWellsOut <- unlist(reactiveValuesToList(nt_wellStore),use.names=F)
+                } else {ntWellsOut <- "EMPTY"}
+            }
+            
+            posWellsOut <- paste(posWellsOut,collapse = "_:_")
+            negWellsOut <- paste(negWellsOut,collapse = "_:_")
+            ntWellsOut <- paste(ntWellsOut,collapse = "_:_")
+            
+            
+            
+            
+            ctrlWellsOut <- paste(posWellsOut,negWellsOut,ntWellsOut,sep = "_@_")
+            
+            params_df[c(9:(8+length(tabInput$inputPlates))),2] <- ctrlWellsOut
+            params$data = params_df
+        } else {
+            for(i in names(getWells)) {
+                posWellsOut_sp <- which(getWells[[i]][[1]] == "positive")
+                negWellsOut_sp <- which(getWells[[i]][[1]] == "negative")
+                ntWellsOut_sp <- which(getWells[[i]][[1]] == "nt")
+                
+                
+                ctrlWellsList[[i]][1] <- i
+                sumWellsOut_sp <- paste(
+                    paste(df_qc()[posWellsOut_sp,TabDimensions$well],collapse = "_:_"),
+                    paste(df_qc()[negWellsOut_sp,TabDimensions$well],collapse = "_:_"),
+                    paste(df_qc()[ntWellsOut_sp,TabDimensions$well],collapse = "_:_"),
+                    sep="_@_"
+                )
+                if(!sumWellsOut_sp %in% "_@__@_"){
+                    ctrlWellsList[[i]][2] <- sumWellsOut_sp
+                } else {
+                    ctrlWellsList[[i]][1] <- i
+                    ctrlWellsList[[i]][2] <- NA
+                }
+            }
+            ctrlWellsOut_sp <- data.frame(do.call(rbind,ctrlWellsList),stringsAsFactors=F)
+            colnames(ctrlWellsOut_sp) <- NULL
+            row.names(ctrlWellsOut_sp) <- NULL
+            #print(ctrlWellsOut_sp)
+            params_df[c(9:(8+length(tabInput$inputPlates))),1] <- ctrlWellsOut_sp[,1]
+            params_df[c(9:(8+length(tabInput$inputPlates))),2] <- ctrlWellsOut_sp[,2]
+            params$data = params_df
+        }
     }
+    validate(need(input$file1, message=FALSE))
+    try(
+        makeParams(tabInput$inputPlates),
+        silent= T
+    )
 })
 
 
