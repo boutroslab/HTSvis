@@ -146,6 +146,10 @@ output$helpSubHeader <- renderUI(
                 <br/>
                 <br/>
                 - If you're running HTSvis on a laptop, low battery might slow down the application 
+                <br/>
+                <br/>
+                <b> Note:</b> Any uploaded data is encrypted and will be deleted 
+                when the session is ended. 
                "
     ))
     )

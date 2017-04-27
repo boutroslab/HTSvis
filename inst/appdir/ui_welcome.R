@@ -13,19 +13,17 @@ fixedRow(
                             HTML("</div>"),
                             h3(paste0("About")),
                             h4(paste(
-                                "Arrayed high-throughput screens (HTS) cover a broad range", 
-                                "of applications such as RNAi or small molecule screening.",
-                                "Specialized software for statistical analysis and visualization",
-                                "is available to people trained in bioinformatics.",
-                                "For many biologists however, exploratory data analysis",
-                                "and integration of screening results is challenging",
-                                "due to the size of produced data tables and the lack of",
-                                "user-friendly tools to interpret and visualize screening results.",
-                                "Here we present HTSvis, a web application to interactively",
-                                "visualize raw data, perform quality control and assess screening",
-                                "results from single- to multichannel measurements such as image-based screens.",
-                                "Per well aggregated raw and analyzed data of various assay types", 
-                                "and scales can be loaded in a generic tabular format.", sep=" ")),
+                                "Arrayed high-throughput screens (HTS) cover a broad range of applications
+                                using RNAi or small molecules as perturbations and specialized software packages
+                                for statistical analysis have become available. 
+                                However, exploratory data analysis and integration of screening results has 
+                                remained challenging due to the size of the data sets and the lack of 
+                                user-friendly tools for interpretation and visualization of screening results. 
+                                Here we present HTSvis, a web application to interactively visualize raw data, 
+                                perform quality control and assess screening results from single to multi-channel 
+                                measurements such as image-based screens. 
+                                Per well aggregated raw and analyzed data of various assay types and 
+                                scales can be loaded in a generic tabular format.", sep=" ")),
                             HTML("<div style='height: 25px;'>"),
                             HTML("</div>"),
                             h3("Manual"),
