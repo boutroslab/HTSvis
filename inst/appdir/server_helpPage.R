@@ -563,7 +563,7 @@ series (data points of one plate are plotted at one x-axis position). If control
 the arithmetic mean of control samples will be plotted as colored dots.
 The upper right plot shows the density distribution (Kernel density distribution)
 of positive and negative controls and further provides
-the robust Z’-factor (Birmingham, A. et al., <i>Nat. Methods</i>, 2009) for the experiment.
+the Z’-factor (for details see Birmingham, A. et al., <i>Nat. Methods</i>, 2009) for the experiment.
 A boxplot of chosen controls for all plates is provided in the lower left plot.
 All plots are created for data of one screens and channel, both can be selected from drop-down lists."
     ))
