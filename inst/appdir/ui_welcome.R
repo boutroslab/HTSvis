@@ -7,7 +7,7 @@ fixedRow(
                      # HTML("</div>"),
                      column(12,
                             align = "left",
-                            h2(paste("HTSvis: A web app for exploratory data analysis",
+                            h2(paste("HTSvis: a web app for exploratory data analysis",
                                       "and visualization of arrayed high-throughput screens",sep = " ")),
                             HTML("<div style='height: 25px;'>"),
                             HTML("</div>"),
