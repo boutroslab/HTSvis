@@ -125,31 +125,33 @@ conditionalPanel(condition='output.showPanels',
                                                       id="helpQC2",
                                                       content = "Control wells can either be 
                                                       defined for all plates of one experiment or 
-                                                      for each plate individually.",
-                                                iconClass = "fa fa-question"),
-                                          tags$style(
-                                              type='text/css',
-                                              "#helpQC2{ margin-top: 38px;
-                                              margin-left:-25px;}")
-                                ),
-                                column(3,
-                                       align="center",
-                                       uiOutput("platesQC") ,
-                                    tags$style(
-                                        type='text/css',
-                                        "#platesQC{ margin-top: 25px;}"),
-                                    h6("set check to select all plates"),
-                                    checkboxInput("allPlates","")
-                                            )
+                                                      for each plate individually. The define 
+                                                      controls for all plates simultaneously,
+                                                      set the 'all plates' check.",
+                                                      iconClass = "fa fa-question"),
+                                            tags$style(
+                                                type='text/css',
+                                                "#helpQC2{ margin-top: 38px;
+                                                margin-left:-25px;}")
+                                            ),
+                                     column(3,
+                                            align="center",
+                                            uiOutput("platesQC") ,
+                                            tags$style(
+                                                type='text/css',
+                                                "#platesQC{ margin-top: 25px;}"),
+                                            h6("set check to select all plates"),
+                                            checkboxInput("allPlates","")
+                                     )
                                      ),
-                                HTML("<div style='height: 25px;'>"),
-                                HTML("</div>"),
-                                fixedRow(
-                                    column( 6,
-                                            ggvisOutput("heatmap_qc"))
-                                )
+                                 HTML("<div style='height: 25px;'>"),
+                                 HTML("</div>"),
+                                 fixedRow(
+                                     column( 6,
+                                             ggvisOutput("heatmap_qc"))
                                  )
+                     )
                      ),
                  HTML("<div style='height: 25px;'>"),
                  HTML("</div>")
-                 )
+)
