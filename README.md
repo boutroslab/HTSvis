@@ -8,7 +8,7 @@
 # HTSvis: a web app for exploratory data analysis and visualization of arrayed high-throughput screens 
 
 
-Version 1.1.3
+Version 1.2.0
 </br> 
 
 
