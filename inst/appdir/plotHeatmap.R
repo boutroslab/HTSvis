@@ -50,12 +50,12 @@ plotHeatmap <- function(data_table,limits,curr_plate,curr_screen,curr_feature,pl
                             dplyr::select_(wellDim,"row","column","value",annoDim)
     }
 
+  curr_df <- data.frame(curr_df)
   curr_df <- curr_df[gtools::mixedorder(curr_df[,wellDim]),]
   curr_df$column <- factor(
                             as.character(as.numeric(curr_df$column)),
                             levels=seq(1:n_distinct(curr_df$column))
                             )
-
 
 #Set color scale
   curr_df = mutate(
