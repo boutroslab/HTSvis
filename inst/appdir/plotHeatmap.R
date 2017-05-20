@@ -50,25 +50,27 @@ plotHeatmap <- function(data_table,limits,curr_plate,curr_screen,curr_feature,pl
                             dplyr::select_(wellDim,"row","column","value",annoDim)
     }
 
-  curr_df <- data.frame(curr_df)
-  curr_df <- curr_df[gtools::mixedorder(curr_df[,wellDim]),]
-  curr_df$column <- factor(
-                            as.character(as.numeric(curr_df$column)),
-                            levels=seq(1:n_distinct(curr_df$column))
-                            )
+  
+      curr_df <- data.frame(curr_df)
+      curr_df <- curr_df[gtools::mixedorder(curr_df[,wellDim]),]
+      curr_df$column <- factor(
+                                as.character(as.numeric(curr_df$column)),
+                                levels=seq(1:n_distinct(curr_df$column))
+                                )
+    
+    #Set color scale
+      curr_df = mutate(
+                    curr_df,def.color=as.character(cut(value,
+                                                       breaks=breakPoints,
+                                                       labels = col_palette)
+                                                   )
+                    )
+      curr_df$def.color[curr_df$value < min] = col_palette[1]
+      curr_df$def.color[curr_df$value > max] = col_palette[length(col_palette)]
+    
+      # Set NA values in df2$def.color to light balck in df2$def.color
+      curr_df$def.color[is.na(curr_df$value)] = "black"
+      curr_df$CSidB110 <- 1:nrow(curr_df)
+      return(curr_df)
 
-#Set color scale
-  curr_df = mutate(
-                curr_df,def.color=as.character(cut(value,
-                                                   breaks=breakPoints,
-                                                   labels = col_palette)
-                                               )
-                )
-  curr_df$def.color[curr_df$value < min] = col_palette[1]
-  curr_df$def.color[curr_df$value > max] = col_palette[length(col_palette)]
-
-  # Set NA values in df2$def.color to light balck in df2$def.color
-  curr_df$def.color[is.na(curr_df$value)] = "black"
-  curr_df$CSidB110 <- 1:nrow(curr_df)
-  return(curr_df)
 }
