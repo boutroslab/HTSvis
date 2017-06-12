@@ -17,7 +17,6 @@ ui <- function(request) {
                  ') ,
 
 
-
             #initialize shiny js (for html tags in selectize dropdown)
             shinyjs::useShinyjs(),
 

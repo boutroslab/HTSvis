@@ -248,8 +248,8 @@ observeEvent(input$startApp,{
                                      input$PlateDimension,
                                      input$AnnoDimension,
                                      "experiment.id")
-                test_ft <-  test_ft %>% dplyr::mutate_each(funs(as.character),
-                                                           one_of(colnames_string))
+                test_ft <-  test_ft %>% dplyr::mutate_at(colnames_string,
+                                                         funs(as.character))
                 feature_table2$data <- test_ft
             }
         } else {
@@ -272,11 +272,11 @@ observeEvent(input$startApp,{
                     }
                 }
                 test_ft <-  test_ft %>%
-                    dplyr::mutate_each(funs(as.character),
-                                       one_of(colnames_string)) %>%
-                    dplyr::select(one_of(colnames_string,
-                                         input$MeasuredValues))
+                    dplyr::mutate_at(colnames_string,funs(as.character)) %>%
+                        dplyr::select(one_of(colnames_string,
+                                             input$MeasuredValues))
                 feature_table2$data <- test_ft
+                
             }
         }
     }

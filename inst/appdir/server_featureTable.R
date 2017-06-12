@@ -27,11 +27,11 @@ feature_table_print <-   reactive({
                                 TabDimensions$well,
                                 TabDimensions$plate,
                                 features_Table$selected_features))) %>%
-                mutate_each_(
-                    funs(round(.,digits=3)),
-                    paste0("-",c(TabDimensions$annotation,
+                mutate_at(
+                    vars(-one_of(c(TabDimensions$annotation,
                                  TabDimensions$plate,
-                                 TabDimensions$well))) %>% 
+                                 TabDimensions$well))),
+                    funs(round(.,digits=3))) %>% 
                 mutate(rowsFT=seq(1:nrow(.)))
         } else {
             feature_table2$data %>%
@@ -40,11 +40,12 @@ feature_table_print <-   reactive({
                                 TabDimensions$plate,
                                 TabDimensions$experiment,
                                 features_Table$selected_features))) %>%
-                mutate_each_(funs(round(.,digits=3)),
-                             paste0("-",c(TabDimensions$annotation,
-                                          TabDimensions$plate,
-                                          TabDimensions$well,
-                                          TabDimensions$experiment))) %>% 
+                mutate_at(
+                    vars(-one_of(c(TabDimensions$annotation,
+                                   TabDimensions$plate,
+                                   TabDimensions$well,
+                                   TabDimensions$experiment))),
+                    funs(round(.,digits=3))) %>% 
                 mutate(rowsFT=seq(1:nrow(.)))
         }
     }
