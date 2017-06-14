@@ -71,6 +71,7 @@ If you're running HTSvis on a laptop, low battery might slow down the applicatio
 
 In case the installation fails try to install the following packages manually  
 ```
+install.packages("data.table")
 install.packages("tidyr")
 install.packages("miniUI")
 install.packages("shinyjs")
