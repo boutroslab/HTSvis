@@ -21,7 +21,7 @@ observe({
     if(file_ext(inFile$name) == "RData" |
        file_ext(inFile$name) == "Rdata") {
         feature_table2$data_pre <- testInput(
-            get(load(inFile$datapath))
+            data.frame(get(load(inFile$datapath)))
         )
         if(!is.data.frame(feature_table2$data_pre)){
             feature_table2$data_pre <- NULL
