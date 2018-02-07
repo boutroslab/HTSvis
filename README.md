@@ -36,6 +36,7 @@ devtools::install_github("boutroslab/HTSvis", build_vignettes = F, type="source"
 ### Load the package and call the function 'HTSvis' to start the web application
 We recommend to start a new session and clear the workspace when using the application 
 ```
+
 library(HTSvis)
 
 HTSvis()
