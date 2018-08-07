@@ -11,7 +11,7 @@
 Version 1.2.0
 </br> 
 
-## Attention: HTSvis is currenlty under construction and we can not guarantee full functionalty. Please contact us if you face any problems. 
+
 
 ## About 
 HTSvis is an R/Shiny open-source web application for interactive visualization and 
