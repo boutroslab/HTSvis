@@ -36,7 +36,7 @@ fixedRow(
                             HTML("<div style='height: 25px;'>"),
                             HTML("</div>"),
                             h3("Additional notes"),
-                            h4(paste("A  local version of HTSvis for download and information concerning licesning",
+                            h4(paste("A  local version of HTSvis for download and information concerning licensing",
                                      "can be found at:"),sep=" "),
                             h4(a("https://github.com/boutroslab/HTSvis", href="https://github.com/boutroslab/HTSvis")),
                             HTML("<div style='height: 25px;'>"),
