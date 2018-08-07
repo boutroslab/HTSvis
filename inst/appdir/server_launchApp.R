@@ -690,6 +690,9 @@ observeEvent(input$startApp,{
         } else {
             showApp$panels = T
             showApp$dummy = F
+            feature_table2$data <- feature_table2$data %>% dplyr::arrange_(input$ExperimentDimension,
+                                                                           input$PlateDimension,
+                                                                           input$WellDimension)
         }
     }
 })
