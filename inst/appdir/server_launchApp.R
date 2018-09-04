@@ -455,7 +455,7 @@ observeEvent(input$startApp,{
                     unlist(use.names = FALSE))
             if(!is.null(input$IsSingleExperiment)){
                 if(isTRUE(input$IsSingleExperiment)) {
-                    tabInput$inputScreens="single_experiment"
+                    tabInput$inputScreens == "single_experiment"
                 } else {
                     tabInput$inputScreens=feature_table2$data %>%
                         dplyr::distinct_(input$ExperimentDimension) %>%
