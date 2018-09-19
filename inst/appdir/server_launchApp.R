@@ -699,6 +699,7 @@ observeEvent(input$startApp,{
                 feature_table2$data <- feature_table2$data %>% dplyr::arrange_(input$ExperimentDimension,
                                                                                input$PlateDimension,
                                                                                input$WellDimension)   
+            }
         }
     }
 })
